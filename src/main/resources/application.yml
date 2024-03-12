@@ -1,0 +1,44 @@
+spring:
+  #db
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url : jdbc:mysql://localhost:3306/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: ssafy
+  #jpa
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            clientId: 0a1e9d23904384ee3c948fd848a4fe60
+            clientSecret: 95x09adSUhz68BVmZoJ6YeRCiKmFtwHZ # ??? ??
+            authorizationGrantType: authorization_code
+            redirectUri: localhost:8080/login/oauth2/code/kakao
+            scope: profile_nickname, profile_image
+            clientName: Kakao
+        provider:
+          kakao:
+            authorizationUri: https://kauth.kakao.com/oauth/authorize
+            tokenUri: https://kauth.kakao.com/oauth/token
+            userInfoUri: https://kapi.kakao.com/v2/user/me
+            userNameAttribute: id
+
+#  #redis
+#  data:
+#    redis:
+#      host: ${REDIS_HOST}
+#      port: ${REDIS_PORT}
+#      password: ${REDIS_PASSWORD}
+#      lettuce:
+#        pool:
+#          max-idle: 8
+#          min-idle: 0
+#          max-active: 8
+#          max-wait: -1
