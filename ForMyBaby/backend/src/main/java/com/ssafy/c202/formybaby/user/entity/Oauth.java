@@ -9,7 +9,7 @@ public class Oauth {
 
     @Id
     @Column(nullable = false)
-    private Long id;
+    private Long oauthId;
 
     @Column(nullable = false)
     private String name;

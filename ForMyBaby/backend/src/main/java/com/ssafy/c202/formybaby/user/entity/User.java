@@ -9,11 +9,10 @@ import lombok.Data;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "oauth_id")
     private Oauth oauth;
 
     @Column(nullable = false)

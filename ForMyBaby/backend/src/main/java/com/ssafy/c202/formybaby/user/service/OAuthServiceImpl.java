@@ -10,7 +10,10 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -47,18 +50,18 @@ public class OAuthServiceImpl implements OAuthService {
     @Override
     public String processUserLoginOrRegistration(Map<String, Object> kakaoUserInfo) {
         // DB에서 사용자 조회 (가정)
-        User user = userService.findByUserId((Long) kakaoUserInfo.get("id"));
+        Oauth oauthUser = oauthRepository.findByOauthId((Long) kakaoUserInfo.get("id"));
 
         String jwtToken;
 
-        if(user == null){
-            log.info("user 값 없음");
+        if(oauthUser == null){
+            log.info("oauthUser 값 없음");
 
             Map<String, Object> kakaoAccount = (Map<String, Object>) kakaoUserInfo.get("kakao_account");
             Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
             Oauth oauth = new Oauth();
-            oauth.setId((Long) kakaoUserInfo.get("id"));
+            oauth.setOauthId((Long) kakaoUserInfo.get("id"));
             oauth.setName((String) kakaoAccount.get("name")); // 카카오 계정으로부터 이름 추출
             oauth.setProfileImg((String) profile.get("profile_image_url")); // 프로필 이미지 URL 추출
             oauth.setAccountEmail((String) kakaoAccount.get("email")); // 카카오 계정 이메일 추출
@@ -69,6 +72,7 @@ public class OAuthServiceImpl implements OAuthService {
 
             // 유저 정보 저장 로직 추가 (유저 회원가입)
             User newUser = new User();
+
             newUser.setOauth(oauth); // Oauth 객체와의 연결 설정
             newUser.setDanger(false); // 기본값 설정 예시
             newUser.setGeneral(false); // 기본값 설정 예시

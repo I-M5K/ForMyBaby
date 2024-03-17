@@ -14,9 +14,13 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     @Override
-    public User findByUserId(Long id) {
-        User user = userRepository.findByOauth_Id(id);
-        return user;
+    public User findByUserId(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user != null) {
+            return user;
+        } else {
+            return null;
+        }
     }
     @Override
     public User registerUser(User user) {

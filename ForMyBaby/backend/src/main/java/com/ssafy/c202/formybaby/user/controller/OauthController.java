@@ -18,15 +18,6 @@ import java.util.Map;
 @Slf4j
 public class OauthController {
 
-//    @Autowired
-//    private UserService userService;
-//
-//    @Autowired
-//    private JwtService jwtService;
-//
-//    @Autowired
-//    private OauthRepository oauthRepository;
-
     @Autowired
     private OAuthService oAuthService;
 
