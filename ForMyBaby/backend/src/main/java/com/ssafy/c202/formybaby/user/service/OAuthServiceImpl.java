@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -78,6 +79,12 @@ public class OAuthServiceImpl implements OAuthService {
             newUser.setGeneral(false); // 기본값 설정 예시
             newUser.setSound(false); // 기본값 설정 예시
             newUser.setUserState(false); // 기본값 설정 예시
+
+            Random random = new Random();
+            int randomNum = random.nextInt(10000); // 0부터 9999까지의 랜덤 정수 생성
+            System.out.println(randomNum);
+
+            newUser.setUserId(oauth.getOauthId()+randomNum);
 
             userService.registerUser(newUser); // 새 유저 정보 저장
 
