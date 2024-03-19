@@ -10,7 +10,7 @@ function Footer() {
       <nav>
         <ul style={styles.navList}>
           <li style={styles.navItem}>
-            <a href="/">
+            <a href="/main">
               <img src={homeIcon} alt="Home" style={styles.icon} />
             </a>
           </li>

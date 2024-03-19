@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Link 컴포넌트 import
 import NavBar from '../components/NavBar';
 import './MainPage.css';
 
@@ -17,46 +18,57 @@ const MainPage = () => {
         </div>
       </div>
       <img src={require('../assets/babybear.png')} className="gombaImage" alt="Baby Bear" />
-      <div className="rectangleBox" onClick={() => {}}>
-        <>
-          100% 채우면 과연 어떤 선물이?
-        </>
-      </div>
+      <Link to="/present">
+        <div className="rectangleBox">
+          <>
+            100% 채우면 과연 어떤 선물이?
+          </>
+        </div>
+      </Link>
 
-      <div className="boxAvengers">
         <div className="boxContainerRight">
-          <div className="smallmiddleBox" onClick={() => {}}>
-            a
-          </div>
-          <div className="smallBox" onClick={() => {}}>
-            <>
-              우리아이<br />
-              수면패턴
-            </>
-          </div>
+          <Link to="/sleep-pattern">
+            <div className="smallmiddleBox">
+              a
+            </div>
+          </Link>
+          <Link to="/sleep-pattern">
+            <div className="smallBox">
+              <>
+                우리아이<br />
+                수면패턴
+              </>
+            </div>
+          </Link>
         </div>
         
         <div className="boxContainerLeft">
-          <div className="smallBox" onClick={() => {}}>
-            <>
-              무준이가 태어난지<br />
-              27일 되었어요
-            </>
-          </div>
-          <div className="smallBox" onClick={() => {}}>
-            <>
-              이번주<br />
-              건강검진
-            </>
-          </div>
-          <div className="smallBox" onClick={() => {}}>
-            <>
-              우리아이<br />
-              육아꿀팁
-            </>
-          </div>
+          <Link to="/baby-age">
+            <div className="smallBox">
+              <>
+                무준이가 태어난지<br />
+                27일 되었어요
+              </>
+            </div>
+          </Link>
+          <Link to="/timeline">
+            <div className="smallBox">
+              <>
+                이번주<br />
+                건강검진
+              </>
+            </div>
+          </Link>
+          <Link to="/parenting-tips">
+            <div className="smallBox">
+              <>
+                우리아이<br />
+                육아꿀팁
+              </>
+            </div>
+          </Link>
         </div>
-      </div>
+
       <NavBar />
     </div>
   );

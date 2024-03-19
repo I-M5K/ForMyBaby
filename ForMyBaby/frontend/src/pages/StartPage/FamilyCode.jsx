@@ -1,7 +1,7 @@
 // src/FamilyCodeForm.js
 
 import React, { useState, useRef } from 'react';
-import '../../CSS/FamilyCode.css';
+import './FamilyCode.css';
 
 function FamilyCodeForm({ onSubmit, goToNextPage }) {
   const [code, setCode] = useState('');
@@ -36,7 +36,7 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
         프로필 → 가족 코드에서 코드를 확인해주세요.
       </p>
       <div className="code-input">
-        {[...Array(4)].map((_, index) => (
+        {[...Array(6)].map((_, index) => (
           <input
             key={index}
             ref={(el) => (inputRefs.current[index] = el)}
