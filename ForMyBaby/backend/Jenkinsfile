@@ -75,7 +75,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker rmi kimhyein/back"     //images 날리기
+                        sh "docker rmi hyeiiin/back"     //images 날리기
 //                         sh "docker pull ${DOCKER_USER_ID}/back"
                     }
                 }
@@ -88,23 +88,37 @@ pipeline {
                 }
             }
         }
+//         stage('Up') {
+//             steps {
+//                 script {
+//                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+//                         try{
+//                             sh "docker rm -f back || true"
+//                             sh "docker run -d --name back -p 8082:8080 \
+//                                 -e DB_URL=${env.DB_URL} \
+//                                 -e DB_USER=${env.DB_USER} \
+//                                 -e DB_PASSWORD=${env.DB_PASSWORD} \
+//                                 -e REDIS_HOST=${env.REDIS_HOST} \
+//                                 -e REDIS_PASSWORD=${env.REDIS_PASSWORD} \
+//                                 -e REDIS_PORT=${env.REDIS_PORT} \
+//                                 -e MAIL_ID=${env.MAIL_ID} \
+//                                 -e MAIL_PASSWORD=${env.MAIL_PASSWORD} \
+//                                 -e MAIL_PORT=${env.MAIL_PORT} \
+//                                 kimhyein/back"
+//                         } catch (Exception e){
+//                             sh "docker restart back || true"  // Ignore error if container doesn't exist
+//                         }
+//                     }
+//                 }
+//             }
+//         }
         stage('Up') {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try{
                             sh "docker rm -f back || true"
-                            sh "docker run -d --name back -p 8082:8080 \
-                                -e DB_URL=${env.DB_URL} \
-                                -e DB_USER=${env.DB_USER} \
-                                -e DB_PASSWORD=${env.DB_PASSWORD} \
-                                -e REDIS_HOST=${env.REDIS_HOST} \
-                                -e REDIS_PASSWORD=${env.REDIS_PASSWORD} \
-                                -e REDIS_PORT=${env.REDIS_PORT} \
-                                -e MAIL_ID=${env.MAIL_ID} \
-                                -e MAIL_PASSWORD=${env.MAIL_PASSWORD} \
-                                -e MAIL_PORT=${env.MAIL_PORT} \
-                                kimhyein/back"
+                            sh "docker run -d --name back -p 8082:8080 hyeiiin/back"
                         } catch (Exception e){
                             sh "docker restart back || true"  // Ignore error if container doesn't exist
                         }
