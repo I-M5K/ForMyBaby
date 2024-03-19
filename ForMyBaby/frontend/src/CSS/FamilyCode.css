@@ -1,0 +1,54 @@
+/* src/FamilyCodeForm.css */
+
+.family-code-form {
+  max-width: 300px;
+  margin: 0 auto;
+  margin-top: 80px;
+  padding: 20px;
+}
+
+.family-code-form h2 {
+  margin-top: 80px;
+}
+
+.familyImage {
+  width: 207px;
+  height: 189px;
+  padding: 30px;
+}
+
+.code-input input {
+  flex: 1;
+  width: 50px;
+  height: 50px;
+  margin-right: 5px;
+  font-size: 24px;
+  text-align: center;
+  background: #f9f9f9;
+  border: none;
+  border-radius: 20px;
+}
+
+.submit-button {
+  width: 100%;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 260px;
+  height: 47px;
+  margin-top: 30px;
+  background: #f7c515;
+  border-radius: 30px;
+}
+
+.skip-button {
+  background-color: #fff; /* 기본 버튼 색상 */
+  color: #000;
+  border: none;
+  cursor: pointer;
+  width: 260px;
+  height: 47px;
+  padding: 10px;
+  margin-top: 10px;
+}

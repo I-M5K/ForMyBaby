@@ -1,0 +1,78 @@
+.container {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 20px;
+    padding-top: 40px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .headerText {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .notificationIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .gombaImage {
+    width: 167px;
+    height: 149px;
+    padding: 30px;
+  }
+  
+  .rectangleBox {
+    position: absolute;
+    width: 387px;
+    height: 94px;
+    left: calc(50% - 387px/2 + 1.5px);
+    background: #f9f9f9;
+    border-radius: 30px;
+  }
+
+  .group {
+    position: relative; /* group 요소를 relative로 설정 */
+  }
+  
+  .boxContainerRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+  }
+  
+  .boxContainerLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 50%;
+    left: 20px;
+  }
+  
+  .smallBox {
+    width: 190px;
+    height: 87px;
+    background: #f9f9f9;
+    border-radius: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .smallmiddleBox {
+    width: 190px;
+    height: 193px;
+    background: #f9f9f9;
+    border-radius: 30px;
+    margin-bottom: 20px;
+  }
+  
