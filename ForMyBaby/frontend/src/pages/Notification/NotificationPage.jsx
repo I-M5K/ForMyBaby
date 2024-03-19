@@ -1,13 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NotificationBox from '../../components/notification/NotificationBox';
+import { getNotificationList, deleteNotification, deleteNotificationAll } from '../../api/notificationApi';
 
 const NotificationPage = () => {
-  // 가상의 알림 데이터
-  const [notifications, setNotifications] = useState([
-    { id: 1, type: '알림', content: '새로운 메시지가 도착했습니다.', time: '방금 전' },
-    { id: 2, type: '경고', content: '잘못된 입력이 감지되었습니다.', time: '5분 전' },
-    { id: 3, type: '알림', content: '오늘의 할일을 확인하세요.', time: '1시간 전' },
-  ]);
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    // 페이지가 처음 렌더링될 때 알림 데이터를 가져옴
+    async function fetchNotificationList() {
+      try {
+        const notificationList = await getNotificationList();
+        setNotifications(notificationList);
+      } catch (error) {
+        console.error('알림 목록을 가져오는 중 에러 발생:', error);
+      }
+    }
+    
+    fetchNotificationList(); // 알림 데이터 가져오기
+  }, []); // 빈 배열을 전달하여 이펙트가 한 번만 실행되도록 함
+
+  // 알림 삭제 함수
+  const handleDeleteNotification = async (notificationId) => {
+    await deleteNotification(notificationId);
+    // 알림 삭제 후 알림 목록 다시 가져와서 상태 업데이트
+    const updatedNotificationList = await getNotificationList();
+    setNotifications(updatedNotificationList);
+  };
+
+  // 모든 알림 삭제 함수
+  const handleDeleteAllNotifications = async () => {
+    await deleteNotificationAll();
+    // 모든 알림 삭제 후 알림 목록을 빈 배열로 설정하여 화면 갱신
+    setNotifications([]);
+  };
 
   return (
     <div className="notification-page">
@@ -15,7 +40,7 @@ const NotificationPage = () => {
         <h1>알림</h1>
         <div className="notification-buttons">
           {/* 전체 삭제 버튼 */}
-          <button className="delete-all-button" >전체 삭제</button>
+          <button className="delete-all-button" onClick={handleDeleteAllNotifications}>전체 삭제</button>
           {/* 설정 버튼 */}
           <button className="settings-button">설정</button>
         </div>
@@ -24,10 +49,11 @@ const NotificationPage = () => {
         {/* 알림 목록 렌더링 */}
         {notifications.map(notification => (
           <NotificationBox
-            key={notification.id}
-            type={notification.type}
+            key={notification.notificationId} // notificationId로 변경
+            type={notification.notificationType} // notificationType으로 변경
             content={notification.content}
-            time={notification.time}
+            time={notification.createdAt} // createdAt로 변경
+            onDelete={() => handleDeleteNotification(notification.notificationId)} // 삭제 함수 전달
           />
         ))}
       </div>
