@@ -25,13 +25,13 @@ pipeline {
         }
         stage('Setup Environment') {
             steps {
-                dir("${env.WORKSPACE}/feature/backend/khi"){
+                dir("${env.WORKSPACE}/develop"){
                     script {
                         sh "ls -al"
 //                         sh "echo 'SUBMODULE CHECK'"
 //                         sh "ls ./src/main/resources"
 //                         sh "chmod +x ./gradlew"
-                        sh "cat ./src/main/resources/application.yml"
+//                         sh "cat ./src/main/resources/application.yml"
                     }
                 }
             }
