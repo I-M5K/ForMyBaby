@@ -1,28 +1,24 @@
 import useGeoLocation from "../../hooks/useGeolocation";
 import { sendLocation } from '../../api/userApi'; 
 import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useRecoilState } from 'recoil';
-
-// import "../../FCM/firebase-messaging-sw.js";
 import { requestPermission } from "../../FCM/firebase-messaging-sw";
-import { userDataState } from "../../atoms/userDataState";
+import { useUserStore } from '../../stores/UserStore'; // Zustand 스토어 import
+
 
 const WelcomePage = () => {
     const location = useGeoLocation();
-    const [userData, setUserData] = useRecoilState(userDataState);
-    console.log(userData);
+    const { id, name, email, fcm, setFcm } = useUserStore();
     //requestPermission();
+    console.log(id);
+    console.log(name);
+    console.log(email);
 
     useEffect(() => {
         // console.log('fetchData 직전');
         const fetchData = async () => {
-            if (userData.fcm == null){
+            if (fcm == null){
                 requestPermission();
-                setUserData(userData => ({
-                    ...userData,
-                    fcm: localStorage.getItem('fcmToken')
-                }));
+                setFcm(localStorage.getItem('fcmToken'));
             }
             // console.log('fetchData 직후');
             if (location && location.loaded && location.coordinates) {
