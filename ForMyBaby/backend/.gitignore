@@ -1,6 +1,17 @@
-
-
 # key 관련
 *.pem
 gpu_README.md
 ec2_README.md
+
+HELP.md
+.gradle
+
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+
+
+
+

@@ -1,6 +1,7 @@
 package com.ssafy.c202.formybaby.user.controller;
 
 import com.ssafy.c202.formybaby.global.jwt.JwtProperties;
+import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
 import com.ssafy.c202.formybaby.user.service.OAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

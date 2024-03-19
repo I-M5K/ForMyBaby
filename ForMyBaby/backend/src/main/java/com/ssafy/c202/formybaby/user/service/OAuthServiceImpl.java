@@ -81,10 +81,17 @@ public class OAuthServiceImpl implements OAuthService {
             newUser.setUserState(false); // 기본값 설정 예시
 
             Random random = new Random();
+
             int randomNum = random.nextInt(10000); // 0부터 9999까지의 랜덤 정수 생성
             System.out.println(randomNum);
 
-            newUser.setUserId(oauth.getOauthId()+randomNum);
+            // userId 생성: oauthId와 난수를 결합
+            String userIdStr = oauth.getOauthId().toString() + String.format("%04d", randomNum);
+
+            // Long 타입으로 변환을 시도합니다. 여기서는 변환에 실패할 가능성에 대한 처리가 필요합니다.
+            Long userId = Long.parseLong(userIdStr);
+
+            newUser.setUserId(userId);
 
             userService.registerUser(newUser); // 새 유저 정보 저장
 
