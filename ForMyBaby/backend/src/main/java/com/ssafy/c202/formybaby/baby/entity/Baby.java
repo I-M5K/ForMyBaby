@@ -5,12 +5,14 @@ import com.ssafy.c202.formybaby.user.entity.Family;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Entity
-public class Baby {
+public class Baby implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

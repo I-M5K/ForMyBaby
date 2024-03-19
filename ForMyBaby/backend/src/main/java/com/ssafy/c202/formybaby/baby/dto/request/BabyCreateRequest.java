@@ -14,7 +14,6 @@ public record BabyCreateRequest(
         //List<MultipartFile> files
 
         String profileImg,
-        String role,
-        String familyCode
+        String role
 )
 { }

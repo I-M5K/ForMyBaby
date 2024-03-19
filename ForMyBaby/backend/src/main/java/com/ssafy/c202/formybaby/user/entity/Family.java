@@ -22,13 +22,19 @@ public class Family {
     private Baby baby;
 
     @Column(nullable = false)
+    @ColumnDefault("123")
     private String familyCode;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role = Role.Mother;
 
     @Column(nullable = false)
     @ColumnDefault("1")
     private int familyRank;
 
+
+    public boolean isCorrectCode (String familyCode) {
+        return this.familyCode.equals(familyCode);
+    }
 }

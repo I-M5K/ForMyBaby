@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-03-19T15:05:36+0900",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.5.jar, environment: Java 17.0.9 (Oracle Corporation)"
+    date = "2024-03-19T16:02:22+0900",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.5.jar, environment: Java 17 (Oracle Corporation)"
 )
 @Component
 public class BabyMapperImpl implements BabyMapper {
@@ -42,6 +42,9 @@ public class BabyMapperImpl implements BabyMapper {
 
         Baby baby = new Baby();
 
+        if ( babyUpdateRequest.babyId() != null ) {
+            baby.setBabyId( Long.parseLong( babyUpdateRequest.babyId() ) );
+        }
         baby.setBabyName( babyUpdateRequest.babyName() );
         if ( babyUpdateRequest.birthDate() != null ) {
             baby.setBirthDate( LocalDate.parse( babyUpdateRequest.birthDate() ) );
@@ -58,6 +61,9 @@ public class BabyMapperImpl implements BabyMapper {
             return;
         }
 
+        if ( babyUpdateRequest.babyId() != null ) {
+            baby.setBabyId( Long.parseLong( babyUpdateRequest.babyId() ) );
+        }
         if ( babyUpdateRequest.babyName() != null ) {
             baby.setBabyName( babyUpdateRequest.babyName() );
         }

@@ -9,12 +9,16 @@ import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.mapper.FamilyMapper;
 import com.ssafy.c202.formybaby.user.repository.FamilyRepository;
+import com.ssafy.c202.formybaby.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -23,6 +27,7 @@ public class BabyServiceImpl implements BabyService{
 
     private final BabyRepository babyRepository;
     private final FamilyRepository familyRepository;
+    private final UserRepository userRepository;
     private final BabyMapper babyMapper;
     private final FamilyMapper familyMapper;
     @Override
@@ -30,16 +35,20 @@ public class BabyServiceImpl implements BabyService{
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         babyRepository.save(baby);
 
-        Family family = familyMapper.updateFamilyChild(babyCreateRequest);
+        String rand = RandomStringUtils.randomAlphanumeric(6);
+
+        Family family = familyMapper.initFamilyEntity(userRepository.findByUserId(babyCreateRequest.userId()), baby, babyCreateRequest, rand);
         familyRepository.save(family);
     }
 
     @Override
     public BabyReadResponse updateBaby(BabyUpdateRequest babyUpdateRequest) {
-        Baby oldBaby = babyMapper.toBabyEntity(babyUpdateRequest);
-        babyMapper.updateBabyFromRequest(babyUpdateRequest, oldBaby);
+        Baby baby = babyMapper.toBabyEntity(babyUpdateRequest);
+        babyMapper.updateBabyFromRequest(babyUpdateRequest, baby);
 
-        return babyRepository.findBabyByBabyId(oldBaby.getBabyId())
+        babyRepository.save(baby);
+
+        return babyRepository.findBabyByBabyId(baby.getBabyId())
                 .orElseThrow(NullPointerException::new);
     }
 
@@ -56,6 +65,7 @@ public class BabyServiceImpl implements BabyService{
 
     @Override
     public void deleteBaby(Long babyId) {
+        familyRepository.deleteFamiliesByBabyBabyId(babyId);
         babyRepository.deleteByBabyId(babyId);
     }
 }

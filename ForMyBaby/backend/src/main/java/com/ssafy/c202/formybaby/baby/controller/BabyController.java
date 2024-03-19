@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/baby")
+@RequestMapping("/v1/baby")
 @CrossOrigin(origins = "http://localhost:3000")
 public class BabyController {
 
@@ -35,14 +35,14 @@ public class BabyController {
         return new ResponseEntity<>(babyService.babyDetail(babyId), HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/list/{userId}")
     public ResponseEntity<List<BabyReadResponse>> getList(@PathVariable Long userId) {
         return new ResponseEntity<>(babyService.babyList(userId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{babyId}")
-    public ResponseEntity<?> kill(@PathVariable long babyNum) {
-        babyService.deleteBaby(babyNum);
+    public ResponseEntity<?> kill(@PathVariable Long babyId) {
+        babyService.deleteBaby(babyId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

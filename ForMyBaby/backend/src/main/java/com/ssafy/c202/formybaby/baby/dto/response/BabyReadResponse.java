@@ -9,5 +9,6 @@ public record BabyReadResponse(
         String babyName,
         LocalDate birthDate,
         BabyGender babyGender,
-        String profileImg
+        String profileImg,
+        String familyCode
 ){}
