@@ -44,7 +44,7 @@ pipeline {
                         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                             echo "도커허브 아이디: ${DOCKER_USER_ID}"
                             echo "도커허브 비밀번호: ${DOCKER_USER_PASSWORD}"
-                            sh "docker build --no-cache -t ${DOCKER_USER_ID}/back backend"
+                            sh "docker build --no-cache -t ${DOCKER_USER_ID}/back ForMyBaby/backend"
                         }
                     }
                 }
