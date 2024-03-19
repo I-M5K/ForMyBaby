@@ -28,8 +28,8 @@ pipeline {
                 dir("${env.WORKSPACE}/feature/backend/khi"){
                     script {
                         sh "ls -al"
-                        sh "echo 'SUBMODULE CHECK'"
-                        sh "ls ./src/main/resources"
+//                         sh "echo 'SUBMODULE CHECK'"
+//                         sh "ls ./src/main/resources"
                         sh "chmod +x ./gradlew"
                         sh "cat ./src/main/resources/application.yml"
                     }
