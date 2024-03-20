@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Setup Environment') {
             steps {
-                dir("${env.WORKSPACE}/develop_be"){
+                dir("${env.WORKSPACE}/ForMyBaby/backend"){
                     script {
                         sh "ls -al"
                         sh "ls ./src/main/resources"
