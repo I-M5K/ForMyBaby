@@ -42,6 +42,7 @@ public class FCMService {
     }
 
     public void sendTest(String fcmToken) {
+
         Notification googleNotification = Notification.builder()
                 .setTitle("Test")
                 .setBody("testing...")
@@ -54,8 +55,12 @@ public class FCMService {
                 .putData("key", "BDSwVwVaEvWL1-Rws1skaQEjBCcvi4TP1TWicodeN49yC7LBjI-0t5rTb6cohFPxeYH88RWWajNm5fMtell2mhw")
                 .build();
 
-        send(message);
-        log.info("sending test : " + message.toString());
+        try{
+            send(message);
+            log.info("sending test : " + message.toString());
+        } catch(Exception e) {
+            log.info("fcm error : " + e.getMessage());
+        }
     }
 
     public void send(Message message) {

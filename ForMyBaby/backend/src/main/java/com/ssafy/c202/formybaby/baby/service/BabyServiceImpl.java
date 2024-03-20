@@ -51,7 +51,7 @@ public class BabyServiceImpl implements BabyService{
         String familyCode = RandomStringUtils.randomAlphanumeric(6);
         babyRepository.save(baby);
 
-        fcmService.sendTest("fGEU-9IwnPvJFXs8VcFrHe:APA91bGmQ0bqr_Hxut3dxXPA3qOkpuS3u0ZNnwAR0Mc6YmDWFMsw4WgN8Ncp1VSpdXHz-OYKijYEUK0MHKTRrr_je5EzL7KKDuBjuoBoclMKsWVoSqmIExHLl1v2VqdG2Fb_dA7f29BG");
+        fcmService.sendTest("fnwM3OU363c7PthT1nsD5t:APA91bE-WIUrffTK4vj5e3r4M5KG-xA-MjMXPllTFIbK_pk-_8qna2337s6paCx_jE-2tHIkfWyt393FxKMrIPJ7q0q_nuMU9vhm02KHVMiZKvlsWpL7RPSnUrreDDe7pqBYCDl79Egi");
 
 
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
