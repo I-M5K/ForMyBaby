@@ -105,7 +105,7 @@ pipeline {
                                 -e DB_URL=${env.DB_URL} \
                                 -e DB_USER=${env.DB_USER} \
                                 -e DB_PASSWORD=${env.DB_PASSWORD} \
-                                hyeiiin/back"
+                                hyeiiin/back:latest"
                         } catch (Exception e){
                             sh "docker restart back || true"  // Ignore error if container doesn't exist
                         }
