@@ -9,12 +9,13 @@ COPY settings.gradle .
 COPY src src
 # gradlew 실행 권한 부여
 #RUN chmod +x ./gradlew
-#RUN ./gradlew bootJar
+RUN ./gradlew bootJar
 
 # 실행 스테이지
 FROM openjdk:17
 WORKDIR /back
-COPY ./build/libs/*.jar .
-ENTRYPOINT ["java", "-jar", "app.jar"]
 VOLUME /tmp
+#COPY --from=builder /back/build/libs/*.jar app.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
 EXPOSE 8080
