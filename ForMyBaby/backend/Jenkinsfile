@@ -33,8 +33,8 @@ pipeline {
                         sh "ls -al"
 //                         sh "echo 'SUBMODULE CHECK'"
 //                         sh "ls ./src/main/resources"
-//                         sh "chmod +x ./gradlew"
-//                         sh "cat ./src/main/resources/application.yml"
+s                       sh "chmod +x ./gradlew"
+                        sh "cat ./src/main/resources/application.yml"
                     }
                 }
             }
@@ -74,20 +74,23 @@ pipeline {
                 }
             }
         }
+        stage('Prune old images'){
+            steps{
+                script{
+                    sh "docker ps"
+//                     sh "docker system prune --filter until=10h"
+                }
+            }
+        }
         stage('Pull') {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-//                         sh "docker rmi hyeiiin/back"     //images 날리기
-                        sh "docker pull ${DOCKER_USER_ID}/back"
+                        sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
+                        sh "docker rm back || true"    // Ignore error if container doesn't exist
+                        sh "docker rmi hyeiiin/back"     //images 날리기
+//                         sh "docker pull ${DOCKER_USER_ID}/back"
                     }
-                }
-            }
-        }
-        stage('Prune old images'){
-            steps{
-                script{
-                    sh "docker system prune --filter until=10h"
                 }
             }
         }
