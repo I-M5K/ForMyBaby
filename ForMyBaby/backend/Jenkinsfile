@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REPO = "s10-ai-image-sub2/S10P22C202"
+        REPO = "s10-ai-image-sub2/S10P22C202.git"
         DB_URL = "jdbc:mysql://localhost:8080/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true"
         DB_USER = "root"
         DB_PASSWORD = "ssafy"
@@ -89,7 +89,8 @@ pipeline {
 //                         sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
 //                         sh "docker rm back || true"    // Ignore error if container doesn't exist
 //                         sh "docker rmi hyeiiin/back"     //images 날리기
-                        sh "docker pull ${DOCKER_USER_ID}/back"
+                        sh "docker rmi hyeiiin/back"     //images 날리기
+//                         sh "docker pull ${DOCKER_USER_ID}/back"
                     }
                 }
             }
