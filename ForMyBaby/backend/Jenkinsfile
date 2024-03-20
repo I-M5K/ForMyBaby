@@ -89,8 +89,8 @@ pipeline {
 //                         sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
 //                         sh "docker rm back || true"    // Ignore error if container doesn't exist
 //                         sh "docker rmi hyeiiin/back"     //images 날리기
-                        sh "docker rmi hyeiiin/back"     //images 날리기
-//                         sh "docker pull ${DOCKER_USER_ID}/back"
+//                         sh "docker rmi hyeiiin/back"     //images 날리기
+                        sh "docker pull ${DOCKER_USER_ID}/back"
                     }
                 }
             }
