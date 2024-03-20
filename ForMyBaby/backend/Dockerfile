@@ -15,7 +15,6 @@ RUN ./gradlew bootJar
 FROM openjdk:17
 WORKDIR /back
 VOLUME /tmp
-#COPY --from=builder /back/build/libs/*.jar app.jar
-COPY ${JAR_FILE} app.jar
+COPY --from=builder /back/build/libs/*.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
 EXPOSE 8080

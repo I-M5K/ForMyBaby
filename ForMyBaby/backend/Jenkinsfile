@@ -2,9 +2,6 @@ pipeline {
     agent any
     environment {
         REPO = "s10-ai-image-sub2/S10P22C202.git"
-        DB_URL = "jdbc:mysql://localhost:3306/formybaby"
-        DB_USER = "root"
-        DB_PASSWORD = "ssafy"
 //         DB_URL = "${env.DB_URL}"
 //         DB_USER = "${env.DB_USER}"
 //         DB_PASSWORD = "${env.DB_PASSWORD}"
@@ -31,8 +28,7 @@ pipeline {
                 dir("${env.WORKSPACE}/develop_be"){
                     script {
                         sh "ls -al"
-//                         sh "echo 'SUBMODULE CHECK'"
-//                         sh "ls ./src/main/resources"
+                        sh "ls ./src/main/resources"
                         sh "chmod +x ./gradlew"
                         sh "cat ./src/main/resources/application.yml"
                     }
@@ -101,11 +97,7 @@ pipeline {
                         try{
                             sh "docker rm -f back || true"
                             sh "docker ps"
-                            sh "docker run -d --name back -p 8082:8080 \
-                                -e DB_URL=${env.DB_URL} \
-                                -e DB_USER=${env.DB_USER} \
-                                -e DB_PASSWORD=${env.DB_PASSWORD} \
-                                hyeiiin/back"
+                            sh "docker run -d --name back -p 8082:8080 hyeiiin/back"
                         } catch (Exception e){
                             sh "docker restart back || true"  // Ignore error if container doesn't exist
                         }
