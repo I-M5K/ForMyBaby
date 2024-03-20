@@ -8,7 +8,7 @@ const kakaoApi = async (code) => {
             "Content-Type": "application/x-www-form-urlencoded",
         };
 
-        const response = await fetch(`http://localhost:8080/v1/api/oauth/kakao/login?code=${code}`, {
+        const response = await fetch(`http://localhost:8080/v1/oauth/kakao/login?code=${code}`, {
             method: "POST",
             headers: headers,
         });

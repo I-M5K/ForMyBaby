@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("v1/api/oauth")
+@RequestMapping("v1/oauth")
 @Slf4j
 public class OauthController {
 
@@ -66,14 +66,18 @@ public class OauthController {
 
         log.info("kakaoUserInfo : " + kakaoUserInfo);
 
-        Optional<UserInfoMapper> userId = userRepository.findUserInfoByOauth_OauthId((Long) kakaoUserInfo.get("id"));
-
-        log.info("userId : " + userId);
-
-        kakaoUserInfo.put("userId",userId);
+        Long id = (Long) kakaoUserInfo.get("id");
 
         // 사용자 검증 및 JWT 토큰 생성
         String jwtToken = oAuthService.processUserLoginOrRegistration(kakaoUserInfo);
+
+        log.info("id : " + id);
+
+        Optional<UserInfoMapper> userId = userRepository.findUserInfoByOauth_OauthId(id);
+
+        log.info("userId : " + userId.get().getUserId());
+
+        kakaoUserInfo.put("userId",userId.get().getUserId());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
