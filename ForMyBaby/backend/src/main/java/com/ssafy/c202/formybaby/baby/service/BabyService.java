@@ -10,12 +10,15 @@ import java.util.List;
 public interface BabyService {
     void createBaby(BabyCreateRequest babyCreateRequest);
 
+    void createNewBaby(BabyCreateRequest babyCreateRequest);
 
     BabyReadResponse updateBaby(BabyUpdateRequest babyUpdateRequest);
 
     BabyReadResponse babyDetail(Long babyId);
 
     List<BabyReadResponse> babyList(Long userId);
+
+    List<BabyReadResponse> babyList(String familyCode);
 
     void deleteBaby(Long babyId);
 }
