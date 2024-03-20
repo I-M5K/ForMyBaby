@@ -33,7 +33,7 @@ pipeline {
                         sh "ls -al"
 //                         sh "echo 'SUBMODULE CHECK'"
 //                         sh "ls ./src/main/resources"
-s                       sh "chmod +x ./gradlew"
+                        sh "chmod +x ./gradlew"
                         sh "cat ./src/main/resources/application.yml"
                     }
                 }
