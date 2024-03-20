@@ -89,7 +89,6 @@ pipeline {
 //                         sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
 //                         sh "docker rm back || true"    // Ignore error if container doesn't exist
 //                         sh "docker rmi hyeiiin/back"     //images 날리기
-//                         sh "docker rmi hyeiiin/back"     //images 날리기
                         sh "docker pull ${DOCKER_USER_ID}/back"
                     }
                 }
@@ -105,7 +104,7 @@ pipeline {
                                 -e DB_URL=${env.DB_URL} \
                                 -e DB_USER=${env.DB_USER} \
                                 -e DB_PASSWORD=${env.DB_PASSWORD} \
-                                hyeiiin/back:latest"
+                                hyeiiin/back"
                         } catch (Exception e){
                             sh "docker restart back || true"  // Ignore error if container doesn't exist
                         }
