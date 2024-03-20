@@ -28,6 +28,9 @@ public class Notification {
     private NotificationType notificationType;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
