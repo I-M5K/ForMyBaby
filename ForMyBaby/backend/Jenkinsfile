@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REPO = "s10-ai-image-sub2/S10P22C202.git"
+        REPO = "s10-ai-image-sub2/S10P22C202"
 //         DB_URL = "${env.DB_URL}"
 //         DB_USER = "${env.DB_USER}"
 //         DB_PASSWORD = "${env.DB_PASSWORD}"
@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Setup Environment') {
             steps {
-                dir("${env.WORKSPACE}/develop"){
+                dir("${env.WORKSPACE}/develop_be"){
                     script {
                         sh "ls -al"
 //                         sh "echo 'SUBMODULE CHECK'"
