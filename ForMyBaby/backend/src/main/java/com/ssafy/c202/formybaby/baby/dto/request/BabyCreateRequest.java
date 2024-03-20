@@ -12,7 +12,6 @@ public record BabyCreateRequest(
 
         //S3 설정 후 변경
         //List<MultipartFile> files
-
         String profileImg,
         String role
 )
