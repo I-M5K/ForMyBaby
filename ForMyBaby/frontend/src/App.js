@@ -29,6 +29,7 @@ import Present from './pages/Features/Present';
 import MyPage from './pages/MyPage/MyPage';
 
 import TutorialAndLogin from './components/TutorialAndLogin'
+import VideoPage from './VideoPage'
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/notification" element={<NotificationPage />} />
+          <Route path="/video" element={<VideoPage />} />
         </Routes>
       </BrowserRouter>
     </div>
