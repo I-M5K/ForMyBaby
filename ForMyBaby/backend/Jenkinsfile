@@ -77,9 +77,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
-                        sh "docker rm back || true"    // Ignore error if container doesn't exist
-                        sh "docker rmi hyeiiin/back"     //images 날리기
+//                         sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
+//                         sh "docker rm back || true"    // Ignore error if container doesn't exist
+//                         sh "docker rmi hyeiiin/back"     //images 날리기
 //                         sh "docker pull ${DOCKER_USER_ID}/back"
                     }
                 }
@@ -91,8 +91,9 @@ pipeline {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try{
 //                             sh "docker rm -f back || true"
-//                             sh "docker ps"
+                            sh "docker ps"
                             sh "docker run -d --name back -p 8082:8080 ${DOCKER_USER_ID}/back"
+                            sh "docker ps"
                         } catch (Exception e){
                             sh "docker restart back || true"  // Ignore error if container doesn't exist
                         }

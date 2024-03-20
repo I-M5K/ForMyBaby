@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/v1/oauth")
+@RequestMapping("/oauth")
 @Slf4j
 public class OauthController {
 
