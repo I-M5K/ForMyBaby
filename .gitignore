@@ -4,9 +4,9 @@ gpu_README.md
 ec2_README.md
 
 HELP.md
-.gradle
+**/.gradle
 
-build/
+**/build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

@@ -6,7 +6,10 @@ import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.mapper.BabyMapper;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
+import com.ssafy.c202.formybaby.notification.entity.FCMMessage;
+import com.ssafy.c202.formybaby.notification.service.FCMService;
 import com.ssafy.c202.formybaby.user.entity.Family;
+import com.ssafy.c202.formybaby.user.entity.User;
 import com.ssafy.c202.formybaby.user.mapper.FamilyMapper;
 import com.ssafy.c202.formybaby.user.repository.FamilyRepository;
 import com.ssafy.c202.formybaby.user.repository.UserRepository;
@@ -30,14 +33,28 @@ public class BabyServiceImpl implements BabyService{
     private final UserRepository userRepository;
     private final BabyMapper babyMapper;
     private final FamilyMapper familyMapper;
+    private final FCMService fcmService;
     @Override
     public void createBaby(BabyCreateRequest babyCreateRequest) {
+        User user = userRepository.findByUserId(babyCreateRequest.userId());
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
+        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
         babyRepository.save(baby);
 
-        String rand = RandomStringUtils.randomAlphanumeric(6);
+        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+        familyRepository.save(family);
+    }
 
-        Family family = familyMapper.initFamilyEntity(userRepository.findByUserId(babyCreateRequest.userId()), baby, babyCreateRequest, rand);
+    public void createNewBaby(BabyCreateRequest babyCreateRequest) {
+        User user = userRepository.findByUserId(babyCreateRequest.userId());
+        Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
+        String familyCode = RandomStringUtils.randomAlphanumeric(6);
+        babyRepository.save(baby);
+
+        fcmService.sendTest("fGEU-9IwnPvJFXs8VcFrHe:APA91bGmQ0bqr_Hxut3dxXPA3qOkpuS3u0ZNnwAR0Mc6YmDWFMsw4WgN8Ncp1VSpdXHz-OYKijYEUK0MHKTRrr_je5EzL7KKDuBjuoBoclMKsWVoSqmIExHLl1v2VqdG2Fb_dA7f29BG");
+
+
+        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
         familyRepository.save(family);
     }
 
@@ -61,6 +78,10 @@ public class BabyServiceImpl implements BabyService{
     public List<BabyReadResponse> babyList(Long userId) {
         String familyCode = familyRepository.findFamilyCodeByUserId(userId);
         return babyRepository.findBabiesByUserId(userId);
+    }
+    @Override
+    public List<BabyReadResponse> babyList(String familyCode) {
+        return babyRepository.findBabiesByFamilyCode(familyCode);
     }
 
     @Override

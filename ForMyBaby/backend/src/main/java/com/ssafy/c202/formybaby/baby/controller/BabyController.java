@@ -5,11 +5,13 @@ import com.ssafy.c202.formybaby.baby.dto.request.BabyUpdateRequest;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
 import com.ssafy.c202.formybaby.baby.service.BabyService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +23,12 @@ public class BabyController {
 
     @PostMapping()
     public ResponseEntity<List<BabyReadResponse>> create(@RequestBody BabyCreateRequest babyCreateRequest) {
+        babyService.createNewBaby(babyCreateRequest);
+        return new ResponseEntity<>( babyService.babyList(babyCreateRequest.userId()), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<List<BabyReadResponse>> add(@RequestBody BabyCreateRequest babyCreateRequest) {
         babyService.createBaby(babyCreateRequest);
         return new ResponseEntity<>( babyService.babyList(babyCreateRequest.userId()), HttpStatus.CREATED);
     }
@@ -38,6 +46,10 @@ public class BabyController {
     @GetMapping("/list/{userId}")
     public ResponseEntity<List<BabyReadResponse>> getList(@PathVariable Long userId) {
         return new ResponseEntity<>(babyService.babyList(userId), HttpStatus.OK);
+    }
+    @GetMapping("/list/{familyCode}")
+    public ResponseEntity<List<BabyReadResponse>> getList(@PathVariable String familyCode) {
+        return new ResponseEntity<>(babyService.babyList(familyCode), HttpStatus.OK);
     }
 
     @DeleteMapping("/{babyId}")
