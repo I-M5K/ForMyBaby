@@ -2,7 +2,7 @@ spring:
   #db
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://j10c202.p.ssafy.io:3307/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: ssafy
   #jpa
@@ -16,7 +16,7 @@ spring:
   oauth:
     kakao:
       client_id: f9d3aa3c4d425c0ad175a6b95e366769 # REST API ?
-      redirect_uri: "http://j10c202.p.ssafy.io:8082/v1/oauth/redirected/kakao"
+      redirect_uri: "http://localhost:3000/oauth/redirected/kakao"
       client_secret: Mx4luiTuOBM8RAuJRU9AZ0UJdGtQrRVh
       scope: name, account_email, profile_image
 #  redis

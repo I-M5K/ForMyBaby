@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         REPO = "s10-ai-image-sub2/S10P22C202"
-        DB_URL = "jdbc:mysql://j10c202.p.ssafy.io:3307/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+        DB_URL = "jdbc:mysql://j10c202.p.ssafy.io:8080/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true"
         DB_USER = "root"
         DB_PASSWORD = "ssafy"
 //         DB_URL = "${env.DB_URL}"
