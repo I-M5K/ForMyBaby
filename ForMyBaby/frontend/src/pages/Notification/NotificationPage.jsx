@@ -31,13 +31,14 @@ const NotificationPage = () => {
       </div>
       <div className="notification-list">
         {notifications.map(notification => (
-          <NotificationBox
-            key={notification.notificationId}
-            type={notification.notificationType}
-            content={notification.content}
-            time={notification.createdAt}
-            onDelete={() => handleDeleteNotification(notification.notificationId)}
-          />
+          <div key={notification.notificationId} className="notification-box-wrapper">
+            <NotificationBox
+              type={notification.type}
+              content={notification.content}
+              time={notification.createdAt}
+            />
+            <button className="delete-notification-button" onClick={() => handleDeleteNotification(notification.notificationId)}>삭제</button>
+          </div>
         ))}
       </div>
     </div>
