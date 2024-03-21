@@ -15,7 +15,11 @@ import MainPage from './pages/MainPage';
 import WelcomePage from './pages/StartPage/WelcomePage';
 import NotificationPage from './pages/Notification/NotificationPage';
 
+// 아이 등록
 import BabyAdd from './pages/BabyAdd/BabyAdd';
+import BabyAddMore from './pages/BabyAdd/BabyAddMore'
+import BabyRelation from './pages/BabyAdd/BabyRelation'
+import BabyWelcome from './pages/BabyAdd/BabyWelcome'
 
 // 아이 지킴이
 import BabyGuard from './pages/Features/BabyGuard';
@@ -41,6 +45,9 @@ function App() {
           <Route path="/main" element={<MainPage />} />
           <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/baby-add" element={<BabyAdd />} />
+          <Route path="/baby-add-more" element={<BabyAddMore />} />
+          <Route path="/baby-relation" element={<BabyRelation />} />
+          <Route path="/baby-welcome" element={<BabyWelcome />} />
           <Route path="/baby-guard" element={<BabyGuard />} />
           <Route path="/timeline" element={<TimeLine />} />
           <Route path="/parenting-stamp" element={<ParentingStamp />} />
