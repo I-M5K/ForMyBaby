@@ -43,9 +43,11 @@ const MainPage = () => {
             낮잠 잘 시간이에요!
           </>
         </span>
-        <div className="notificationIcon">
-          <img src={require('../assets/mdi_bell.png')} alt="Notification Bell" />
-        </div>
+        <Link to="/notification">
+          <div className="notificationIcon">
+            <img src={require('../assets/mdi_bell.png')} alt="Notification Bell"/>
+          </div>
+        </Link>
       </div>
       <img src={require('../assets/babybear.png')} className="gombaImage" alt="Baby Bear" />
       <Link to="/present">

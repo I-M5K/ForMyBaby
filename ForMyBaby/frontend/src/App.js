@@ -43,18 +43,19 @@ function App() {
     // 여기서 유저 정보를 확인하고 로그인 상태를 변경합니다.
     // 예를 들어, 로컬 스토리지에서 유저 정보를 가져온다고 가정합니다.
     const userInfo = localStorage.getItem('user');
-    if (userInfo.id != 0) {
+    if (userInfo && userInfo.id !== 0) { // userInfo가 null이 아니고 id가 0이 아닌 경우에 로그인 상태로 설정
       setUserLoggedIn(true);
     } else {
       setUserLoggedIn(false);
     }
   }, []);
+
   return (
     <div className='App'>
       <BrowserRouter>
         <Routes>
-        <Route path="/" element={userLoggedIn ? <Navigate to="/main" /> : <TutorialAndLogin />} />
-          <Route path="/oauth/redirected/kakao" element={<KakaoRedirectPage />}></Route>
+          <Route path="/" element={<TutorialAndLogin />} />
+          <Route path="/oauth/redirected/kakao" element={<KakaoRedirectPage />} />
           <Route path="/agree" element={<AgreePage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/welcome" element={<WelcomePage />} />
@@ -75,5 +76,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;

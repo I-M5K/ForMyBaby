@@ -6,7 +6,7 @@ import { useUserStore, useLocationStore } from '../../stores/UserStore'; // Zust
 
 
 const AgreePage = () => {
-    const location = useGeoLocation();
+    //const location = useGeoLocation();
     const { id, name, email, fcm, setFcm } = useUserStore();
     //const { isExist, setIsExist } = useLocationStore();
 

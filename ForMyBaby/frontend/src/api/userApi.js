@@ -15,10 +15,10 @@ export const sendLocation = async (latitude, longitude) => {
     }
 };
 
-export const submitFamilyCode = async (code) => {
-  console.log('familyCode: ', code);
+export const submitFamilyCode = async (familyCode) => {
+  console.log('familyCode: ', familyCode);
   try {
-    const response = await axiosWrapper.post('/v1/users/family', { code });
+    const response = await axiosWrapper.post('/v1/users/family', { familyCode });
     console.log('Server Response:', response.data);
     if (response == 1){ // 옳은 가족 코드
       return 1;
@@ -37,7 +37,7 @@ export const getFamilyCode = async () => {
     console.log('가족코드', response.data);
     return response.data;
   } catch (error) {
-    console.error('제출 오류!', error);
+    console.error('가족코드 생성 오류!', error);
   }
 }
 
