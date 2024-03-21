@@ -104,7 +104,6 @@ pipeline {
     }
 
 
-오전 11:21
 
 
 
@@ -127,7 +126,7 @@ post {
                 )
             }
         }
-    }git 
+    }
 //     post {
 //         always {
 //             script {
