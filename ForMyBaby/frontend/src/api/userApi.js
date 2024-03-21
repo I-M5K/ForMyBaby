@@ -15,4 +15,30 @@ export const sendLocation = async (latitude, longitude) => {
     }
 };
 
+export const submitFamilyCode = async (code) => {
+  console.log('familyCode: ', code);
+  try {
+    const response = await axiosWrapper.post('/v1/users/family', { code });
+    console.log('Server Response:', response.data);
+    if (response == 1){ // 옳은 가족 코드
+      return 1;
+    } else { // 없는 가족 토드
+      return 0;
+    } 
+  } catch (error) {
+    console.error('제출 오류!', error);
+  }
+}
+
+export const getFamilyCode = async () => {
+  console.log('가족코드받기!');
+  try {
+    const response = await axiosWrapper.get('/v1/users/family');
+    console.log('가족코드', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('제출 오류!', error);
+  }
+}
+
 

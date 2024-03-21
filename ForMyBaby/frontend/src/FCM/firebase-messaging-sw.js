@@ -39,7 +39,7 @@ export async function requestPermission() {
   if (token) {
     console.log('token: ', token);
     localStorage.setItem('fcmToken', token);
-    sendDeviceToken(token);
+    sendDeviceToken(token); // 토큰 서버로 보내기
   } else console.log("Can not get Token");
 
   onMessage(messaging, (payload) => {
