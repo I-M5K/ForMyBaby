@@ -91,6 +91,35 @@ pipeline {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+post {
+        success {
+            script {
+                mattermostSend (color: 'good', 
+                message: "FE 배포 성공   :cat_jump: :loopy_happy: :bboong: ",
+                )
+            }
+        }
+        failure {
+            script {
+                mattermostSend (color: 'danger', 
+                message: "FE 배포 실패   :cry_tom: :cryingloopy: :cryingpatamon: "
+                )
+            }
+        }
+    }
 //     post {
 //         always {
 //             script {
