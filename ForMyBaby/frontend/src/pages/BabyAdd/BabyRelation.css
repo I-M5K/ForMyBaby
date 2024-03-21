@@ -1,0 +1,41 @@
+.baby-rel-comment {
+    margin-bottom: 80px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.relation-btn {
+    padding: 10px 20px;
+    width: 300px;
+    background-color: transparent;
+    color: #f7c515;
+    font-size: 18px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: 2px solid #f7c515;
+    transition: all 0.3s ease;
+}
+
+.relation-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.relation-btn.selected {
+    background-color: #ffe380;
+    color: white;
+}
+
+.baby-add-submit-fin {
+    width: 300px;
+    height: 47px; 
+    border-radius: 30px; 
+    border: 2px solid #f7c515;
+    margin-top: 50px; 
+    font-size: 16px; 
+    cursor: pointer;
+    color: #fff;
+    background: #f7c515;
+}

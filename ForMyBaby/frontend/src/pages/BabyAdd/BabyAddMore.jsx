@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './BabyAdd.css';
-import { Link } from 'react-router-dom'
 
 const BabyAddPage = () => {
     const [babyName, setBabyName] = useState('');
@@ -39,7 +38,7 @@ const BabyAddPage = () => {
 
     return (
         <div className="baby-add-container">
-            <p className="baby-add-comment">아이 정보를 입력해주세요</p>
+            <p className="baby-add-comment">추가할 아이 정보를 입력해주세요</p>
             <form className='baby-add-form' onSubmit={handleSubmit}>
                 <div className='photo-gender'>
                     <div>
@@ -69,13 +68,7 @@ const BabyAddPage = () => {
                         className="input-field"
                     />
                 </div>
-                <Link to="/baby-add-more" className='baby-add-more-container'>
-                    <div className='baby-add-more-button'>+</div>
-                    <p className='baby-add-more-text'>추가하기</p>
-                </Link>
-                <Link to='/baby-relation'>
-                    <button type="submit" className='baby-add-submit' disabled={!isFormValid}>등록하기</button>
-                </Link>
+                <button type="submit" className='baby-add-submit' disabled={!isFormValid}>등록하기</button>
             </form>
         </div>
     );
