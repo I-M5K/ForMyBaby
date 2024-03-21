@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import NotificationBox from '../../components/notification/NotificationBox';
 import { useNotificationStore } from '../../stores/NotificationStore'; // Zustand 스토어 import
+import { Link } from 'react-router-dom'; // Link 컴포넌트 import
 
 const NotificationPage = () => {
   const { notifications, fetchNotificationList, deleteNotificationById, deleteAllNotifications } = useNotificationStore();
@@ -23,7 +24,9 @@ const NotificationPage = () => {
         <h1>알림</h1>
         <div className="notification-buttons">
           <button className="delete-all-button" onClick={handleDeleteAllNotifications}>전체 삭제</button>
-          <button className="settings-button">설정</button>
+          <Link to="/notification/setting">
+            <button className="settings-button">설정</button>
+          </Link>
         </div>
       </div>
       <div className="notification-list">

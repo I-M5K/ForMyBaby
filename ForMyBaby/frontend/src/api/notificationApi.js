@@ -35,7 +35,7 @@ export const sendNotificationSetting = async (list) => {
     try {
       // 서버로 변경된 상태 배열을 POST 요청으로 전송
       console.log(list);
-      const response = await axiosWrapper.patch('/v1/notification/setting', list);
+      const response = await axiosWrapper.patch('/v1/users/setting', list);
       console.log('Server response:', response.data);
     } catch (error) {
       console.error('알림 설정 에러', error);
@@ -46,7 +46,7 @@ export const getNotificationSetting = async () => {
     try {
       // 서버로 변경된 상태 배열을 POST 요청으로 전송
       console.log("알림 설정 가져오기");
-      const response = await axiosWrapper.get('/v1/notification/setting');
+      const response = await axiosWrapper.get('/v1/users/setting');
       console.log('Server response:', response.data);
       return response.data;
     } catch (error) {
