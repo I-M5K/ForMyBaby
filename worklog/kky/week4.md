@@ -7,13 +7,15 @@
 <aside>
 📢 공통
 </aside>
-
+<br>
+<br>
 <aside>
 🌞 오전 할 일
 </aside>
 
 1. [FE] Jira 스플린트 시작
 2. [FE] FCM 웹 푸시 알림 개념 공부
+<br>
 
 <aside>
 🌜 오후 할 일
@@ -33,14 +35,15 @@
 <aside>
 📢 공통 
 </aside>
-
+<br>
+<br>
 <aside>
 🌞 오전 할 일
 </aside>
 
 1. [FE] 알림 목록 가져오기 기능 구현
 2. [FE] 특정 알림 삭제 기능 구현
-
+<br>
 <aside>
 🌜 오후 할 일
 </aside>
@@ -58,14 +61,15 @@
 <aside>
 📢 공통 [Extra] 한국어 데이터 전처리 
 </aside>
-
+<br>
+<br>
 <aside>
 🌞 오전 할 일
 </aside>
 
 1. [FE] 웹 소켓 서버 개념 공부
 2. [Extra] 2차 전문가 특화 리뷰
-
+<br>
 <aside>
 🌜 오후 할 일
 </aside>
@@ -83,17 +87,25 @@
 <aside>
 📢 공통
 </aside>
-
-- [Live]
-
+<br>
+<br>
 <aside>
 🌞 오전 할 일
 </aside>
+
+1. [FE] express 애플리케이션 개념 공부
+2. [FE] 페이지 라우터 설정 - 회원가입, 로그인 회원 구분
+3. [FE] 알림 목록 페이지 설계
+<br>
 
 <aside>
 🌜 오후 할 일
 </aside>
 
+1. [FE] 백엔드 서버와 통신 로직 설계 - FCM 토큰, JWT 토큰, 가족 코드, GPS 위치 데이터 
+2. [FE] 알림 목록 페이지 axios 설정 - 전체 알림 가져오기, 알림 전체 삭제, 특정 알림 삭제
+3. [FE] 알림 설정 페이지 설계
+4. [FE] 알림 설정 페이지 axios 설정 - 알림 소리, 위험 감지 알림, 건강/접종 알림 on/off 기능
 ---
 
 ### Day 5
