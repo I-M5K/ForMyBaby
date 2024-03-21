@@ -7,7 +7,7 @@ export const sendLocation = async (latitude, longitude) => {
       try {
         console.log('latitude, longitude' + latitude, longitude)
         // axios를 사용하여 백엔드로 POST 요청 보내기
-        await axiosWrapper.post('/oauth/location', { latitude, longitude });
+        await axiosWrapper.post('/v1/users/location', { latitude, longitude });
         console.log('위도와 경도 정보를 백엔드로 전송했습니다.');
       } catch (error) {
         console.error('백엔드로 위도와 경도 정보를 보내는 중 오류가 발생했습니다.', error);

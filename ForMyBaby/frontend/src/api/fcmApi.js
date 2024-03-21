@@ -3,7 +3,7 @@ import axiosWrapper from './axiosWrapper';
 export const sendDeviceToken = (token) => {
     axiosWrapper({
       method:'patch',
-      url:`oauth/fcm`,
+      url:`/v1/users/fcm`,
       data:{
         'fcmToken' : `${token}`
       }
