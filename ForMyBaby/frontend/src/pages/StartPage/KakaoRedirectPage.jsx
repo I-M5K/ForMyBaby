@@ -5,7 +5,7 @@ import kakaoApi from '../../api/kakaoApi'; // API 모듈 import
 import { useUserStore } from '../../stores/UserStore'; // Zustand 스토어 import
 
 const KakaoRedirectPage = () => {
-  const { setId, setEmail, setProfileImg, setName, setJwt } = useUserStore(); // Zustand 스토어 설정 함수 가져오기
+  const { setId, setEmail, setProfileImg, setName, setJwt, setFamily } = useUserStore(); // Zustand 스토어 설정 함수 가져오기
   const navigate = useNavigate(); // useNavigate 훅 사용
   const location = useLocation();
   const code = new URLSearchParams(location.search).get("code");
@@ -21,16 +21,23 @@ const KakaoRedirectPage = () => {
         console.log(data.id);
         console.log(data.kakao_account.email);
 
-        // 데이터 저장
+        // 데이터 저장 - FCM, JWT, 가족 코드 null 여부에 따라 저장
         setId(data.id);
         setEmail(data.kakao_account.email);
         setProfileImg(data.kakao_account.profile.profile_image);
         setName(data.kakao_account.name);
         setJwt(localStorage.getItem("accessToken"));
+        setFamily(localStorage.getItem("familyCode"));
 
-        if (localStorage.getItem("accessToken") != null) {
-          navigate('/welcome'); // 페이지 이동
-        } else {
+        if (localStorage.getItem("accessToken") != null) { // 로그인 성공
+          localStorage.removeItem("accessToken");
+          if (localStorage.getItem("familyCode")){ // 로그인인 경우
+            localStorage.removeItem("familyCode");
+            navigate('/main');
+          } else { // 회원가입인 경우
+            navigate('/agree'); // 페이지 이동
+          }
+        } else { // 로그인 실패
           navigate('/');
         }
       } catch (error) {
