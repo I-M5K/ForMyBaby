@@ -7,4 +7,5 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
    ResponseEntity<UserReadResponse> findByUserId(Long id);
    User registerUser(User user);
+   void deleteUser(Long userId);
 }
