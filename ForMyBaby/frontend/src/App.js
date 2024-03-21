@@ -49,7 +49,7 @@ function App() {
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/notification" element={<NotificationPage />} />
-          <Route path="/video" element={<VideoPage />} />
+   
         </Routes>
       </BrowserRouter>
     </div>
