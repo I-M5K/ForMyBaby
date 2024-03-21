@@ -8,7 +8,13 @@ WORKDIR /ai
 COPY . .
 
 RUN npm install
+RUN npm run build
+FROM nginx:stable-alpine
+COPY --from=builder /app/build /usr/share/nginx/html
 # RUN npm install typescript @types/node @types/react @types/react-dom @types/jest react-router-dom redux react-redux
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
 
 EXPOSE 3002
+
+
+
