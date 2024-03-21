@@ -14,6 +14,7 @@ import AgreePage from './pages/StartPage/AgreePage';
 import MainPage from './pages/MainPage';
 import WelcomePage from './pages/StartPage/WelcomePage';
 import NotificationPage from './pages/Notification/NotificationPage';
+import NotificationSetting from './pages/Notification/NotificationSetting';
 
 import BabyAdd from './pages/BabyAdd/BabyAdd';
 
@@ -61,7 +62,7 @@ function App() {
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/notification" element={<NotificationPage />} />
-   
+          <Route path="/notification/setting" element={<NotificationSetting />} />
         </Routes>
       </BrowserRouter>
     </div>
