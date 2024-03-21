@@ -1,14 +1,19 @@
-COPY package.json ./
-RUN npm install
-COPY . .
-RUN npm run build
 
-FROM python:3.9
+FROM node:lts-alpine as builder
+# FROM python:3.9
+
 WORKDIR /ai
-COPY --from=builder /app/build /ai/frontend
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+
+# ENV PATH /ai/node_modules/.bin:$PATH
+
+# COPY package.json /ai-edu/package.json
 COPY . .
-CMD ["python", "app.py"] 
+
+RUN npm install
+# RUN pip install
+
+# RUN npm install typescript @types/node @types/react @types/react-dom @types/jest react-router-dom redux react-redux
+CMD ["npm", "start"]
+# CMD ["python", "start"]
 
 EXPOSE 3002
