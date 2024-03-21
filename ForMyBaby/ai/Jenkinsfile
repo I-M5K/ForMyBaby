@@ -97,14 +97,14 @@ post {
         success {
             script {
                 mattermostSend (color: 'good', 
-                message: "배포 성공   :cat_jump: :loopy_happy: :bboong: ",
+                message: "AI 배포 성공   :cat_jump: :loopy_happy: :bboong: ",
                 )
             }
         }
         failure {
             script {
                 mattermostSend (color: 'danger', 
-                message: "배포 실패   :cry_tom: :cryingloopy: :cryingpatamon: "
+                message: "AI 배포 실패   :cry_tom: :cryingloopy: :cryingpatamon: "
                 )
             }
         }
