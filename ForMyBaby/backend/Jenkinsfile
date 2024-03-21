@@ -90,7 +90,7 @@ pipeline {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try{
-//                             sh "docker rm -f back || true"
+                            sh "docker rm -f back || true"
                             sh "docker ps"
                             sh "docker run -d --name back -p 8082:8080 ${DOCKER_USER_ID}/back"
                             sh "docker ps"
