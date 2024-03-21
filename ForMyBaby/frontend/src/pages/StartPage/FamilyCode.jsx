@@ -37,6 +37,9 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
 
   const handleSkip = () => { // 신규회원
     const code = getFamilyCode();
+    // if (code == null){
+    //   navigate('')
+    // }
     setFamily(code);
     navigate('/baby-add'); // 아이 정보 등록 페이지로
   };
