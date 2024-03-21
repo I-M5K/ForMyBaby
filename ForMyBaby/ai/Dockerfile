@@ -11,4 +11,4 @@ COPY . .
 # RUN npm install typescript @types/node @types/react @types/react-dom @types/jest react-router-dom redux react-redux
 CMD ["start"]
 
-EXPOSE 3000
+EXPOSE 3002
