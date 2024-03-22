@@ -16,22 +16,22 @@ import org.springframework.context.annotation.Configuration;
 public class JobConfig {
     public static final Integer CHUNK_SIZE = 100;
 
-    @JobScope
     @Bean
-    public Job createHealth(JobRepository jobRepository, Step getBabies, Step getHealth) {
-        return new JobBuilder("createGeneral", jobRepository)
+    @JobScope
+    public Job createHealth(JobRepository jobRepository, Step getFamily, Step getHealth) {
+        return new JobBuilder("createHealth", jobRepository)
                 .incrementer(new RunIdIncrementer())
-                .start(getBabies)
+                .start(getFamily)
                 .next(getHealth)
                 .build();
     }
 
-    @JobScope
     @Bean
-    public Job createVaccine(JobRepository jobRepository, Step getBabies, Step getVaccine) {
-        return new JobBuilder("checkPriority", jobRepository)
+    @JobScope
+    public Job createVaccine(JobRepository jobRepository, Step getFamily, Step getVaccine) {
+        return new JobBuilder("createVaccine", jobRepository)
                 .incrementer(new RunIdIncrementer())
-                .start(getBabies)
+                .start(getFamily)
                 .next(getVaccine)
                 .build();
     }

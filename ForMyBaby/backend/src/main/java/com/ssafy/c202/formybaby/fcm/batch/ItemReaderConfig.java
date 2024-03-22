@@ -1,15 +1,13 @@
 package com.ssafy.c202.formybaby.fcm.batch;
 
-import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.health.entity.Health;
+import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.vaccine.entity.Vaccine;
 import jakarta.persistence.EntityManagerFactory;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,28 +21,22 @@ public class ItemReaderConfig {
 
     private final EntityManagerFactory emf;
 
-    @Autowired
-    private DataShareBean<Baby> babyShareBean;
-    @Autowired
-    private DataShareBean<Health> healthShareBean;
-    @Autowired
-    private DataShareBean<Vaccine> vaccineShareBean;
-
 
     @Bean
     @StepScope
-    public JpaPagingItemReader<Baby> babyReader() {
+    public JpaPagingItemReader<Family> generalFamilyReader() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate sixYearsAgo = LocalDate.now().minusYears(6);
         String formattedDate = sixYearsAgo.format(formatter);
 
-        String query = "SELECT b FROM Baby b WHERE b.birthDate >= :startDate";
-        return new JpaPagingItemReaderBuilder<Baby>()
+        String query = "SELECT f FROM Family f JOIN FETCH f.user u JOIN FETCH f.baby b " +
+                "WHERE b.birthDate >= :startDate AND u.isGeneral = true";
+        return new JpaPagingItemReaderBuilder<Family>()
                 .entityManagerFactory(emf)
                 .queryString(query)
                 .parameterValues(Collections.singletonMap("startDate", formattedDate))
                 .pageSize(StepConfig.CHUNK_SIZE)
-                .name("babyReader")
+                .name("familyReader")
                 .build();
     }
 

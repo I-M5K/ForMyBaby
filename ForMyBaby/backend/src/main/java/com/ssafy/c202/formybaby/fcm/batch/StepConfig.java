@@ -3,6 +3,7 @@ package com.ssafy.c202.formybaby.fcm.batch;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.health.entity.Health;
 import com.ssafy.c202.formybaby.notification.entity.Notification;
+import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.vaccine.entity.Vaccine;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.Step;
@@ -15,26 +16,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.util.List;
+
 @Configuration
 @AllArgsConstructor
 public class StepConfig {
     public static final Integer CHUNK_SIZE = 100;
 
     @Bean
-    public Step getBabies(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                          ItemReader<Baby> babyReader, ItemWriter<Baby> babyWriter) {
-        return new StepBuilder("getBabies", jobRepository)
-                .<Baby, Baby>chunk(CHUNK_SIZE, transactionManager)
-                .reader(babyReader)
-                .writer(babyWriter)
+    public Step getFamily(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+                          ItemReader<Family> generalFamilyReader, ItemWriter<Family> generalFamilyWriter) {
+        return new StepBuilder("getFamily", jobRepository)
+                .<Family, Family>chunk(CHUNK_SIZE, transactionManager)
+                .reader(generalFamilyReader)
+                .writer(generalFamilyWriter)
                 .build();
     }
     @Bean
     public Step getHealth(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                          ItemReader<Health> healthReader, ItemProcessor<Health, Notification> checkHealthProcessor,
-                          ItemWriter<Notification> notificationWriter) {
+                          ItemReader<Health> healthReader, ItemProcessor<Health, List<Notification>> checkHealthProcessor,
+                          ItemWriter<List<Notification>> notificationWriter) {
         return new StepBuilder("getHealth", jobRepository)
-                .<Health, Notification>chunk(CHUNK_SIZE, transactionManager)
+                .<Health, List<Notification>>chunk(CHUNK_SIZE, transactionManager)
                 .reader(healthReader)
                 .processor(checkHealthProcessor)
                 .writer(notificationWriter)
@@ -43,10 +46,10 @@ public class StepConfig {
     }
     @Bean
     public Step getVaccine(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                           ItemReader<Vaccine> vaccineReader, ItemProcessor<Vaccine, Notification> checkVaccineProcessor,
-                           ItemWriter<Notification> notificationWriter) {
+                           ItemReader<Vaccine> vaccineReader, ItemProcessor<Vaccine, List<Notification>> checkVaccineProcessor,
+                           ItemWriter<List<Notification>> notificationWriter) {
         return new StepBuilder("getVaccine", jobRepository)
-                .<Vaccine, Notification>chunk(CHUNK_SIZE, transactionManager)
+                .<Vaccine, List<Notification>>chunk(CHUNK_SIZE, transactionManager)
                 .reader(vaccineReader)
                 .processor(checkVaccineProcessor)
                 .writer(notificationWriter)

@@ -1,5 +1,6 @@
 package com.ssafy.c202.formybaby.baby.controller;
 
+import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateListRequest;
 import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateRequest;
 import com.ssafy.c202.formybaby.baby.dto.request.BabyUpdateRequest;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
@@ -22,14 +23,14 @@ public class BabyController {
     private final BabyService babyService;
 
     @PostMapping()
-    public ResponseEntity<List<BabyReadResponse>> create(@RequestBody BabyCreateRequest babyCreateRequest) {
-        babyService.createNewBaby(babyCreateRequest);
-        return new ResponseEntity<>( babyService.babyList(babyCreateRequest.userId()), HttpStatus.CREATED);
+    public ResponseEntity<List<BabyReadResponse>> create(@RequestBody BabyCreateListRequest babyCreateListRequest) {
+        babyService.createNewBaby(babyCreateListRequest);
+        return new ResponseEntity<>( babyService.babyList(babyCreateListRequest.list().get(0).userId()), HttpStatus.CREATED);
     }
 
     @PostMapping("/add")
     public ResponseEntity<List<BabyReadResponse>> add(@RequestBody BabyCreateRequest babyCreateRequest) {
-        babyService.createBaby(babyCreateRequest);
+        babyService.addBaby(babyCreateRequest);
         return new ResponseEntity<>( babyService.babyList(babyCreateRequest.userId()), HttpStatus.CREATED);
     }
 
