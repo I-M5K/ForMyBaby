@@ -37,7 +37,7 @@ self.addEventListener("install", function (e) {
       url = '/baby-guard';
     } else if (key === 'health'){ // 건강검진
       url = '/timeline';
-    } else if (key === 'shot'){ // 접종
+    } else if (key === 'vaccine'){ // 접종
       url = '/timeline';
     }
     event.notification.close();
