@@ -5,8 +5,7 @@ https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kky/we
 
 
 # 김도현
-
-
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kdh/week4.md?ref_type=heads
 
 
 
