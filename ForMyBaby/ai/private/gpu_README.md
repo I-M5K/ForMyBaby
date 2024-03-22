@@ -27,12 +27,12 @@ GPU Device 번호
     https://server.ssafy.com/
     - **SSAFY 서버 계정 정보 (대외비)**
     
-        ID : ssafy / PW : trainee#0114#
+        ID :  / PW : 
 2. JupyterHub 접속
     http://70.12.130.121 
     - **C101 주피터 계정 정보**
     
-        ID : j10c202 / PW : s10p22c202
+        ID : j10c202 / PW : 
     
     - cf) session time : 24H (주피터 터미널에서 nohup이나 tmux로 background 방식으로 실행해도 세션이 만료된다면 프로세스 종료)
 3. 프로그램 실행 시 디바이스 번호 지정하기 (공유 서버 리소스 독점 방지)
