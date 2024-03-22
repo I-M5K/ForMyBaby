@@ -1,4 +1,6 @@
+
 FROM node:lts-alpine as builder
+# FROM python:3.9
 
 WORKDIR /ai
 
@@ -8,9 +10,10 @@ WORKDIR /ai
 COPY . .
 
 RUN npm install
+# RUN pip install
+
 # RUN npm install typescript @types/node @types/react @types/react-dom @types/jest react-router-dom redux react-redux
 CMD ["npm", "start"]
+# CMD ["python", "start"]
 
 EXPOSE 3002
-
-
