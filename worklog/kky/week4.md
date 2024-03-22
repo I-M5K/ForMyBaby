@@ -114,11 +114,18 @@
 <aside>
 📢 공통
 </aside>
-
+<br>
+<br>
 <aside>
 🌞 오전 할 일
 </aside>
 
+1. [FE] FCM 푸시 알림 환경설정 - 메시지 종류, 클릭 시 이동 url 설정하기
+2. [FE] 아이 정보 등록 페이지 axios 설정
+<br>
 <aside>
 🌜 오후 할 일
 </aside>
+1. [AI] express 앱 기반 웹 소켓 서버 - 실시간 영상 버퍼링 문제 대안 찾기 
+2. [AI] 웹 소켓 서버 - babyId에 따른 방 만들기
+3. [AI] 웹 소켓 서버 - 공유하는 babyId에 맞는 방으로 유저 연결하기
