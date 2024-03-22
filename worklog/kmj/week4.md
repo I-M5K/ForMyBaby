@@ -46,17 +46,23 @@
 24/03/21
 
 💡 오전 할 일
- 1. fcm 로직 구상
+ 1. FCM 로직 구상
  2. Spring Batch 공부
 
 💡 오후 할 일
+ 1. Spring Batch Job, Step 설계
+ 2. Step 간 데이터 공유
 
 
 ### Day 5
 24/03/22
 
 💡 오전 할 일
+ 1. Spring Batch 마무리
+ 
 
 💡 오후 할 일
+ 1. Batch, FCM 테스트 
+ 2. FCM 로직 설계
 
 ---
