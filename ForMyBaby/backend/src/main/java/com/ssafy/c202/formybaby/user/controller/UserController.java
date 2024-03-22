@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserReadResponse> findUser(@RequestParam("userId") Long userId){
         try {
-            UserReadResponse userReadResponse = userService.findByUserId(userId).getBody();
+            UserReadResponse userReadResponse = userService.findByUserReadResponseUserId(userId).getBody();
             log.info("userReadResponse : " + userReadResponse);
             return new ResponseEntity<>(userReadResponse, HttpStatus.OK);
         }catch (NotFoundException e){

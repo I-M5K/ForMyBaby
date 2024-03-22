@@ -5,7 +5,8 @@ import com.ssafy.c202.formybaby.user.entity.User;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
-   ResponseEntity<UserReadResponse> findByUserId(Long id);
+   User findByUserId(Long userId);
+   ResponseEntity<UserReadResponse> findByUserReadResponseUserId(Long id);
    User findByOauthId(Long oauthId);
    User registerUser(User user);
    void deleteUser(String token);
