@@ -1,0 +1,31 @@
+.notification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .notification-list {
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+  }
+  
+  .notification-header {
+    display: flex; /* Flexbox를 활용하여 내부 요소를 가로로 정렬 */
+    align-items: center; /* 세로 축 중앙 정렬 */
+    justify-content: space-between; /* 요소들을 양 끝과 중앙으로 분배 */
+    padding: 10px; /* 필요에 따라 적절한 패딩 추가 */
+  }
+  
+  .notification-title {
+    display: flex;
+    text-align: center; /* 중앙 정렬 */
+    flex-grow: 1; /* 남은 공간을 모두 차지 */
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .notification-buttons {
+    display: flex; /* Flexbox를 활용하여 내부 요소를 가로로 정렬 */
+    gap: 10px; /* 버튼 사이 간격 */
+  }
+  

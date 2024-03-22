@@ -27,7 +27,7 @@ import BabyGuard from './pages/Features/BabyGuard';
 // 건강/접종 타임라인
 import TimeLine from './pages/Features/timeline/TimeLine';
 // 성장 스탬프
-import ParentingStamp from './pages/Features/ParentingStamp';
+import ParentingStamp from './pages/ParentingStamp/ParentingStamp';
 // 스톱모션
 import Present from './pages/Features/Present';
 // 마이 페이지
