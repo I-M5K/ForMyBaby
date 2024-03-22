@@ -1,11 +1,13 @@
 package com.ssafy.c202.formybaby.user.service;
 
 import com.ssafy.c202.formybaby.global.jwt.JwtService;
+import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.user.entity.Oauth;
 import com.ssafy.c202.formybaby.user.entity.User;
 import com.ssafy.c202.formybaby.user.repository.OauthRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,10 +26,16 @@ public class OAuthServiceImpl implements OAuthService {
     private JwtService jwtService;
 
     @Autowired
+    private RedisService redisService;
+
+    @Autowired
     private OauthRepository oauthRepository;
 
     @Autowired
     private RestTemplate restTemplate; // RestTemplate 의존성 주입
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public Map<String, Object> getKakaoUserInfo(String accessToken) {
@@ -95,13 +103,17 @@ public class OAuthServiceImpl implements OAuthService {
             // jwt 생성
             jwtToken = jwtService.generateToken(Long.toString((Long) kakaoUserInfo.get("id")));
             log.info("jwtToken : " + jwtToken);
+            // Redis에 JWT 토큰과 userId를 저장
+            redisService.saveUserIdByToken(jwtToken, newUser.getUserId());
             return jwtToken;
 
         }else {
             log.info("user 값 있음");
             // 사용자 정보가 있으면 JWT 생성
             jwtToken = jwtService.generateToken(Long.toString((Long) kakaoUserInfo.get("id")));
+            User user = userService.findByOauthId((Long) kakaoUserInfo.get("id"));
             log.info("jwtToken : " + jwtToken);
+            redisService.saveUserIdByToken(jwtToken, user.getUserId());
             return jwtToken;
         }
     }

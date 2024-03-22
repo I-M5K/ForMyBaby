@@ -17,5 +17,15 @@ public class RedisService {
     public String getValue(String key) {
         return stringRedisTemplate.opsForValue().get(key);
     }
+
+    // JWT 토큰을 키로, userId를 값으로 저장하는 메서드
+    public void saveUserIdByToken(String token, Long userId){
+        stringRedisTemplate.opsForValue().set(token, String.valueOf(userId));
+    }
+
+    // JWT 토큰에 해당하는 userId를 조회하는 메서드
+    public String getUserIdByToken(String token) {
+        return stringRedisTemplate.opsForValue().get(token);
+    }
 }
 

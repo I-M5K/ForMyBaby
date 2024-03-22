@@ -22,7 +22,7 @@ spring:
   #redis
   data:
     redis:
-      host: 43.202.0.196  # Redis 서버의 공개 IP 주소
+      host: j10c202.p.ssafy.io # Redis 서버의 공개 IP 주소
       port: 6379
       password: imok202!
       lettuce:

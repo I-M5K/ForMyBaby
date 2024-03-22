@@ -33,6 +33,13 @@ public class UserServiceImpl implements UserService{
             return null;
         }
     }
+
+    @Override
+    public User findByOauthId(Long oauthId) {
+        User user = userRepository.findByOauth_OauthId(oauthId);
+        return user;
+    }
+
     @Override
     public User registerUser(User user) {
         user = userRepository.save(user);
