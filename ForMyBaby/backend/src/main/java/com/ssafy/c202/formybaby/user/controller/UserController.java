@@ -34,8 +34,8 @@ public class UserController {
         }
     }
     @DeleteMapping()
-    public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId){
-        userService.deleteUser(userId);
+    public ResponseEntity<?> deleteUser(@RequestHeader(name = "Authorization") String token){
+        userService.deleteUser(token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

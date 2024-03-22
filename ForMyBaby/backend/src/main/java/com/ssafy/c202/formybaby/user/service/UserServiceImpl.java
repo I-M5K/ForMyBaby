@@ -1,14 +1,15 @@
 package com.ssafy.c202.formybaby.user.service;
 
+import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
 import com.ssafy.c202.formybaby.user.entity.User;
-import com.ssafy.c202.formybaby.user.mapper.FamilyMapper;
 import com.ssafy.c202.formybaby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @Service
 @Slf4j
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+
+    private final RedisService redisService;
 
     @Override
     public ResponseEntity<UserReadResponse> findByUserId(Long userId) {
@@ -47,7 +50,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+    public void deleteUser(@RequestHeader(name = "Authorization") String token) {
+        String redisGetUserId = redisService.getUserIdByToken(token);
+        // Redis에서 가져온 값이 null이 아니고, 길이가 충분히 길다면
+        if (redisGetUserId != null && redisGetUserId.length() >= 11) {
+            // 마지막 11자리를 제외한 나머지를 id로 추정
+            String idSubstring = redisGetUserId.substring(0, redisGetUserId.length() - 11);
+            log.info("idSubstring : " + idSubstring);
+            long userId = Long.parseLong(idSubstring);
+            // userId를 사용하여 필요한 작업을 수행
+            userRepository.deleteById(userId);
+        } else {
+            log.error("Redis에서 올바른 userId 값을 가져오지 못했습니다.");
+        }
     }
 }

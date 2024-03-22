@@ -8,5 +8,5 @@ public interface UserService {
    ResponseEntity<UserReadResponse> findByUserId(Long id);
    User findByOauthId(Long oauthId);
    User registerUser(User user);
-   void deleteUser(Long userId);
+   void deleteUser(String token);
 }
