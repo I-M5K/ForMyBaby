@@ -5,14 +5,13 @@ https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kky/we
 
 
 # 김도현
-
-
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kdh/week4.md?ref_type=heads
 
 
 
 
 # 김무준
-
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kmj/week4.md?ref_type=heads
 
 
 
@@ -35,7 +34,7 @@ https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kky/we
 
 
 # 임채진
-
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/develop_ai/ForMyBaby/ai/workspace/README.md?ref_type=heads 
 
 
 
