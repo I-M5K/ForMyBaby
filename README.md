@@ -12,7 +12,7 @@ https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kky/we
 
 
 # 김무준
-
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kmj/week4.md?ref_type=heads
 
 
 
