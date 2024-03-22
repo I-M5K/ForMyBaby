@@ -51,7 +51,7 @@ public class ItemReaderConfig {
     @Bean
     @StepScope
     public JpaPagingItemReader<Health> healthReader() {
-        String query = ("SELECT h FROM Health");
+        String query = ("SELECT h FROM Health h");
         return new JpaPagingItemReaderBuilder<Health>()
                 .entityManagerFactory(emf)
                 .queryString(query)
@@ -62,9 +62,9 @@ public class ItemReaderConfig {
 
     @Bean
     @StepScope
-    public JpaPagingItemReader<Health> vaccineReader() {
-        String query = ("SELECT v FROM Vaccine");
-        return new JpaPagingItemReaderBuilder<Health>()
+    public JpaPagingItemReader<Vaccine> vaccineReader() {
+        String query = ("SELECT v FROM Vaccine v");
+        return new JpaPagingItemReaderBuilder<Vaccine>()
                 .entityManagerFactory(emf)
                 .queryString(query)
                 .pageSize(StepConfig.CHUNK_SIZE)

@@ -18,34 +18,31 @@ public class JobConfig {
 
     @JobScope
     @Bean
-    public Job createHealth(JobRepository jobRepository, Step getBabies, Step getHealth, Step checkTime) {
+    public Job createHealth(JobRepository jobRepository, Step getBabies, Step getHealth) {
         return new JobBuilder("createGeneral", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(getBabies)
                 .next(getHealth)
-                .next(checkTime)
                 .build();
     }
 
     @JobScope
     @Bean
-    public Job createVaccine(JobRepository jobRepository, Step getBabies, Step getVaccine, Step checkTime) {
+    public Job createVaccine(JobRepository jobRepository, Step getBabies, Step getVaccine) {
         return new JobBuilder("checkPriority", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(getBabies)
                 .next(getVaccine)
-                .next(checkTime)
                 .build();
     }
 
     @JobScope
     @Bean
-    public Job checkPriority(JobRepository jobRepository, Step getLocations, Step locationCheck, Step setPriority) {
+    public Job checkPriority(JobRepository jobRepository, Step getLocations, Step setLocations) {
         return new JobBuilder("checkPriority", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(getLocations)
-                .next(locationCheck)
-                .next(setPriority)
+                .next(setLocations)
                 .build();
     }
 

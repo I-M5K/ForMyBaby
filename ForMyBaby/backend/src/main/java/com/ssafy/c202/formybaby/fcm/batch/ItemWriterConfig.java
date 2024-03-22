@@ -1,16 +1,16 @@
 package com.ssafy.c202.formybaby.fcm.batch;
 
-import com.google.firebase.messaging.Notification;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.health.entity.Health;
+import com.ssafy.c202.formybaby.notification.entity.Notification;
 import com.ssafy.c202.formybaby.notification.service.NotificationService;
 import com.ssafy.c202.formybaby.vaccine.entity.Vaccine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -27,14 +27,33 @@ public class ItemWriterConfig {
     @Autowired
     private DataShareBean<Vaccine> vaccineShareBean;
 
+    @Bean
+    @StepScope
     public ItemWriter<Baby> babyWriter() {
         return chunk -> {
-            try {
-                babyShareBean.putData(chunk);
-            } catch (Exception e) {
-                log.info("babyAlarmWriter ERROR : {} ", e.getMessage());
-            }
+            for(Baby baby : chunk.getItems()) {
+                try{
+                    babyShareBean.putData((baby.getBabyId().toString()), baby);
 
+                } catch (Exception e) {
+                    log.info("Baby Share Bean error : {}", e.getMessage());
+                }
+            }
         };
+    }
+    @Bean
+    @StepScope
+    public ItemWriter<Notification> notificationWriter() {
+//        return chunk -> {
+//            for(Health health : chunk.getItems()) {
+//                try{
+//                    healthShareBean.putData(Integer.toString(health.getHealthId()), health);
+//
+//                } catch (Exception e) {
+//                    log.info("Health Share Bean error : {}", e.getMessage());
+//                }
+//            }
+//        };
+        return null;
     }
 }
