@@ -19,15 +19,15 @@ spring:
       redirect_uri: "http://localhost:3000/oauth/redirected/kakao"
       client_secret: Mx4luiTuOBM8RAuJRU9AZ0UJdGtQrRVh
       scope: name, account_email, profile_image
-#  redis
-#  data:
-#    redis:
-#      host: ${REDIS_HOST}
-#      port: ${REDIS_PORT}
-#      password: ${REDIS_PASSWORD}
-#      lettuce:
-#        pool:
-#          max-idle: 8
-#          min-idle: 0
-#          max-active: 8
-#          max-wait: -1
+  #redis
+  data:
+    redis:
+      host: 43.202.0.196  # Redis 서버의 공개 IP 주소
+      port: 6379
+      password: imok202!
+      lettuce:
+        pool:
+          max-idle: 8
+          min-idle: 0
+          max-active: 8
+          max-wait: -1
