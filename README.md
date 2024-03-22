@@ -34,7 +34,7 @@ https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kmj/we
 
 
 # 임채진
-
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/develop_ai/ForMyBaby/ai/workspace/README.md?ref_type=heads 
 
 
 
