@@ -48,6 +48,7 @@ public class FCMService {
     }
 
     public void sendTest(String fcmToken) {
+
         Notification googleNotification = Notification.builder()
                 .setTitle("Test")
                 .setBody("testing...")

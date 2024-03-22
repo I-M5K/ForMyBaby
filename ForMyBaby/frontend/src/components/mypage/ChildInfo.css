@@ -1,0 +1,51 @@
+.child-info-container {
+    display: flex;
+    overflow-x: auto;
+}
+
+.child-title {
+    margin-right: auto;
+    display: flex;
+    font-weight: bold;
+}
+
+.child-container {
+    max-width: 350px;
+    display: flex;
+    padding: 10px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+    -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨기기 */
+}
+
+.child-item {
+    flex: 0 0 auto;
+    position: relative;
+    margin: 10px;
+    padding: 10px;
+}
+
+.child-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.child-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.add-child-button {
+    flex: 0 0 auto;
+    position: relative;
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 50%; 
+    width: 60px; 
+    height: 60px; 
+    font-size: 12px; 
+}

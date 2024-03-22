@@ -1,9 +1,9 @@
 import React from 'react';
 import './notificationBox.css';
 
-const NotificationBox = ({ type, content, time, onClick }) => {
+const NotificationBox = ({ type, content, time }) => {
   return (
-    <div className="notification-box" onClick={onClick}>
+    <div className="notification-box">
       {/* 알림 종류 */}
       <div className="notification-type">
         {type}

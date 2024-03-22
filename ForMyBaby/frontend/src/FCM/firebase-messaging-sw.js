@@ -8,13 +8,13 @@ import { sendDeviceToken } from "../api/fcmApi";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCpQRys0g1wtVFi7QFDfJykINwMmmBxDLo",
-  authDomain: "formybaby-3f058.firebaseapp.com",
-  projectId: "formybaby-3f058",
-  storageBucket: "formybaby-3f058.appspot.com",
-  messagingSenderId: "1037876412711",
-  appId: "1:1037876412711:web:04a4fd6a91519a8809a902",
-  measurementId: "G-D9110MK113"
+  apiKey: "AIzaSyDoj1PlYSKrUWQvHOKEfBo5r05CCHVV_zo",
+  authDomain: "ssafy-ai-415702.firebaseapp.com",
+  projectId: "ssafy-ai-415702",
+  storageBucket: "ssafy-ai-415702.appspot.com",
+  messagingSenderId: "153226356709",
+  appId: "1:153226356709:web:07c5dffac2788e0b87710c",
+  measurementId: "G-Y2C0CE431D"
 };
 
 // Initialize Firebase
@@ -39,7 +39,7 @@ export async function requestPermission() {
   if (token) {
     console.log('token: ', token);
     localStorage.setItem('fcmToken', token);
-    sendDeviceToken(token);
+    sendDeviceToken(token); // 토큰 서버로 보내기
   } else console.log("Can not get Token");
 
   onMessage(messaging, (payload) => {

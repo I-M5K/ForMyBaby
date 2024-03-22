@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 //import AppRouter from './Router'
 import './App.css'
 import Tutorial from './components/tutorial/Tutorial'
 import Login from './pages/StartPage/Login'
 
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Navigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
 import FamilyCode from './pages/StartPage/FamilyCode'
@@ -14,8 +14,13 @@ import AgreePage from './pages/StartPage/AgreePage';
 import MainPage from './pages/MainPage';
 import WelcomePage from './pages/StartPage/WelcomePage';
 import NotificationPage from './pages/Notification/NotificationPage';
+import NotificationSetting from './pages/Notification/NotificationSetting';
 
+// 아이 등록
 import BabyAdd from './pages/BabyAdd/BabyAdd';
+import BabyAddMore from './pages/BabyAdd/BabyAddMore'
+import BabyRelation from './pages/BabyAdd/BabyRelation'
+import BabyWelcome from './pages/BabyAdd/BabyWelcome'
 
 // 아이 지킴이
 import BabyGuard from './pages/Features/BabyGuard';
@@ -29,18 +34,35 @@ import Present from './pages/Features/Present';
 import MyPage from './pages/MyPage/MyPage';
 
 import TutorialAndLogin from './components/TutorialAndLogin'
+import VideoPage from './VideoPage'
 
 function App() {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // 여기서 유저 정보를 확인하고 로그인 상태를 변경합니다.
+    // 예를 들어, 로컬 스토리지에서 유저 정보를 가져온다고 가정합니다.
+    const userInfo = localStorage.getItem('user');
+    if (userInfo && userInfo.id !== 0) { // userInfo가 null이 아니고 id가 0이 아닌 경우에 로그인 상태로 설정
+      setUserLoggedIn(true);
+    } else {
+      setUserLoggedIn(false);
+    }
+  }, []);
+
   return (
     <div className='App'>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<TutorialAndLogin />} />
-          <Route path="/oauth/redirected/kakao" element={<KakaoRedirectPage />}></Route>
+          <Route path="/oauth/redirected/kakao" element={<KakaoRedirectPage />} />
           <Route path="/agree" element={<AgreePage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/baby-add" element={<BabyAdd />} />
+          <Route path="/baby-add-more" element={<BabyAddMore />} />
+          <Route path="/baby-relation" element={<BabyRelation />} />
+          <Route path="/baby-welcome" element={<BabyWelcome />} />
           <Route path="/baby-guard" element={<BabyGuard />} />
           <Route path="/timeline" element={<TimeLine />} />
           <Route path="/parenting-stamp" element={<ParentingStamp />} />
@@ -48,10 +70,12 @@ function App() {
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/notification" element={<NotificationPage />} />
+          <Route path="/notification/setting" element={<NotificationSetting />} />
         </Routes>
       </BrowserRouter>
     </div>
   );
 }
+
 
 export default App;

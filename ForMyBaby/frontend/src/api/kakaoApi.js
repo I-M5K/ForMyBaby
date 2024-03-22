@@ -23,7 +23,7 @@ const kakaoApi = async (code) => {
         //token.replace('Bearer ', '');
         //setUserData({ ...userData, jwt: token });
         localStorage.setItem('accessToken', token.replace('Bearer ', ''));
-        
+        //localStorage.setItem('id', )
         const data = await response.json();
         return data;
     } catch (error) {

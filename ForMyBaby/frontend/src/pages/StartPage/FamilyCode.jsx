@@ -2,14 +2,26 @@
 
 import React, { useState, useRef } from 'react';
 import './FamilyCode.css';
+import axios from 'axios';
+import { submitFamilyCode, getFamilyCode } from '../../api/userApi';
+import { useUserStore, useLocationStore } from '../../stores/UserStore'; // Zustand 스토어 import
+import { useNavigate } from 'react-router-dom';
 
 function FamilyCodeForm({ onSubmit, goToNextPage }) {
   const [code, setCode] = useState('');
   const inputRefs = useRef([]);
+  const navigate = useNavigate(); // useNavigate 훅 사용
+  const { setFamily } = useUserStore();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(code);
+
+  const handleSubmit = async (code) => { // 기존 회원과 가족
+    const res = submitFamilyCode(code);
+    if (res == 1){
+      setFamily(code);
+      navigate('/main');
+    } else {
+      // 다시 입력하라는 프롬프트 보여주기
+    }
   };
 
   const handleChange = (index, value) => {
@@ -23,8 +35,13 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
     }
   };
 
-  const handleSkip = () => {
-    goToNextPage(); // 부모 컴포넌트에서 전달된 함수 호출하여 페이지 이동
+  const handleSkip = () => { // 신규회원
+    const code = getFamilyCode();
+    // if (code == null){
+    //   navigate('')
+    // }
+    setFamily(code);
+    navigate('/baby-add'); // 아이 정보 등록 페이지로
   };
 
   return (
@@ -47,7 +64,7 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
           />
         ))}
       </div>
-      <button type="submit" className="submit-button">확인하기</button>
+      <button type="submit" className="submit-button" onClick={handleSubmit}>확인하기</button>
       <button type="button" className="skip-button" onClick={handleSkip}>공유 없이 가입하기</button>
     </form>
   );
