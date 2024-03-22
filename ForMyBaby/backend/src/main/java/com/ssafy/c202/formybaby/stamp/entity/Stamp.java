@@ -1,9 +1,12 @@
 package com.ssafy.c202.formybaby.stamp.entity;
 
+import com.ssafy.c202.formybaby.baby.entity.Baby;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+
 
 @Entity
 @Data
@@ -13,18 +16,23 @@ public class Stamp {
     @Column(nullable = false)
     private long stampId;
 
-    @Column(nullable = false)
-    private long babyId;
+//    @Column(nullable = false)
+//    private long babyId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "baby_id", nullable = false)
+    private Baby baby;
 
     @Column(nullable = false)
     private long step;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String stampImg;
 
     @Column(nullable = true)
     private String memo;
 
+    @CreationTimestamp
     @Column(nullable = false)
-    private Timestamp createdAt;
+    private String createdAt;
 }
