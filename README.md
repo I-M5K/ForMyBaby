@@ -1,5 +1,62 @@
-# 컨벤션
-## 브랜치 종류
+# 김광연
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kky/week4.md?ref_type=heads
+
+
+
+
+# 김도현
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kdh/week4.md?ref_type=heads
+
+
+
+
+# 김무준
+https://lab.ssafy.com/s10-ai-image-sub2/S10P22C202/-/blob/worklog/worklog/kmj/week4.md?ref_type=heads
+
+
+
+
+
+# 김준형
+
+
+
+
+
+
+# 김혜인
+
+
+
+
+
+
+
+
+# 임채진
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 컨벤션
+### 브랜치 종류
 main: 제품 출시 브랜치<br>
 develop: 출시를 위해 개발하는 브랜치<br>
 feat/{기능명}: 새로운 기능 개발하는 브랜치<br>
