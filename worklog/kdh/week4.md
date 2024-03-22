@@ -56,6 +56,7 @@ Day 5
  
 💡 오전 할 일 : 
 - 정적 코드 품질 분석 라이브 강의 시청
+- [CI/CD] Redis 관련 공부 및 설정
 - [BE] user security 설정
 - [BE] ContextHolder 관련 개념 공부
  
