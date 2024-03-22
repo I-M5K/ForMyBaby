@@ -88,7 +88,7 @@ public class OauthController {
             String jwtToken = oAuthService.processUserLogin(kakaoUserInfo);
 
             String getUserId = redisService.getUserIdByToken(jwtToken);
-            ResponseEntity<UserReadResponse> user = userService.findByUserId(Long.valueOf(getUserId));
+            ResponseEntity<UserReadResponse> user = userService.findByUserReadResponseUserId(Long.valueOf(getUserId));
             kakaoUserInfo.put("userId",user.getBody().userId());
 
             HttpHeaders responseHeaders = new HttpHeaders();
@@ -102,7 +102,7 @@ public class OauthController {
             String jwtToken = oAuthService.processUserRegistration(kakaoUserInfo);
 
             String getUserId = redisService.getUserIdByToken(jwtToken);
-            ResponseEntity<UserReadResponse> user = userService.findByUserId(Long.valueOf(getUserId));
+            ResponseEntity<UserReadResponse> user = userService.findByUserReadResponseUserId(Long.valueOf(getUserId));
             kakaoUserInfo.put("userId",user.getBody().userId());
 
             HttpHeaders responseHeaders = new HttpHeaders();

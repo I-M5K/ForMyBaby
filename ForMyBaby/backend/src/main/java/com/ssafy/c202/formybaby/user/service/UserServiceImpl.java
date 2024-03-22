@@ -21,7 +21,17 @@ public class UserServiceImpl implements UserService{
     private final RedisService redisService;
 
     @Override
-    public ResponseEntity<UserReadResponse> findByUserId(Long userId) {
+    public User findByUserId(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        if(userId!=null){
+            return user;
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public ResponseEntity<UserReadResponse> findByUserReadResponseUserId(Long userId) {
         User user = userRepository.findByUserId(userId); // User 엔티티를 조회
 
         if (user != null) {
