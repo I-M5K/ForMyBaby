@@ -1,5 +1,6 @@
 package com.ssafy.c202.formybaby.user.service;
 
+import com.ssafy.c202.formybaby.baby.service.BabyService;
 import com.ssafy.c202.formybaby.global.jwt.JwtService;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.user.entity.Oauth;
@@ -54,68 +55,74 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public String processUserLoginOrRegistration(Map<String, Object> kakaoUserInfo) {
-        // DB에서 사용자 조회 (가정)
-        Oauth oauthUser = oauthRepository.findByOauthId((Long) kakaoUserInfo.get("id"));
+    public Oauth findByOauthId(Long oauthId){
+        Oauth oauth = oauthRepository.findByOauthId(oauthId);
+        return oauth;
+    }
+
+    // 로그인
+    @Override
+    public String processUserLogin(Map<String, Object> kakaoUserInfo) {
+        log.info("로그인");
 
         String jwtToken;
 
-        if(oauthUser == null){
-            log.info("oauthUser 값 없음");
+        // jwt 생성
+        jwtToken = jwtService.generateToken(Long.toString((Long) kakaoUserInfo.get("id")));
+        log.info("jwtToken : " + jwtToken);
 
-            Map<String, Object> kakaoAccount = (Map<String, Object>) kakaoUserInfo.get("kakao_account");
-            Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+        User existingUser = userService.findByOauthId((Long)kakaoUserInfo.get("id"));
 
-            Oauth oauth = new Oauth();
-            oauth.setOauthId((Long) kakaoUserInfo.get("id"));
-            oauth.setName((String) kakaoAccount.get("name")); // 카카오 계정으로부터 이름 추출
-            oauth.setProfileImg((String) profile.get("profile_image_url")); // 프로필 이미지 URL 추출
-            oauth.setAccountEmail((String) kakaoAccount.get("email")); // 카카오 계정 이메일 추출
+        log.info("existingUser : " + existingUser);
 
-            log.info("oauth : " + oauth);
+        // Redis에 JWT 토큰과 userId를 저장
+        redisService.saveUserIdByToken(jwtToken, existingUser.getUserId());
+        return jwtToken;
+    }
 
-            oauthRepository.save(oauth);
+    //일반 회원 가입
+    @Override
+    public String processUserRegistration(Map<String, Object> kakaoUserInfo) {
+        log.info("회원가입");
 
-            // 유저 정보 저장 로직 추가 (유저 회원가입)
-            User newUser = new User();
+        String jwtToken;
 
-            newUser.setOauth(oauth); // Oauth 객체와의 연결 설정
-            newUser.setDanger(false); // 기본값 설정 예시
-            newUser.setGeneral(false); // 기본값 설정 예시
-            newUser.setSound(false); // 기본값 설정 예시
-            newUser.setUserState(false); // 기본값 설정 예시
+        Map<String, Object> kakaoAccount = (Map<String, Object>) kakaoUserInfo.get("kakao_account");
+        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
-            Random random = new Random();
+        Oauth oauth = new Oauth();
+        oauth.setOauthId((Long) kakaoUserInfo.get("id"));
+        oauth.setName((String) kakaoAccount.get("name")); // 카카오 계정으로부터 이름 추출
+        oauth.setProfileImg((String) profile.get("thumbnail_image_url"));// 프로필 이미지 URL 추출
+        oauth.setAccountEmail((String) kakaoAccount.get("email")); // 카카오 계정 이메일 추출
 
-            int randomNum = random.nextInt(10000); // 0부터 9999까지의 랜덤 정수 생성
-            System.out.println(randomNum);
+        oauthRepository.save(oauth);
 
-            // userId 생성: oauthId와 난수를 결합
-            String userIdStr = oauth.getOauthId().toString() + String.format("%04d", randomNum);
+//        // 유저 정보 저장 로직 추가 (유저 회원가입)
+//        User newUser = new User();
+//        newUser.setOauth(oauth); // Oauth 객체와의 연결 설정
+//        newUser.setDanger(false); // 기본값 설정 예시
+//        newUser.setGeneral(false); // 기본값 설정 예시
+//        newUser.setSound(false); // 기본값 설정 예시
+//        newUser.setUserState(false); // 기본값 설정 예시
+//        Random random = new Random();
+//        int randomNum = random.nextInt(10000); // 0부터 9999까지의 랜덤 정수 생성
+//        System.out.println(randomNum);
+//        // userId 생성: oauthId와 난수를 결합
+//        String userIdStr = oauth.getOauthId().toString() + String.format("%04d", randomNum);
+//        // Long 타입으로 변환을 시도합니다. 여기서는 변환에 실패할 가능성에 대한 처리가 필요합니다.
+//        Long userId = Long.parseLong(userIdStr);
+//        newUser.setUserId(userId);
+//        userService.registerUser(newUser); // 새 유저 정보 저장
+//
+        // jwt 생성
+        jwtToken = jwtService.generateToken(Long.toString((Long) kakaoUserInfo.get("id")));
+        log.info("jwtToken : " + jwtToken);
 
-            // Long 타입으로 변환을 시도합니다. 여기서는 변환에 실패할 가능성에 대한 처리가 필요합니다.
-            Long userId = Long.parseLong(userIdStr);
+        // Redis에 JWT 토큰과 userId를 저장
+        //redisService.saveUserIdByToken(jwtToken, newUser.getUserId());
 
-            newUser.setUserId(userId);
-
-            userService.registerUser(newUser); // 새 유저 정보 저장
-
-            // jwt 생성
-            jwtToken = jwtService.generateToken(Long.toString((Long) kakaoUserInfo.get("id")));
-            log.info("jwtToken : " + jwtToken);
-            // Redis에 JWT 토큰과 userId를 저장
-            redisService.saveUserIdByToken(jwtToken, newUser.getUserId());
-            return jwtToken;
-
-        }else {
-            log.info("user 값 있음");
-            // 사용자 정보가 있으면 JWT 생성
-            jwtToken = jwtService.generateToken(Long.toString((Long) kakaoUserInfo.get("id")));
-            User user = userService.findByOauthId((Long) kakaoUserInfo.get("id"));
-            log.info("jwtToken : " + jwtToken);
-            redisService.saveUserIdByToken(jwtToken, user.getUserId());
-            return jwtToken;
-        }
+        return jwtToken;
     }
 }
 

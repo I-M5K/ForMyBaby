@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findByOauthId(Long oauthId) {
         User user = userRepository.findByOauth_OauthId(oauthId);
+        log.info("user2222 : " + user);
         return user;
     }
 
