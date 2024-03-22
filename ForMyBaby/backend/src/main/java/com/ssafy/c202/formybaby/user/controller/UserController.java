@@ -1,6 +1,7 @@
 package com.ssafy.c202.formybaby.user.controller;
 
 
+import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
 import com.ssafy.c202.formybaby.user.entity.User;
 import com.ssafy.c202.formybaby.user.exception.NotFoundException;
 import com.ssafy.c202.formybaby.user.service.UserService;
@@ -21,9 +22,9 @@ public class UserController {
     @Autowired
     private UserService userService;
     @GetMapping()
-    public ResponseEntity<User> findUser(@RequestParam("userId") Long userId){
+    public ResponseEntity<UserReadResponse> findUser(@RequestParam("userId") Long userId){
         try {
-            User userReadResponse = userService.findByUserId(userId);
+            UserReadResponse userReadResponse = userService.findByUserId(userId).getBody();
             log.info("userReadResponse : " + userReadResponse);
             return new ResponseEntity<>(userReadResponse, HttpStatus.OK);
         }catch (NotFoundException e){
@@ -31,5 +32,10 @@ public class UserController {
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+    @DeleteMapping()
+    public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId){
+        userService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

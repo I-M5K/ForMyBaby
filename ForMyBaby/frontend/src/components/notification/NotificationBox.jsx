@@ -1,19 +1,21 @@
 import React from 'react';
 import './notificationBox.css';
 
-const NotificationBox = ({ type, content, time }) => {
-  return (
-    <div className="notification-box">
-      {/* 알림 종류 */}
-      <div className="notification-type">
-        {type}
-      </div>
-      
-      {/* 알림 내용 */}
-      <div className="notification-content">{content}</div>
+const NotificationBox = ({ type, content, time, onDelete }) => {
 
-      {/* 알림 시간 */}
-      <div className="notification-time">{time}</div>
+  const handleSwipeDelete = () => {
+    onDelete(); // 부모 컴포넌트에서 전달받은 삭제 함수 실행
+  }
+
+  const typeClass = type === 'info' ? 'info' : type === 'warning' ? 'warning' : ''
+
+  return (
+    <div className={`notification-box ${typeClass}`} onClick={handleSwipeDelete}> 
+      <div className='noti-container'>
+        <div className="notification-content">{content}</div>
+        <div className="notification-time">{time}</div>
+        <button className="delete-notification-button" onClick={onDelete}>삭제</button>
+      </div>
     </div>
   );
 }

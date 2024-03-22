@@ -1,7 +1,8 @@
 package com.ssafy.c202.formybaby.user.controller;
 
 import com.ssafy.c202.formybaby.global.jwt.JwtProperties;
-import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
+import com.ssafy.c202.formybaby.user.mapper.UserInfoMapper;
+import com.ssafy.c202.formybaby.user.repository.UserRepository;
 import com.ssafy.c202.formybaby.user.service.OAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/oauth")
+@RequestMapping("v1/oauth")
 @Slf4j
 public class OauthController {
 
     @Autowired
     private OAuthService oAuthService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private RestTemplate restTemplate; // RestTemplate 의존성 주입
@@ -61,8 +66,18 @@ public class OauthController {
 
         log.info("kakaoUserInfo : " + kakaoUserInfo);
 
+        Long id = (Long) kakaoUserInfo.get("id");
+
         // 사용자 검증 및 JWT 토큰 생성
         String jwtToken = oAuthService.processUserLoginOrRegistration(kakaoUserInfo);
+
+        log.info("id : " + id);
+
+        Optional<UserInfoMapper> userId = userRepository.findUserInfoByOauth_OauthId(id);
+
+        log.info("userId : " + userId.get().getUserId());
+
+        kakaoUserInfo.put("userId",userId.get().getUserId());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);

@@ -6,8 +6,7 @@ import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.mapper.BabyMapper;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
-import com.ssafy.c202.formybaby.notification.entity.FCMMessage;
-import com.ssafy.c202.formybaby.notification.service.FCMService;
+import com.ssafy.c202.formybaby.fcm.service.FCMService;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
 import com.ssafy.c202.formybaby.user.mapper.FamilyMapper;
@@ -20,7 +19,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor

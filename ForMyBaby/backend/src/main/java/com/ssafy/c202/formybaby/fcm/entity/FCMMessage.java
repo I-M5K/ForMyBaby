@@ -1,4 +1,4 @@
-package com.ssafy.c202.formybaby.notification.entity;
+package com.ssafy.c202.formybaby.fcm.entity;
 
 import com.ssafy.c202.formybaby.user.entity.User;
 import lombok.Builder;

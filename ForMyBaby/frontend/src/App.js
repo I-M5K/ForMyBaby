@@ -27,14 +27,14 @@ import BabyGuard from './pages/Features/BabyGuard';
 // 건강/접종 타임라인
 import TimeLine from './pages/Features/timeline/TimeLine';
 // 성장 스탬프
-import ParentingStamp from './pages/Features/ParentingStamp';
+import ParentingStamp from './pages/ParentingStamp/ParentingStamp';
 // 스톱모션
 import Present from './pages/Features/Present';
 // 마이 페이지
 import MyPage from './pages/MyPage/MyPage';
 
 import TutorialAndLogin from './components/TutorialAndLogin'
-import VideoPage from './VideoPage'
+
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -71,6 +71,7 @@ function App() {
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/notification/setting" element={<NotificationSetting />} />
+          <Route path="/timeline" elemenet={<TimeLine />} />
         </Routes>
       </BrowserRouter>
     </div>
