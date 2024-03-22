@@ -34,7 +34,7 @@ import Present from './pages/Features/Present';
 import MyPage from './pages/MyPage/MyPage';
 
 import TutorialAndLogin from './components/TutorialAndLogin'
-import VideoPage from './VideoPage'
+
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -71,6 +71,7 @@ function App() {
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/notification/setting" element={<NotificationSetting />} />
+          <Route path="/timeline" elemenet={<TimeLine />} />
         </Routes>
       </BrowserRouter>
     </div>
