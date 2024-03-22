@@ -52,3 +52,43 @@ Day 3
 - nginx proxy 설정
 - API 명세서 수정
 - S3 학습
+
+------------------------------------------------------------------------------------------
+
+Day 4
+24/03/21
+ 
+:bulb: 오전 할 일 : 
+
+- CI/CD FE nginx proxy 설정
+- CI/CD AI,FE,BE jenkinsfile Mattermost 연동
+- CI/CD BE 오류 수정 
+
+
+:bulb: 오후 할 일 : 
+
+- CI/CD AI jenkins 파일, docker 파일 수정
+- CI/CD AI 오류 수정 
+- FFmpeg 학습
+- S3,Lambda 찾아보기
+
+------------------------------------------------------------------------------------------
+
+Day 5
+24/03/22
+ 
+:bulb: 오전 할 일 : 
+
+- CI/CD AI 프로젝트 나누기
+- CI/CD AI 파이프라인 나눠서 환경세팅
+- CI/CD AI pthyon, js, C++ 로 각자 Dockerfile 수정
+
+
+:bulb: 오후 할 일 : 
+
+- S3,Lambda 학습
+- STopmotion FFmpeg 사진 영상 변환 설계
+- Stopmotion API 설계
+
+
+
