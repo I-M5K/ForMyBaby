@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REPO = "s10-ai-image-sub2/S10P22C202.git"
+        REPO = "s10-ai-image-sub2/S10P22C202"
 //         DB_URL = "${env.DB_URL}"
 //         DB_USER = "${env.DB_USER}"
 //         DB_PASSWORD = "${env.DB_PASSWORD}"
@@ -15,28 +15,19 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                    checkout scm
-//                 checkout scmGit(
-//                         branches: [[name: 'be']],
-// //                         extensions: [submodule(parentCredentials: true, trackingSubmodules: true)],
-//                         userRemoteConfigs: [[credentialsId: 'GitLab-Project-access-Token', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C202.git']]
-//                 )
+                checkout scm
             }
         }
         stage('Setup Environment') {
             steps {
-                dir("${env.WORKSPACE}/develop"){
+                dir("${env.WORKSPACE}/ForMyBaby/backend"){
                     script {
-                        sh "ls -al"
-//                         sh "echo 'SUBMODULE CHECK'"
-//                         sh "ls ./src/main/resources"
-//                         sh "chmod +x ./gradlew"
-//                         sh "cat ./src/main/resources/application.yml"
+                        sh "chmod +x ./gradlew"
+                        sh "cat ./src/main/resources/application.yml"
                     }
                 }
             }
         }
-
         stage("Build") {
                 steps {
                     script {
@@ -71,20 +62,26 @@ pipeline {
                 }
             }
         }
+
+        stage('Prune old images'){
+            steps{
+                script{
+                    sh "docker ps"
+//                     sh "docker system prune --filter until=10h"
+                }
+            }
+        }
+
+
         stage('Pull') {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker rmi hyeiiin/back"     //images 날리기
+//                         sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
+//                         sh "docker rm back || true"    // Ignore error if container doesn't exist
+//                         sh "docker rmi hyeiiin/back"     //images 날리기
 //                         sh "docker pull ${DOCKER_USER_ID}/back"
                     }
-                }
-            }
-        }
-        stage('Prune old images'){
-            steps{
-                script{
-                    sh "docker system prune --filter until=10h"
                 }
             }
         }
@@ -94,22 +91,39 @@ pipeline {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try{
                             sh "docker rm -f back || true"
-                            sh "docker run -d --name back -p 8082:8080 \
-                                -e DB_URL=${env.DB_URL} \
-                                -e DB_USER=${env.DB_USER} \
-                                -e DB_PASSWORD=${env.DB_PASSWORD} \
-                                -e REDIS_HOST=${env.REDIS_HOST} \
-                                -e REDIS_PASSWORD=${env.REDIS_PASSWORD} \
-                                -e REDIS_PORT=${env.REDIS_PORT} \
-                                -e MAIL_ID=${env.MAIL_ID} \
-                                -e MAIL_PASSWORD=${env.MAIL_PASSWORD} \
-                                -e MAIL_PORT=${env.MAIL_PORT} \
-                                hyeiiin/back"
+                            sh "docker ps"
+                            sh "docker run -d --name back -p 8082:8080 ${DOCKER_USER_ID}/back"
+                            sh "docker ps"
                         } catch (Exception e){
                             sh "docker restart back || true"  // Ignore error if container doesn't exist
                         }
                     }
                 }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+post {
+        success {
+            script {
+                mattermostSend (color: 'good',
+                message: "BE 배포 성공   :cat_jump: :loopy_happy: :bboong: ",
+                )
+            }
+        }
+        failure {
+            script {
+                mattermostSend (color: 'danger',
+                message: "BE 배포 실패   :cry_tom: :cryingloopy: :cryingpatamon: "
+                )
             }
         }
     }

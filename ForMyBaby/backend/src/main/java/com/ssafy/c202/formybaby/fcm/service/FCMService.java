@@ -1,9 +1,10 @@
-package com.ssafy.c202.formybaby.notification.service;
+package com.ssafy.c202.formybaby.fcm.service;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
-import com.ssafy.c202.formybaby.notification.entity.FCMMessage;
+import com.ssafy.c202.formybaby.fcm.entity.FCMMessage;
 import com.ssafy.c202.formybaby.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,12 @@ public class FCMService {
                 .putData("key", fcmMessage.getKey())
                 .build();
 
-        send(message);
+        try {
+            send(message);
+
+        } catch(FirebaseException e) {
+            log.info("fcm error" + e.getMessage());
+        }
     }
 
     public void sendTest(String fcmToken) {
@@ -58,12 +64,12 @@ public class FCMService {
         try{
             send(message);
             log.info("sending test : " + message.toString());
-        } catch(Exception e) {
+        } catch(FirebaseException e) {
             log.info("fcm error : " + e.getMessage());
         }
     }
 
-    public void send(Message message) {
+    public void send(Message message) throws FirebaseException {
         firebaseMessaging.sendAsync(message);
     }
 }
