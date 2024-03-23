@@ -1,8 +1,14 @@
 package com.ssafy.c202.formybaby.user.service;
 
 import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.user.dto.request.UserUpdateRequest;
+import com.ssafy.c202.formybaby.user.dto.response.UserProfileResponse;
 import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
+import com.ssafy.c202.formybaby.user.entity.Family;
+import com.ssafy.c202.formybaby.user.entity.Oauth;
 import com.ssafy.c202.formybaby.user.entity.User;
+import com.ssafy.c202.formybaby.user.repository.FamilyRepository;
+import com.ssafy.c202.formybaby.user.repository.OauthRepository;
 import com.ssafy.c202.formybaby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +25,10 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     private final RedisService redisService;
+
+    private final OauthRepository oauthRepository;
+
+    private final FamilyRepository familyRepository;
 
     @Override
     public User findByUserId(Long userId) {
@@ -73,6 +83,29 @@ public class UserServiceImpl implements UserService{
             userRepository.deleteById(userId);
         } else {
             log.error("Redis에서 올바른 userId 값을 가져오지 못했습니다.");
+        }
+    }
+
+    @Override
+    public UserProfileResponse updateUser(UserUpdateRequest userUpdateRequest) {
+//        log.info("userUpdateRequest : " + userUpdateRequest);
+        User user = userRepository.findByUserId(userUpdateRequest.userId());
+//        log.info("user : " + user);
+        Oauth oauth = oauthRepository.findByOauthId(user.getOauth().getOauthId());
+//        log.info("oauth : " + oauth);
+        Family family = familyRepository.findFamilyByUser_UserId(userUpdateRequest.userId());
+//        log.info("family : " + family);
+        String role = family.getRole().toString();
+        if(user != null){
+            UserProfileResponse userProfileResponse = new UserProfileResponse(
+                    oauth.getName(),
+                    oauth.getProfileImg(),
+                    role
+            );
+            return userProfileResponse;
+        }
+        else{
+            return null;
         }
     }
 }

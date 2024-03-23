@@ -15,7 +15,7 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
     String findFamilyCodeByUserId(@Param("userId") Long userId);
 
     List<Family> findByFamilyId(Long familyId);
-
+    Family findFamilyByUser_UserId(Long userId);
     Family findFamilyByUserUserIdAndBabyBabyId(Long userId, Long babyId);
     Family findFamilyByUserUserIdAndBabyIsNull(Long userId);
     List<Family> findFamiliesByUserUserId(Long userId);

@@ -1,6 +1,8 @@
 package com.ssafy.c202.formybaby.user.controller;
 
 
+import com.ssafy.c202.formybaby.user.dto.request.UserUpdateRequest;
+import com.ssafy.c202.formybaby.user.dto.response.UserProfileResponse;
 import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
 import com.ssafy.c202.formybaby.user.entity.User;
 import com.ssafy.c202.formybaby.user.exception.NotFoundException;
@@ -30,6 +32,15 @@ public class UserController {
         }catch (NotFoundException e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping
+    public ResponseEntity<UserProfileResponse> updateUser(@RequestBody UserUpdateRequest userUpdateRequest){
+        try {
+            UserProfileResponse userProfileResponse = userService.updateUser(userUpdateRequest);
+            return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
+        } catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
