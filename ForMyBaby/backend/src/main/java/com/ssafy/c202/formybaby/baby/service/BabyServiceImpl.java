@@ -38,7 +38,6 @@ public class BabyServiceImpl implements BabyService{
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
         babyRepository.save(baby);
-
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
         familyRepository.save(family);
     }
@@ -50,7 +49,6 @@ public class BabyServiceImpl implements BabyService{
         babyRepository.save(baby);
 
         fcmService.sendTest("fnwM3OU363c7PthT1nsD5t:APA91bE-WIUrffTK4vj5e3r4M5KG-xA-MjMXPllTFIbK_pk-_8qna2337s6paCx_jE-2tHIkfWyt393FxKMrIPJ7q0q_nuMU9vhm02KHVMiZKvlsWpL7RPSnUrreDDe7pqBYCDl79Egi");
-
 
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
         familyRepository.save(family);
