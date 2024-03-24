@@ -11,13 +11,12 @@ import java.sql.Timestamp;
 @Entity
 @Data
 public class Stamp {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private long stampId;
-
-//    @Column(nullable = false)
-//    private long babyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "baby_id", nullable = false)
