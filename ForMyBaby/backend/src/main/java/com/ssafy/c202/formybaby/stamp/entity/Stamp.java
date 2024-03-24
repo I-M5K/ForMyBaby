@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 @Data
 public class Stamp {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)

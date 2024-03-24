@@ -46,7 +46,7 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             "FROM Baby b " +
             "left JOIN Family f ON b.babyId = f.baby.babyId " +
             "WHERE f.baby.babyId = :babyId")
-    Optional<BabyReadResponse>findBabyByBabyId(Long babyId);
+    Optional<BabyReadResponse> findBabyByBabyId(Long babyId);
 
     void deleteByBabyId(Long babyId);
 }
