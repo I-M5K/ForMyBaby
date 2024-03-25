@@ -43,7 +43,7 @@ const BabyAddPage = () => {
             console.log(babyBirthDate);
             formData.append('babyBirthDate', babyBirthDate);
             formData.append('profileImg', babyPhoto);
-            formData.append('role', "엄마");
+            formData.append('role', "none");
 
             try {
                 const data = await addBabyInfo(formData); // API 호출
