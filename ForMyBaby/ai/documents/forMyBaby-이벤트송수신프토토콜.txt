@@ -1,7 +1,7 @@
 # 이벤트 송수신 프로토콜
 
 	1. 평상시 (실시간 영상 시각화 페이지)
-		timestamp; files; data; baby_id
+		timestamp, files, data, baby_id
 		1711328672; (실시간 영상 프레임.jpg); (온습도 정보)
 		
 	2. 이벤트 (일반 - 성장 스탬프용 )

@@ -90,16 +90,22 @@ const upload = multer({ storage: storage });
 app.post('/data/:babyId', upload.single('image'), (req, res) => {
   try {
     const babyId = req.params.babyId;
-    console.log('Received image for babyId:', babyId);
+    // console.log('Received image for babyId:', babyId);
 
     const line = req.body.line; // line 데이터 수신
-    console.log('Received line:', line);
+    // console.log('Received line:', line);
+
+    const timestamp = req.body.timestamp; // timestamp 데이터 수신
+    // console.log('Received timestamp:', timestamp);
+
+
+    console.log(timestamp, babyId, line); // Combine into one line
 
     // 이미지 파일을 읽어서 데이터를 클라이언트로 전송
     fs.readFile(req.file.path, (err, data) => {
       if (err) throw err;
       // 이미지와 함께 데이터를 클라이언트로 전송
-      io.emit('image', { imageData: data, lineData: line });
+      io.emit('image', { imageData: data, lineData: line, timestamp: timestamp });
     });
     res.status(200).send('Image received');
   } catch (error) {
