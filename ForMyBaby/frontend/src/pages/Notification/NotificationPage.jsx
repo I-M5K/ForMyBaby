@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NotificationBox from '../../components/notification/NotificationBox';
 import { useNotificationStore } from '../../stores/NotificationStore'; // Zustand 스토어 import
 import { Link } from 'react-router-dom'; // Link 컴포넌트 import
+import arrowLeft from '../../assets/arrow_left.png'
 
 import './NotificationPage.css'
 
@@ -91,6 +92,11 @@ const NotificationPage = () => {
 
   return (
     <div className='notification-container'>
+        <Link to="/main">
+          <button className="settings-quit-button">
+            <img src={arrowLeft} alt="Settings" />
+          </button>
+        </Link>
       <div className="notification-page">
         <div className="notification-header">
           <div className='notification-title'>알림 목록</div>
