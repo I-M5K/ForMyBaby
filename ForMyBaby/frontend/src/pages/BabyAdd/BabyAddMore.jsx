@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import './BabyAdd.css';
+import { useUserStore } from '../../stores/UserStore';
+import { addBabyInfo } from '../../api/userApi';
 
 const BabyAddPage = () => {
+    const { id, babyList, setBabyList } = useUserStore();
+
     const [babyName, setBabyName] = useState('');
     const [babyGender, setBabyGender] = useState('');
     const [babyBirthDate, setBabyBirthDate] = useState('');
@@ -27,12 +31,25 @@ const BabyAddPage = () => {
         setBabyGender(gender);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         if (isFormValid) {
-            // 실제 등록 로직 구현
-            console.log('Form Submitted');
-            console.log({ babyName, babyGender, babyBirthDate, babyPhoto });
+            const formData = new FormData();
+            formData.append('userId', id);
+            formData.append('babyName', babyName);
+            formData.append('babyGender', babyGender);
+            formData.append('babyBirthDate', babyBirthDate);
+            formData.append('profileImg', babyPhoto);
+            formData.append('role', "엄마");
+
+            try {
+                const data = await addBabyInfo(formData); // API 호출
+                console.log('Baby information submitted successfully!');
+                console.log(data);
+                setBabyList(data);
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
@@ -68,7 +85,7 @@ const BabyAddPage = () => {
                         className="input-field"
                     />
                 </div>
-                <button type="submit" className='baby-add-submit' disabled={!isFormValid}>등록하기</button>
+                <button type="submit" onClick={handleSubmit} className='baby-add-submit' disabled={!isFormValid}>등록하기</button>
             </form>
         </div>
     );

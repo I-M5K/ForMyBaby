@@ -41,4 +41,31 @@ export const getFamilyCode = async () => {
   }
 }
 
+export const addBabyInfo = async (formData) => {
+  try {
+      const response = await axiosWrapper.post('/v1/users/baby', formData);
+
+      if (response.status === 200) {
+          return response.data;
+      } else {
+          throw new Error('Failed to submit baby information');
+      }
+  } catch (error) {
+      throw new Error('Error occurred while submitting baby information:', error);
+  }
+};
+
+// userApi.js
+export const updateBabyRole = async (data) => { // data를 직접 받도록 수정
+  try {
+      const response = await axiosWrapper.post('/v1/users/role', data); // 받은 data를 그대로 전송
+      return response;
+  } catch (error) {
+      throw new Error('Failed to update baby roles:', error);
+  }
+};
+
+
+
+
 
