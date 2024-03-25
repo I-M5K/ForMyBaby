@@ -7,6 +7,7 @@ import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.vaccine.entity.Vaccine;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -23,6 +24,7 @@ import java.util.List;
 public class StepConfig {
     public static final Integer CHUNK_SIZE = 100;
 
+    @JobScope
     @Bean
     public Step getFamily(JobRepository jobRepository, PlatformTransactionManager transactionManager,
                           ItemReader<Family> generalFamilyReader, ItemWriter<Family> generalFamilyWriter) {
@@ -32,6 +34,7 @@ public class StepConfig {
                 .writer(generalFamilyWriter)
                 .build();
     }
+    @JobScope
     @Bean
     public Step getHealth(JobRepository jobRepository, PlatformTransactionManager transactionManager,
                           ItemReader<Health> healthReader, ItemProcessor<Health, List<Notification>> checkHealthProcessor,
@@ -44,6 +47,7 @@ public class StepConfig {
                 .build();
 
     }
+    @JobScope
     @Bean
     public Step getVaccine(JobRepository jobRepository, PlatformTransactionManager transactionManager,
                            ItemReader<Vaccine> vaccineReader, ItemProcessor<Vaccine, List<Notification>> checkVaccineProcessor,
@@ -55,13 +59,13 @@ public class StepConfig {
                 .writer(notificationWriter)
                 .build();
     }
-    @Bean
-    public Step getLocations() {
-        return null;
-    }
-    @Bean
-    public Step setLocations() {
-        return null;
-    }
+//    @Bean
+//    public Step getLocations() {
+//        return null;
+//    }
+//    @Bean
+//    public Step setLocations() {
+//        return null;
+//    }
 
 }

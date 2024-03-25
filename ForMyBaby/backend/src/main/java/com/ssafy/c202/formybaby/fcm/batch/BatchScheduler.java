@@ -6,32 +6,43 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@Component
-@AllArgsConstructor
+@Configuration
+@EnableBatchProcessing
+@EnableScheduling
 public class BatchScheduler {
 
+    @Autowired
+    private JobLauncher jobLauncher;
 
-    private final Job createHealth;
-    private final Job createVaccine;
+    @Autowired
+    private Job createHealth;
 
-    private final JobLauncher jobLauncher;
+    @Autowired
+    private Job createVaccine;
 
-        @Scheduled(cron = "30 * * * * ?") // TEST 시 10초 주기로 스케줄링
-//    @Scheduled(cron = "0 0 0 */3 * ?")
-    public void runAlarmJob() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    // 매일 1시에 실행
+    @Scheduled(cron = "0 0 1 * * *")
+    public void runJobs() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
-                .addLong("time", System.currentTimeMillis())
+                .addString("JobID", String.valueOf(System.currentTimeMillis()))
                 .toJobParameters();
 
+        // createHealth Job 실행
         jobLauncher.run(createHealth, jobParameters);
+
+        // createVaccine Job 실행
+        jobLauncher.run(createVaccine, jobParameters);
     }
 }

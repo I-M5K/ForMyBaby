@@ -27,8 +27,6 @@ public class ItemWriterConfig {
     private final NotificationRepository notificationRepository;
     @Autowired
     private DataShareBean<Family> generalShareBean;
-    @Autowired
-    private DataShareBean<Family> dangerShareBean;
 
     @Bean
     @StepScope

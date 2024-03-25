@@ -95,6 +95,7 @@ public class ItemProcessorConfig {
     }
 
     @Bean
+    @StepScope
     ItemProcessor<Vaccine, List<Notification>> checkVaccineProcessor() {
         LocalDate today = LocalDate.now();
         List<Notification> list = new ArrayList<>();

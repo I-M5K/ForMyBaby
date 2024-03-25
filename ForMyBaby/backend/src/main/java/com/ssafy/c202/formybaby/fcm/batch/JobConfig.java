@@ -17,7 +17,6 @@ public class JobConfig {
     public static final Integer CHUNK_SIZE = 100;
 
     @Bean
-    @JobScope
     public Job createHealth(JobRepository jobRepository, Step getFamily, Step getHealth) {
         return new JobBuilder("createHealth", jobRepository)
                 .incrementer(new RunIdIncrementer())
@@ -27,7 +26,6 @@ public class JobConfig {
     }
 
     @Bean
-    @JobScope
     public Job createVaccine(JobRepository jobRepository, Step getFamily, Step getVaccine) {
         return new JobBuilder("createVaccine", jobRepository)
                 .incrementer(new RunIdIncrementer())
@@ -36,14 +34,13 @@ public class JobConfig {
                 .build();
     }
 
-    @JobScope
-    @Bean
-    public Job checkPriority(JobRepository jobRepository, Step getLocations, Step setLocations) {
-        return new JobBuilder("checkPriority", jobRepository)
-                .incrementer(new RunIdIncrementer())
-                .start(getLocations)
-                .next(setLocations)
-                .build();
-    }
+//    @Bean
+//    public Job checkPriority(JobRepository jobRepository, Step getLocations, Step setLocations) {
+//        return new JobBuilder("checkPriority", jobRepository)
+//                .incrementer(new RunIdIncrementer())
+//                .start(getLocations)
+//                .next(setLocations)
+//                .build();
+//    }
 
 }
