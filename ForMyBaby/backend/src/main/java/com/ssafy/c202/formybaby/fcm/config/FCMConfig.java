@@ -1,4 +1,4 @@
-package com.ssafy.c202.formybaby.global.config;
+package com.ssafy.c202.formybaby.fcm.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

@@ -14,7 +14,7 @@ RUN ./gradlew bootJar
 # 실행 스테이지
 FROM openjdk:17
 WORKDIR /back
-COPY --from=builder /back/build/libs/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
 VOLUME /tmp
+COPY --from=builder /back/build/libs/*.jar app.jar
+ENTRYPOINT ["java","-jar","/back/app.jar"]
 EXPOSE 8080
