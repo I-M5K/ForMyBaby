@@ -1,0 +1,27 @@
+.ParentingStamp {
+  padding: 20px;
+}
+
+.parenstamp-title {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.parenstamp-header button {
+    background-color: white;
+    color: orange;
+    border-radius: 20px;
+    border-color: orange;
+    padding: 10px 15px;
+    margin: 0 2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* 버튼 클릭 시 배경색 및 텍스트 색상 변경 */
+.parenstamp-header button:hover,
+.parenstamp-header button:active {
+    background-color: orange; /* 버튼이 눌러진 상태일 때 배경색을 오렌지색으로 변경 */
+    color: white; /* 버튼이 눌러진 상태일 때 텍스트 색상을 하얀색으로 변경 */
+}
