@@ -28,7 +28,7 @@ const KakaoRedirectPage = () => {
         setName(data.kakao_account.name);
         setJwt(localStorage.getItem("accessToken"));
         setFamily(data.familyCode);
-        setFcm(data.fcm);
+        setFcm(data.fcmToken);
 
         if (jwt != null) { // 로그인 성공
           localStorage.removeItem("accessToken");
