@@ -1,3 +1,4 @@
+
 spring:
   #db
   datasource:
@@ -31,3 +32,17 @@ spring:
           min-idle: 0
           max-active: 8
           max-wait: -1
+
+  #AWS S3
+  cloud:
+    aws:
+      s3:
+        bucket: formybaby-bucket
+      credentials:
+        access-key: AKIA2UC3BWP55UET3D4E
+        secret-key: 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
+      region:
+        static: ap-northeast-2
+        auto: false
+      stack:
+        auto: false
