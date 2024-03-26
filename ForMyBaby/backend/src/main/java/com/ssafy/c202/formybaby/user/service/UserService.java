@@ -9,13 +9,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserService {
-   User findByUserId(Long userId);
-   ResponseEntity<UserReadResponse> findByUserReadResponseUserId(Long userId);
-
-//   List<UserReadResponse> findByUserReadResponseListUserId(Long userId);
+   UserReadResponse findUser(Long userId);
    User findByOauthId(Long oauthId);
    User registerUser(User user);
-   void deleteUser(String token);
+
+   //void deleteUser(String token);
+   void deleteUser(Long userId);
    UserProfileResponse updateUser(UserUpdateRequest userUpdateRequest);
    String findFcmToken(Long userId);
 }
