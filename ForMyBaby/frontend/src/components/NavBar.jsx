@@ -56,8 +56,8 @@ const styles = {
     margin: '0 10px',
   },
   icon: {
-    width: '50px', // Adjust size as needed
-    height: '50px', // Adjust size as needed
+    width: '50px',
+    height: '50px',
   },
 };
 
