@@ -3,6 +3,8 @@ import socketIOClient from 'socket.io-client';
 import NavBar from '../../components/NavBar';
 import DetailContent from './BabyGuardDetail';
 import ChangeContent from './BabyGuardChange';
+import SleepStatusContent from './SleepStatusContent'; // 수정된 부분
+import { useRecordStore } from '../../stores/RecordStore'; // 상태 관리 파일에서 가져옴
 
 import './BabyGuard.css';
 
@@ -16,37 +18,15 @@ const ImageContent = ({ imageData, lineData }) => (
   </div>
 );
 
-const SleepStatusContent = ({ sleepStatus }) => (
-  <div className="sleep-status-content">
-    <p className='sleep-title'>오늘의 수면 현황</p>
-    <div className="sleep-status">
-      {Object.entries(sleepStatus).map(([key, value]) => (
-        <div className="sleep-status-item" key={key}>
-          <p className="sleep-status-label">{key}</p>
-          <div
-            className="sleep-status-bar"
-            style={{ backgroundColor: value > 50 ? '#5cb85c' : '#d9534f' }}
-          >
-            <div className="sleep-status-bar-fill" style={{ width: `${value}%` }} />
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
 const Dashboard = () => {
   const [imageData, setImageData] = useState(null);
   const [lineData, setLineData] = useState('');
+  const [timestamp, setTimestamp] = useState('');
   const [selectedButton, setSelectedButton] = useState('button1');
   const [babyId, setBabyId] = useState('');
-  const [sleepStatus, setSleepStatus] = useState({
-    수면시간: 80,
-    깨어남: 20,
-    위험행동: 10,
-    온도: 25,
-    습도: 60
-  });
+
+  const { danger, hours, awake } = useRecordStore(); // 상태 관리 파일에서 상태 가져오기
+
 
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
@@ -63,12 +43,27 @@ const Dashboard = () => {
 
     socket.emit('babyId', babyId);
 
-    socket.on('image', ({ imageData, lineData }) => {
+    socket.on('image', ({ imageData, lineData, timestamp }) => {
       const base64String = btoa(
         new Uint8Array(imageData).reduce((data, byte) => data + String.fromCharCode(byte), '')
       );
       setImageData(`data:image/jpeg;base64,${base64String}`);
       setLineData(lineData);
+      setTimestamp(timestamp);
+      console.log('온습도 데이터', lineData);
+      console.log('시간', timestamp);
+    });
+
+    // 소켓 위험 알림용 이벤트 수신
+    socket.on('dangerEvent', () => {
+      // 위험행동 상태 업데이트
+      useRecordStore.setState({ danger: danger + 1 });
+    });
+
+    // 소켓 수면 분석용 이벤트 수신
+    socket.on('sleepEvent', () => {
+      // 깨어남 상태 업데이트
+      useRecordStore.setState({ awake: awake + 1 });
     });
 
     return () => {};
@@ -85,8 +80,13 @@ const Dashboard = () => {
       <div className="content">
         {selectedButton === 'button1' && (
           <div className="dashboard-content">
-            <ImageContent imageData={imageData} lineData={lineData} />
-            <SleepStatusContent sleepStatus={sleepStatus} />
+            <div className="video-content" style={{ backgroundColor: imageData ? 'transparent' : '#f0f0f0', width: '80vw', height: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <h1>Real-time Video</h1>
+              {/* 이미지가 없는 경우를 처리하여 메시지 표시 */}
+              {!imageData && <p style={{ color: '#666' }}>No video available</p>}
+              {imageData && <img src={imageData} alt="Received" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
+            </div>
+            <SleepStatusContent danger={danger} hours={hours} awake={awake} lineData={lineData} /> {/* 수정된 부분 */}
           </div>
         )}
         {selectedButton === 'button2' && <DetailContent />}
