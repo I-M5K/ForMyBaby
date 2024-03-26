@@ -48,6 +48,7 @@ public class BabyController {
     public ResponseEntity<List<BabyReadResponse>> getList(@PathVariable Long userId) {
         return new ResponseEntity<>(babyService.babyList(userId), HttpStatus.OK);
     }
+
     @GetMapping("/list/{familyCode}")
     public ResponseEntity<List<BabyReadResponse>> getList(@PathVariable String familyCode) {
         return new ResponseEntity<>(babyService.babyList(familyCode), HttpStatus.OK);

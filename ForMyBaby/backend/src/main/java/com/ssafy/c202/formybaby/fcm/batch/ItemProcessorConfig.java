@@ -72,6 +72,9 @@ public class ItemProcessorConfig {
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, health),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, health),
                             "health");
+
+                    log.info("HEALTH NOTIFICATION : {}", message);
+
                     fcmService.sendFCM(message);
 
                     list.add(notificationMapper.fromBatch(family, NotificationType.generalHealthWeek,
@@ -83,6 +86,9 @@ public class ItemProcessorConfig {
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, health),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, health),
                             "health");
+
+                    log.info("HEALTH NOTIFICATION : {}", message);
+
                     fcmService.sendFCM(message);
 
                     list.add(notificationMapper.fromBatch(family, NotificationType.generalHealthDay,
@@ -116,6 +122,9 @@ public class ItemProcessorConfig {
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, vaccine),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, vaccine),
                             "vaccine");
+
+                    log.info("VACCINE NOTIFICATION : {}", message);
+
                     fcmService.sendFCM(message);
 
                     list.add(notificationMapper.fromBatch(family, NotificationType.generalVaccineWeek,
@@ -127,6 +136,9 @@ public class ItemProcessorConfig {
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, vaccine),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, vaccine),
                             "vaccine");
+
+                    log.info("VACCINE NOTIFICATION : {}", message);
+
                     fcmService.sendFCM(message);
 
                     list.add(notificationMapper.fromBatch(family, NotificationType.generalVaccineDay,

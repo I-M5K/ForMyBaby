@@ -19,7 +19,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Configuration
-@EnableBatchProcessing
 @EnableScheduling
 public class BatchScheduler {
 
@@ -33,7 +32,7 @@ public class BatchScheduler {
     private Job createVaccine;
 
     // 매일 1시에 실행
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0/10 * * * * *")
     public void runJobs() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("JobID", String.valueOf(System.currentTimeMillis()))

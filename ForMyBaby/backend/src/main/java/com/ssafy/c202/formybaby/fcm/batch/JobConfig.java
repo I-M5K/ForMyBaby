@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class JobConfig {
     public static final Integer CHUNK_SIZE = 100;
 
-    @Bean
+    @Bean(name = "createHealth")
     public Job createHealth(JobRepository jobRepository, Step getFamily, Step getHealth) {
         return new JobBuilder("createHealth", jobRepository)
                 .incrementer(new RunIdIncrementer())
@@ -25,7 +25,7 @@ public class JobConfig {
                 .build();
     }
 
-    @Bean
+    @Bean(name = "createVaccine")
     public Job createVaccine(JobRepository jobRepository, Step getFamily, Step getVaccine) {
         return new JobBuilder("createVaccine", jobRepository)
                 .incrementer(new RunIdIncrementer())

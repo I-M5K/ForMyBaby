@@ -27,7 +27,7 @@ public class ItemReaderConfig {
     public JpaPagingItemReader<Family> generalFamilyReader() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate sixYearsAgo = LocalDate.now().minusYears(6);
-        String formattedDate = sixYearsAgo.format(formatter);
+        LocalDate formattedDate = LocalDate.parse(sixYearsAgo.format(formatter));
 
         String query = "SELECT f FROM Family f JOIN FETCH f.user u JOIN FETCH f.baby b " +
                 "WHERE b.birthDate >= :startDate AND u.isGeneral = true";

@@ -72,9 +72,9 @@ public class OAuthServiceImpl implements OAuthService {
             User newUser = new User();
 
             newUser.setOauth(oauth); // Oauth 객체와의 연결 설정
-            newUser.setDanger(false); // 기본값 설정 예시
-            newUser.setGeneral(false); // 기본값 설정 예시
-            newUser.setSound(false); // 기본값 설정 예시
+            newUser.setDanger(true); // 기본값 설정 예시
+            newUser.setGeneral(true); // 기본값 설정 예시
+            newUser.setSound(true); // 기본값 설정 예시
             newUser.setUserState(false); // 기본값 설정 예시
 
             Random random = new Random();
