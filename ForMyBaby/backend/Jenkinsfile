@@ -112,7 +112,7 @@ pipeline {
                             -e "spring.s3.secret-key=${env.S3_SECRET_KEY}" \
                             -e "spring.s3.region=${env.S3_REGION}" \
                             -e "spring.s3.bucket=${env.S3_BUCKET}" \
-                            ${DOCKER_USER_ID}/back
+                            ${DOCKER_USER_ID}/back"
                             sh "docker ps"
                         } catch (Exception e) {
                             sh "docker restart back || true"  // Ignore error if container doesn't exist
