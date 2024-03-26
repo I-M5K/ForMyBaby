@@ -1,39 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Link 컴포넌트 import
 import NavBar from '../components/NavBar';
 import './MainPage.css';
 import useGeoLocation from "../hooks/useGeolocation";
-import { sendLocation } from '../api/userApi'; 
-import { useState, useEffect } from 'react';
+import { sendLocation } from '../api/userApi';
 import { requestPermission } from "../FCM/firebase-messaging-sw";
-import { useUserStore, useLocationStore } from '../stores/UserStore'; // Zustand 스토어 import
+import { useUserStore } from '../stores/UserStore'; // Zustand 스토어 import
 
 const MainPage = () => {
   const location = useGeoLocation();
   const { id, name, email, fcm, setFcm } = useUserStore();
-  //const { isExist, setIsExist } = useLocationStore();
-
-  //requestPermission();
-  console.log(id);
-  console.log(name);
-  console.log(email);
 
   useEffect(() => {
-      // console.log('fetchData 직전');
-      const fetchData = async () => {
-          if (fcm == null){
-              requestPermission();
-              setFcm(localStorage.getItem('fcmToken'));
-          }
-          // console.log('fetchData 직후');
-          if (location && location.loaded && location.coordinates) {
-              //console.log('useEffect 안 if 문');
-              await sendLocation(location.coordinates.lat, location.coordinates.lng);
-              //setIsExist(true);
-          }
-      };
-      fetchData();
+    const fetchData = async () => {
+      if (fcm == null){
+        requestPermission();
+        setFcm(localStorage.getItem('fcmToken'));
+      }
+      if (location && location.loaded && location.coordinates) {
+        await sendLocation(location.coordinates.lat, location.coordinates.lng);
+      }
+    };
+    fetchData();
   }, [location]);
+
   return (
     <div className="container">
       <div className="header">
@@ -58,48 +48,56 @@ const MainPage = () => {
         </div>
       </Link>
 
-        <div className="boxContainerRight">
-          <Link to="/sleep-pattern">
-            <div className="smallmiddleBox">
-              a
-            </div>
-          </Link>
-          <Link to="/sleep-pattern">
-            <div className="smallBox">
-              <>
+      <div className="boxContainerRight">
+        <Link to="/sleep-pattern">
+          <div className="smallmiddleBox">
+            <span className="boxText">a</span>
+          </div>
+        </Link>
+        <Link to="/sleep-pattern">
+          <div className="smallBox">
+            <>
+              <span className="boxText">
                 우리아이<br />
                 수면패턴
-              </>
-            </div>
-          </Link>
-        </div>
-        
-        <div className="boxContainerLeft">
-          <Link to="/baby-age">
-            <div className="smallBox">
-              <>
+              </span>
+            </>
+          </div>
+        </Link>
+      </div>
+      
+      <div className="boxContainerLeft">
+        <Link to="/baby-age">
+          <div className="smallBox">
+            <>
+              <span className="boxText">
                 무준이가 태어난지<br />
                 27일 되었어요
-              </>
-            </div>
-          </Link>
-          <Link to="/timeline">
-            <div className="smallBox">
-              <>
+              </span>
+            </>
+          </div>
+        </Link>
+        <Link to="/timeline">
+          <div className="smallBox">
+            <>
+              <span className="boxText">
                 이번주<br />
                 건강검진
-              </>
-            </div>
-          </Link>
-          <Link to="/parenting-tips">
-            <div className="smallBox">
-              <>
+              </span>
+            </>
+          </div>
+        </Link>
+        <Link to="/parenting-tips">
+          <div className="smallBox">
+            <>
+              <span className="boxText">
                 우리아이<br />
                 육아꿀팁
-              </>
-            </div>
-          </Link>
-        </div>
+              </span>
+            </>
+          </div>
+        </Link>
+      </div>
 
       <NavBar />
     </div>
