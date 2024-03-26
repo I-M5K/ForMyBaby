@@ -26,6 +26,7 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/ForMyBaby/backend"){
                     script {
+                        echo "S3_ACCESS_KEY: ${env.S3_ACCESS_KEY}"
                         sh "chmod +x ./gradlew"
                         sh "cat ./src/main/resources/application.yml"
                     }
@@ -94,7 +95,6 @@ pipeline {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try {
-                            echo "DB User: ${env.DB_USER}"
                             sh "docker rm -f back || true"
                             sh "docker run -d --name back -p 8082:8080 \
                                 -e DB_URL=${env.DB_URL} \
