@@ -3,9 +3,9 @@ spring:
   #db
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://j10c202.p.ssafy.io:3307/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: ssafy
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   #jpa
   jpa:
     hibernate:
@@ -16,16 +16,16 @@ spring:
   #oauth2
   oauth:
     kakao:
-      client_id: f9d3aa3c4d425c0ad175a6b95e366769 # REST API ?
-      redirect_uri: "http://localhost:3000/oauth/redirected/kakao"
-      client_secret: Mx4luiTuOBM8RAuJRU9AZ0UJdGtQrRVh
+      client_id: ${KAKAO_ID} # REST API ?
+      redirect_uri: ${KAKAO_REDIRECT_URI}
+      client_secret: ${KAKAO_PW}
       scope: name, account_email, profile_image
   #redis
   data:
     redis:
-      host: j10c202.p.ssafy.io # Redis 서버의 공개 IP 주소
-      port: 6379
-      password: imok202!
+      host: ${REDIS_HOST} # Redis 서버의 공개 IP 주소
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
       lettuce:
         pool:
           max-idle: 8
@@ -41,11 +41,11 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key: AKIA2UC3BWP55UET3D4E
-      secret-key: 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
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
     region:
-      static: ap-northeast-2
+      static: ${S3_REGION}
     s3:
-      bucket: formybaby-bucket
+      bucket: ${S3_BUCKET}
     stack:
       auto: false
