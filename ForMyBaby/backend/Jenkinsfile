@@ -99,7 +99,7 @@ pipeline {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try {
                             sh "docker rm -f back || true"
-                            docker run -d --name back -p 8082:8080 \
+                            sh "docker run -d --name back -p 8082:8080 \
                             -e "spring.datasource.username=${env.DB_USER}" \
                             -e "spring.datasource.password=${env.DB_PASSWORD}" \
                             -e "spring.redis.host=${env.REDIS_HOST}" \
