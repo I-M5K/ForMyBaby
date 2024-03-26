@@ -1,12 +1,8 @@
 package com.ssafy.c202.formybaby.stamp.dto.request;
 
-public record StampUpdateRequest(String updatedMemo) {
+import java.util.List;
 
-    public StampUpdateRequest(String updatedMemo) {
-        this.updatedMemo = updatedMemo;
-    }
-
-    public String memo() {
-        return this.updatedMemo;
-    }
-}
+public record StampUpdateRequest(
+        List <String> stampImg,
+        String memo
+) {}
