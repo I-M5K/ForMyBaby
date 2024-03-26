@@ -26,11 +26,11 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/ForMyBaby/backend"){
                     script {
+                        sh "ls -al"
+//                         sh "echo 'SUBMODULE CHECK'"
+//                         sh "ls secure-settings -al"
+                        sh "ls ./src/main/resources"
                         sh "chmod +x ./gradlew"
-                        sh "echo 'spring:' >> ./src/main/resources/application.yml"
-                        sh "echo '  data:' >> ./src/main/resources/application.yml"
-                        sh "echo '    redis:' >> ./src/main/resources/application.yml"
-                        sh "echo '      port: ${REDIS_PORT}' >> ./src/main/resources/application.yml"
                         sh "cat ./src/main/resources/application.yml"
                     }
                 }
