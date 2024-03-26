@@ -1,5 +1,6 @@
 package com.ssafy.c202.formybaby.user.service;
 
+import com.ssafy.c202.formybaby.global.jpaEnum.Role;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.user.dto.request.UserUpdateRequest;
 import com.ssafy.c202.formybaby.user.dto.response.UserProfileResponse;
@@ -16,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -43,12 +46,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public ResponseEntity<UserReadResponse> findByUserReadResponseUserId(Long userId) {
         User user = userRepository.findByUserId(userId); // User 엔티티를 조회
-
+        Family family = familyRepository.findFamilyByUser_UserId(userId);
+        log.info("family : " + family);
+        Role role = family.getRole();
         if (user != null) {
             UserReadResponse userReadResponse = new UserReadResponse(
                     user.getUserId(),
                     user.getOauth().getName(),
-                    user.getOauth().getProfileImg()
+                    user.getOauth().getProfileImg(),
+                    role
             );
             return new ResponseEntity<>(userReadResponse, HttpStatus.OK);
         } else {
@@ -57,15 +63,36 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+//    @Override
+//    public List<UserReadResponse> findByUserReadResponseListUserId(Long userId) {
+//        User user = userRepository.findByUserId(userId);
+//
+//        return null;
+//    }
+
     @Override
     public User findByOauthId(Long oauthId) {
+        // 사용자를 찾음
         User user = userRepository.findByOauth_OauthId(oauthId);
-        log.info("user2222 : " + user);
+        // 사용자가 없는 경우
+        if (user == null) {
+            // 예외를 발생시킴
+            throw new RuntimeException("User not found for oauthId: " + oauthId);
+        }
+        // 사용자를 반환
         return user;
     }
 
+
     @Override
     public User registerUser(User user) {
+        // 사용자가 이미 데이터베이스에 존재하는지 확인
+        User existingUser = userRepository.findByOauth_OauthId(user.getOauth().getOauthId());
+        if (existingUser != null) {
+            // 이미 존재하는 사용자이므로 예외를 발생시킴
+            throw new RuntimeException("User already exists");
+        }
+        // 사용자를 등록하고 저장
         user = userRepository.save(user);
         return user;
     }
@@ -88,14 +115,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserProfileResponse updateUser(UserUpdateRequest userUpdateRequest) {
-//        log.info("userUpdateRequest : " + userUpdateRequest);
         User user = userRepository.findByUserId(userUpdateRequest.userId());
-//        log.info("user : " + user);
         Oauth oauth = oauthRepository.findByOauthId(user.getOauth().getOauthId());
-//        log.info("oauth : " + oauth);
         Family family = familyRepository.findFamilyByUser_UserId(userUpdateRequest.userId());
-//        log.info("family : " + family);
-        String role = family.getRole().toString();
+        Role role = family.getRole();
         if(user != null){
             UserProfileResponse userProfileResponse = new UserProfileResponse(
                     oauth.getName(),
@@ -105,6 +128,16 @@ public class UserServiceImpl implements UserService{
             return userProfileResponse;
         }
         else{
+            return null;
+        }
+    }
+
+    @Override
+    public String findFcmToken(Long userId) {
+        try{
+            String fcmToken = userRepository.findFcmTokenByUserId(userId);
+            return fcmToken;
+        }catch (Exception e){
             return null;
         }
     }

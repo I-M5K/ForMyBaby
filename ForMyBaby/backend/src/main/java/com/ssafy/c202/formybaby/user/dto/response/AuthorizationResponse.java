@@ -1,5 +1,7 @@
 package com.ssafy.c202.formybaby.user.dto.response;
 
+import java.util.List;
+
 public record AuthorizationResponse (
         Long userId,
 
@@ -9,7 +11,7 @@ public record AuthorizationResponse (
 
         String accountEmail,
 
-        String profileImg,
+        List<String> profileImg,
 
         String jwtToken,
 

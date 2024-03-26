@@ -1,5 +1,5 @@
 package com.ssafy.c202.formybaby.user.dto.request;
 
-public record roleUpdateRequest (
+public record RoleUpdateRequest (
         String familyCode
 ) {}

@@ -1,6 +1,7 @@
 package com.ssafy.c202.formybaby.baby.entity;
 
 import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
+import com.ssafy.c202.formybaby.global.jpaEnum.Role;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,4 +32,6 @@ public class Baby implements Serializable {
 
     private String profileImg;
 
+    public void setRole(Role role) {
+    }
 }

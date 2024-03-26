@@ -5,7 +5,7 @@ import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public record babyUpdateRequest(
+public record BabyUpdateRequest(
         String babyName,
         Date birthDate,
         BabyGender babyGender

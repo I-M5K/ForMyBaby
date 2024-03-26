@@ -46,7 +46,11 @@ public class UserController {
     }
     @DeleteMapping()
     public ResponseEntity<?> deleteUser(@RequestHeader(name = "Authorization") String token){
-        userService.deleteUser(token);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try{
+            userService.deleteUser(token);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }

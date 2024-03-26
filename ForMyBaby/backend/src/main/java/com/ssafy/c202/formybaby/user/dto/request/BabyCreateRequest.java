@@ -4,10 +4,12 @@ import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
 import com.ssafy.c202.formybaby.global.jpaEnum.DangerType;
 
 import java.sql.Date;
+import java.util.List;
 
-public record babyCreateRequest (
+public record BabyCreateRequest (
         String babyName,
         Date birthDate,
         BabyGender babyGender,
+        List<String> profileImg,
         String familyCode
 ) {}
