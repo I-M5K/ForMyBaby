@@ -17,9 +17,10 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
     List<Family> findByFamilyId(Long familyId);
     Family findFamilyByUser_UserId(Long userId);
     Family findFamilyByUserUserIdAndBabyBabyId(Long userId, Long babyId);
+    Family findFamilyByBabyBabyId(Long babyId);
     Family findFamilyByUserUserIdAndBabyIsNull(Long userId);
     List<Family> findFamiliesByUserUserId(Long userId);
     List<Family> findFamiliesByBabyBabyId(Long babyId);
-
+    List<Family> findByFamilyCode(String familyCode);
     void deleteFamiliesByBabyBabyId(Long babyId);
 }

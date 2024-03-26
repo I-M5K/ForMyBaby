@@ -1,13 +1,13 @@
 package com.ssafy.c202.formybaby.user.controller;
 
+import com.ssafy.c202.formybaby.baby.entity.Baby;
+import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
 import com.ssafy.c202.formybaby.global.jwt.JwtProperties;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
+import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.Oauth;
-import com.ssafy.c202.formybaby.user.entity.User;
-import com.ssafy.c202.formybaby.user.mapper.UserInfoMapper;
-import com.ssafy.c202.formybaby.user.repository.OauthRepository;
-import com.ssafy.c202.formybaby.user.repository.UserRepository;
+import com.ssafy.c202.formybaby.user.service.FamilyService;
 import com.ssafy.c202.formybaby.user.service.OAuthService;
 import com.ssafy.c202.formybaby.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +19,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("v1/oauth")
@@ -35,6 +37,9 @@ public class OauthController {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private FamilyService familyService;
 
     @Autowired
     private RestTemplate restTemplate; // RestTemplate 의존성 주입
@@ -68,11 +73,11 @@ public class OauthController {
         String accessToken = (String)response.getBody().get("access_token"); // 액세스 토큰 추출
 
         // 카카오에서 가져온 토큰 값으로 유저 정보 조회
-        Map<String, Object> kakaoUserInfo = oAuthService.getKakaoUserInfo(accessToken);
+        Map<String, Object> userInfo = oAuthService.getKakaoUserInfo(accessToken);
 
-        log.info("kakaoUserInfo : " + kakaoUserInfo);
+        log.info("userInfo : " + userInfo);
 
-        Long oauthId = (Long) kakaoUserInfo.get("id");
+        Long oauthId = (Long) userInfo.get("id");
 
         log.info("oauthId : " + oauthId);
 
@@ -85,29 +90,45 @@ public class OauthController {
         if(oauthUser!=null){
             log.info("login");
             // 사용자 검증 및 JWT 토큰 생성
-            String jwtToken = oAuthService.processUserLogin(kakaoUserInfo);
+            String jwtToken = oAuthService.processUserLogin(userInfo);
 
             String getUserId = redisService.getUserIdByToken(jwtToken);
-            ResponseEntity<UserReadResponse> user = userService.findByUserReadResponseUserId(Long.valueOf(getUserId));
-            kakaoUserInfo.put("userId",user.getBody().userId());
+
+            String familyCode = familyService.familyList(Long.valueOf(getUserId)).get(0).getFamilyCode();
+
+            String fcmToken = userService.findFcmToken(Long.valueOf(getUserId));
+
+//            ResponseEntity<UserReadResponse> user = userService.findByUserReadResponseUserId(Long.valueOf(getUserId));
+            userInfo.put("userId",getUserId);
+            userInfo.put("familyCode",familyCode);
+            userInfo.put("fcmToken",fcmToken);
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
-            return new ResponseEntity<>(kakaoUserInfo, responseHeaders, HttpStatus.OK);
+            try{
+                return new ResponseEntity<>(userInfo, responseHeaders, HttpStatus.OK);
+            }catch (Exception e){
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            }
         }
         // 없어서 새로 회원 가입을 시킨다면
         else{
             log.info("register");
             // 사용자 검증 및 JWT 토큰 생성
-            String jwtToken = oAuthService.processUserRegistration(kakaoUserInfo);
+            String jwtToken = oAuthService.processUserRegistration(userInfo);
 
             String getUserId = redisService.getUserIdByToken(jwtToken);
-            ResponseEntity<UserReadResponse> user = userService.findByUserReadResponseUserId(Long.valueOf(getUserId));
-            kakaoUserInfo.put("userId",user.getBody().userId());
+
+//            ResponseEntity<UserReadResponse> user = userService.findByUserReadResponseUserId(Long.valueOf(getUserId));
+            userInfo.put("userId",getUserId);
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
-            return new ResponseEntity<>(kakaoUserInfo, responseHeaders, HttpStatus.OK);
+            try{
+                return new ResponseEntity<>(userInfo, responseHeaders, HttpStatus.OK);
+            }catch (Exception e){
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            }
         }
     }
 }
