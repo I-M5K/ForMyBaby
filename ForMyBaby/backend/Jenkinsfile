@@ -26,8 +26,11 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/ForMyBaby/backend"){
                     script {
-                        echo "S3_ACCESS_KEY: ${env.S3_ACCESS_KEY}"
                         sh "chmod +x ./gradlew"
+                        sh "echo 'spring:' >> ./src/main/resources/application.yml"
+                        sh "echo '  data:' >> ./src/main/resources/application.yml"
+                        sh "echo '    redis:' >> ./src/main/resources/application.yml"
+                        sh "echo '      port: ${REDIS_PORT}' >> ./src/main/resources/application.yml"
                         sh "cat ./src/main/resources/application.yml"
                     }
                 }

@@ -3,9 +3,9 @@ spring:
   #db
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://j10c202.p.ssafy.io:3307/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: ssafy
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   #jpa
   jpa:
     hibernate:
@@ -24,7 +24,7 @@ spring:
   data:
     redis:
       host: ${REDIS_HOST} # Redis 서버의 공개 IP 주소
-      port: 6379
+      port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
       lettuce:
         pool:
