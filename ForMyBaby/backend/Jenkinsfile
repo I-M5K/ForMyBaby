@@ -100,7 +100,7 @@ pipeline {
                         try {
                             sh "docker rm -f back || true"
                             sh "docker run -d --name back -p 8082:8080 \
-                                -e DB_URL=${env.DB_URL} \
+                                -e spring.datasource.username=${env.DB_URL} \
                                 -e DB_USER=${env.DB_USER} \
                                 -e DB_PASSWORD=${env.DB_PASSWORD} \
                                 -e REDIS_HOST=${env.REDIS_HOST} \
