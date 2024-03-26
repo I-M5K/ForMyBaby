@@ -7,7 +7,7 @@ export const useRecordStore = create(persist((set) => ({
     awake: 0,
     setDanger: (danger) => set({ danger: danger }),
     setHours: (hours) => set({ hours: hours }),
-    setAwake: (awake) => setAwake({ awake: awake}),
+    setAwake: (awake) => set({ awake: awake}),
 }), {
     name: "record",
     storage: createJSONStorage(() => localStorage)
@@ -21,9 +21,22 @@ export const useRecordDetailStore = create(persist((set) => ({
     setEndTime: (endTime) => set({ endTimeList: endTime }),
     setDangerList: (danger) => set({ dangerList: danger }),
     setHoursList: (hours) => set({ hoursList: hours }),
-    setAwakeList: (awake) => setAwake({ awakeList: awake}),
+    setAwakeList: (awake) => set({ awakeList: awake}),
 }), {
     name: "detail",
     storage: createJSONStorage(() => localStorage)
 }));
 
+// 위험행동 개수 추가
+export const addDanger = (count) => {
+    useRecordStore.setState((state) => ({
+        danger: state.danger + count
+    }));
+};
+
+// 깨어남 개수 추가
+export const addAwake = (count) => {
+    useRecordStore.setState((state) => ({
+        awake: state.awake + count
+    }));
+};
