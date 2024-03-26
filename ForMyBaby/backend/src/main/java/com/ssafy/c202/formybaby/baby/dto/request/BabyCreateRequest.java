@@ -3,6 +3,7 @@ package com.ssafy.c202.formybaby.baby.dto.request;
 import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
 
 import java.sql.Date;
+import java.util.List;
 
 public record BabyCreateRequest(
         Long userId,
@@ -16,3 +17,4 @@ public record BabyCreateRequest(
         String role
 )
 { }
+

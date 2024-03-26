@@ -1,5 +1,6 @@
 package com.ssafy.c202.formybaby.baby.service;
 
+import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateListRequest;
 import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateRequest;
 import com.ssafy.c202.formybaby.baby.dto.request.BabyUpdateRequest;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
@@ -37,7 +38,7 @@ public class BabyServiceImpl implements BabyService{
     private final FCMService fcmService;
     private final RedisService redisService;
     @Override
-    public void createBaby(BabyCreateRequest babyCreateRequest) {
+    public void addBaby(BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
@@ -46,13 +47,18 @@ public class BabyServiceImpl implements BabyService{
         familyRepository.save(family);
     }
 
-    public void createNewBaby(BabyCreateRequest babyCreateRequest) {
-        User user = userRepository.findByUserId(babyCreateRequest.userId());
-        Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
+    public void createNewBaby(BabyCreateListRequest babyCreateListRequest) {
+        User user = userRepository.findByUserId(babyCreateListRequest.list().get(0).userId());
         String familyCode = RandomStringUtils.randomAlphanumeric(6);
-        babyRepository.save(baby);
-        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
-        familyRepository.save(family);
+        for(BabyCreateRequest babyCreateRequest : babyCreateListRequest.list()){
+            Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
+            babyRepository.save(baby);
+
+//        fcmService.sendTest("fGEU-9IwnPvJFXs8VcFrHe:APA91bGmQ0bqr_Hxut3dxXPA3qOkpuS3u0ZNnwAR0Mc6YmDWFMsw4WgN8Ncp1VSpdXHz-OYKijYEUK0MHKTRrr_je5EzL7KKDuBjuoBoclMKsWVoSqmIExHLl1v2VqdG2Fb_dA7f29BG");
+
+            Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+            familyRepository.save(family);
+        }
     }
     public FamilyReadResponse createNewBaby2(String token, BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());

@@ -117,9 +117,9 @@ public class OAuthServiceImpl implements OAuthService {
             // 유저 정보 저장 로직 추가 (유저 회원가입)
             User newUser = new User();
             newUser.setOauth(oauth); // Oauth 객체와의 연결 설정
-            newUser.setDanger(false); // 기본값 설정 예시
-            newUser.setGeneral(false); // 기본값 설정 예시
-            newUser.setSound(false); // 기본값 설정 예시
+            newUser.setDanger(true); // 기본값 설정 예시
+            newUser.setGeneral(true); // 기본값 설정 예시
+            newUser.setSound(true); // 기본값 설정 예시
             newUser.setUserState(false); // 기본값 설정 예시
             Random random = new Random();
             int randomNum = random.nextInt(10000); // 0부터 9999까지의 랜덤 정수 생성
