@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/v1/users")
-
 public class UserController {
 
     @Autowired
@@ -26,8 +25,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserReadResponse> findUser(@RequestParam("userId") Long userId){
         try {
-            UserReadResponse userReadResponse = userService.findByUserReadResponseUserId(userId).getBody();
-            log.info("userReadResponse : " + userReadResponse);
+            UserReadResponse userReadResponse = userService.findUser(userId);
             return new ResponseEntity<>(userReadResponse, HttpStatus.OK);
         }catch (NotFoundException e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -44,10 +42,20 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+//    @DeleteMapping()
+//    public ResponseEntity<?> deleteUser(@RequestHeader(name = "Authorization") String token){
+//        try{
+//            userService.deleteUser(token);
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }catch (Exception e){
+//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//        }
+//    }
     @DeleteMapping()
-    public ResponseEntity<?> deleteUser(@RequestHeader(name = "Authorization") String token){
+    public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId){
         try{
-            userService.deleteUser(token);
+            userService.deleteUser(userId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

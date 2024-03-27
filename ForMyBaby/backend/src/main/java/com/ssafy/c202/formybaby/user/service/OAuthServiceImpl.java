@@ -120,7 +120,8 @@ public class OAuthServiceImpl implements OAuthService {
             newUser.setDanger(true); // 기본값 설정 예시
             newUser.setGeneral(true); // 기본값 설정 예시
             newUser.setSound(true); // 기본값 설정 예시
-            newUser.setUserState(false); // 기본값 설정 예시
+            newUser.setUserState(true); // 기본값 설정 예시
+
             Random random = new Random();
             int randomNum = random.nextInt(10000); // 0부터 9999까지의 랜덤 정수 생성
             System.out.println(randomNum);

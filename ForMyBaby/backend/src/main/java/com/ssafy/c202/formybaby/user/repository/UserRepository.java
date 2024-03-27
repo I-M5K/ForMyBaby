@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByOauth_OauthId(Long oauthId);
-    Optional<UserInfoMapper> findUserInfoByOauth_OauthId(Long oauthId);
     User findByUserId(Long userId);
     String findFcmTokenByUserId(Long userId);
 }
