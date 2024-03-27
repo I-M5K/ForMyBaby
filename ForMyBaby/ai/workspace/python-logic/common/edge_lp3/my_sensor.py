@@ -39,7 +39,8 @@ class MySensor:
             'form_data' : {'line': SensorData2(0, 0), 'baby_id': 1},
             'time_data' : {'timestamp': 1, 'datetime': '2021-03-25 12:00:00.000000'},
             'aud':1,
-            'ser': SensorData(0, 0, 0, 0, 0, 0, 0, 0, 0)
+            'ser_data': SensorData(0, 0, 0, 0, 0, 0, 0, 0, 0),
+            'frame' : 1
 
         }
 
@@ -54,21 +55,23 @@ class MySensor:
         # Capture frame, get data, preprocess data, process data window, get sound
         self.frame_capture()
         self.data['image_data'][1] = self.frame_encode()
-        self.data['ser'] = self.data_get()
+        self.data['ser_data'] = self.data_get()
         self.data['form_data']['line'] = self.prev_data
+        self.data['frame'] = self.frame
         # print('온습도', self.data['form_data']['line'])
 
     def data_get(self):
         if self.ser.in_waiting > 0:
             self.line = self.ser.readline().decode('utf-8').rstrip()
             if self.line:
-                match = re.match(r'(.*),(.*),(.*),(.*),(.*),(.*),(.*),(.*),(.*)', self.line)     
-
-                if match:
-                    # print("matched")
-                    self.data_window.append(map(float, match.groups()))   # Add data to the window
-                    self.prev_data = SensorData2(match.group(8), match.group(9)) # 온도 (8), 습도 (9)
-                    self.prev_ser = SensorData(*map(float, match.groups()))  # Add data to the window
+                try:
+                    match = re.match(r'(.*),(.*),(.*),(.*),(.*),(.*),(.*),(.*),(.*)', self.line)
+                    if match:
+                        self.data_window.append(map(float, match.groups()))   # Add data to the window
+                        self.prev_data = SensorData2(match.group(8), match.group(9)) # 온도 (8), 습도 (9)
+                        self.prev_ser = SensorData(*map(float, match.groups()))  # Add data to the window
+                except ValueError:
+                    print("Missing data, using previous data.")
         return self.prev_ser
     
     def webcam_open(self):
