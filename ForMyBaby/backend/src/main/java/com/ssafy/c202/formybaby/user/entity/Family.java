@@ -13,16 +13,15 @@ public class Family {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "baby_id")
     private Baby baby;
 
     @Column(nullable = false)
-    @ColumnDefault("123")
     private String familyCode;
 
     @Enumerated(EnumType.STRING)

@@ -73,7 +73,7 @@ public class UserController {
         // 받은 데이터 처리
         Double lat = (Double) locationData.get("latitude");
         Double lon = (Double) locationData.get("longitude");
-
+        log.info("Token : {}", token);
         userService.setLocation(Long.valueOf(redisService.getUserIdByToken(token)), lat, lon);
 
         // 작업이 완료되면 클라이언트에 성공 상태 응답을 반환
@@ -81,8 +81,9 @@ public class UserController {
     }
     @PatchMapping("/fcm")
     public ResponseEntity<String> updateFCMToken(@RequestHeader(name="Authorization") String token,
-                                                 @RequestBody String fcmToken) {
-        // 작업 결과에 따라 응답을 설정
+                                                 @RequestBody Map<String, Object> data) {
+        String fcmToken = (String)data.get("fcmToken");
+        log.info("FCMToken : {}", fcmToken);
         if (fcmToken != null) {
             userService.setFCMToken(Long.valueOf(redisService.getUserIdByToken(token)), fcmToken);
             return ResponseEntity.ok("FCM token update successful");
