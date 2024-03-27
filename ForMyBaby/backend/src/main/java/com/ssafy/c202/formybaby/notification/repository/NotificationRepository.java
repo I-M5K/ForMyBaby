@@ -14,13 +14,13 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     @Query("SELECT n " +
             "FROM NotificationCheck nc " +
             "JOIN nc.notification n " +
-            "WHERE n.user.userId = :userId")
+            "WHERE n.user.userId = :userId AND nc.isChecked=false")
     List<Notification> findAllUncheckedByUserId(Long userId);
 
     @Query("SELECT COUNT(nc) " +
             "FROM NotificationCheck nc " +
             "JOIN nc.notification n " +
-            "WHERE n.user.userId = :userId")
+            "WHERE n.user.userId = :userId AND nc.isChecked=false")
     int findUncheckedCountByUserId(Long userId);
 
     @Query("SELECT COUNT(n) FROM Notification n WHERE n.user.userId = :userId")

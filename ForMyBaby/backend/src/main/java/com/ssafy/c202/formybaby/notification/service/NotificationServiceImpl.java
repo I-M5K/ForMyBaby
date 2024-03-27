@@ -2,6 +2,7 @@ package com.ssafy.c202.formybaby.notification.service;
 
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.global.jpaEnum.NotificationType;
+import com.ssafy.c202.formybaby.global.util.StringCheck;
 import com.ssafy.c202.formybaby.health.entity.Health;
 import com.ssafy.c202.formybaby.notification.entity.Notification;
 import com.ssafy.c202.formybaby.notification.entity.NotificationCheck;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -24,40 +27,43 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService{
 
     private final NotificationMapper notificationMapper;
+
     @Override
     public String createTitle(Family family, NotificationType type, Vaccine vaccine) {
         if(type.equals(NotificationType.generalVaccineDay)) {
-            return "Vaccine D-1 Title";
+            return StringCheck.getPostWord(family.getBaby().getBabyName().substring(1), "이", "") + "의 "
+                    + vaccine.getTarget() + " 예방접종(" + vaccine.getType() + ")이 1일 전입니다.";
         } else {
-            return "Vaccine D-7 Title";
+            return StringCheck.getPostWord(family.getBaby().getBabyName().substring(1), "이", "") + "의 "
+                    + vaccine.getTarget() + " 예방접종(" + vaccine.getType() + ")이 7일 전입니다.";
         }
     }
 
     @Override
     public String createTitle(Family family, NotificationType type, Health health) {
         if(type.equals(NotificationType.generalHealthDay)) {
-            return "Health D-1 Title";
+            return StringCheck.getPostWord(family.getBaby().getBabyName().substring(1), "이", "") + "의 "
+                    + StringCheck.getPostWord(health.getHealthTitle(), "이", "가") + "1일 전입니다.";
         } else {
-            return "Health D-7 Title";
+            return StringCheck.getPostWord(family.getBaby().getBabyName().substring(1), "이", "") + "의 "
+                    + StringCheck.getPostWord(health.getHealthTitle(), "이", "가") + "7일 전입니다.";
         }
     }
 
     @Override
     public String createContent(Family family, NotificationType type, Vaccine vaccine) {
-        if(type.equals(NotificationType.generalVaccineDay)) {
-            return "Vaccine D-1 Content";
-        } else {
-            return "Vaccine D-7 Content";
-        }
+        return vaccine.getTarget() + " 예방접종(" + vaccine.getType() + ")은 생후 " + vaccine.getStartAt()
+                + "개월에서 " + vaccine.getEndAt() + "개월 사이에 접종 받아야 합니다.";
     }
 
     @Override
     public String createContent(Family family, NotificationType type, Health health) {
-        if(type.equals(NotificationType.generalHealthDay)) {
-            return "Health D-1 Content";
-        } else {
-            return "Health D-7 Content";
+        if(health.getHealthId() == 1) {
+            return StringCheck.getPostWord(health.getHealthTitle(), "은", "는") + health.getStartAt()
+                    + "일에서 " + health.getEndAt() + "일 사이에 검진 받아야 합니다.";
         }
+        return StringCheck.getPostWord(health.getHealthTitle(), "은", "는") + health.getStartAt()
+                + "개월에서 " + health.getEndAt() + "개월 사이에 검진 받아야 합니다.";
     }
 
     @Override

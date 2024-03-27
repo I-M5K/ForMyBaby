@@ -15,7 +15,6 @@ import java.util.List;
 
 public interface NotificationService {
 
-//    건강검진 / 예방접종 데이터 넣기
     String createTitle(Family family, NotificationType type, Vaccine vaccine);
     String createTitle(Family family, NotificationType type, Health health);
     String createContent(Family family, NotificationType type, Vaccine vaccine);
