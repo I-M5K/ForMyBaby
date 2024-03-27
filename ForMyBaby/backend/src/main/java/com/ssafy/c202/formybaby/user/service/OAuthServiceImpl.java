@@ -80,7 +80,7 @@ public class OAuthServiceImpl implements OAuthService {
         try {
             // jwt 생성
             jwtToken = jwtService.generateToken(Long.toString((Long) kakaoUserInfo.get("id")));
-            log.info("jwtToken : " + jwtToken);
+            log.info("jwtToken login: " + jwtToken);
 
             User existingUser = userService.findByOauthId((Long)kakaoUserInfo.get("id"));
 
@@ -134,7 +134,7 @@ public class OAuthServiceImpl implements OAuthService {
 
             // jwt 생성
             jwtToken = jwtService.generateToken(Long.toString((Long) kakaoUserInfo.get("id")));
-            log.info("jwtToken : " + jwtToken);
+            log.info("jwtToken register : " + jwtToken);
 
             // Redis에 JWT 토큰과 userId를 저장
             redisService.saveUserIdByToken(jwtToken, newUser.getUserId());

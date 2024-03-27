@@ -98,7 +98,6 @@ public class OauthController {
 
             String fcmToken = userService.findFcmToken(Long.valueOf(getUserId));
 
-//            ResponseEntity<UserReadResponse> user = userService.findByUserReadResponseUserId(Long.valueOf(getUserId));
             userInfo.put("userId",getUserId);
             userInfo.put("familyCode",familyCode);
             userInfo.put("fcmToken",fcmToken);
@@ -119,7 +118,6 @@ public class OauthController {
 
             String getUserId = redisService.getUserIdByToken(jwtToken);
 
-//            ResponseEntity<UserReadResponse> user = userService.findByUserReadResponseUserId(Long.valueOf(getUserId));
             userInfo.put("userId",getUserId);
 
             HttpHeaders responseHeaders = new HttpHeaders();

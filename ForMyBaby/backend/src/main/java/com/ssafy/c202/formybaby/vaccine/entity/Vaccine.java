@@ -18,7 +18,8 @@ public class Vaccine {
 
     @Column(nullable = false)
     private int startAt;
-
+    
     @Column(nullable = false)
     private int endAt;
+
 }

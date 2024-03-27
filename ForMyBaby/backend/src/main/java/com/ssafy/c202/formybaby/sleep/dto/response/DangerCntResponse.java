@@ -1,4 +1,4 @@
-package com.ssafy.c202.formybaby.sleep.Dto.response;
+package com.ssafy.c202.formybaby.sleep.dto.response;
 
 import java.sql.Timestamp;
 
