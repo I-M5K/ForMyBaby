@@ -52,7 +52,7 @@ public class ItemProcessorConfig {
                 boolean isDay = false;
                 boolean isWeek = false;
                 LocalDate birthDate = family.getBaby().getBirthDate();
-                int startAt = health.getStart_at();
+                int startAt = health.getStartAt();
                 if(health.getHealthId() == 1) {
                     if(today.isEqual(birthDate.plusDays(7))){
                         isWeek = true;
@@ -110,7 +110,7 @@ public class ItemProcessorConfig {
                 boolean isDay = false;
                 boolean isWeek = false;
                 LocalDate birthDate = family.getBaby().getBirthDate();
-                LocalDate target = birthDate.plusMonths(vaccine.getStart_at());
+                LocalDate target = birthDate.plusMonths(vaccine.getStartAt());
                 if(today.isEqual(target.minusWeeks(1))) {
                     isWeek = true;
                 } else if(today.isEqual(target.minusDays(1))) {

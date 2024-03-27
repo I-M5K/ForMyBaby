@@ -19,7 +19,7 @@ public class NotificationCheck {
     private Notification notification;
 
     @Column(nullable = false)
-    @ColumnDefault("true")
+    @ColumnDefault("false")
     private boolean isChecked;
 
 }
