@@ -4,6 +4,8 @@ import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.global.jpaEnum.Role;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.notification.entity.Notification;
+import com.ssafy.c202.formybaby.notification.repository.NotificationRepository;
 import com.ssafy.c202.formybaby.user.dto.request.UserUpdateRequest;
 import com.ssafy.c202.formybaby.user.dto.response.UserProfileResponse;
 import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
@@ -36,6 +38,8 @@ public class UserServiceImpl implements UserService{
     private final FamilyRepository familyRepository;
 
     private final BabyRepository babyRepository;
+
+    private final NotificationRepository notificationRepository;
 
     @Override
     public UserReadResponse findUser(Long userId) {
@@ -111,6 +115,8 @@ public class UserServiceImpl implements UserService{
 
         List<Family> familyList = familyRepository.findFamiliesByUserUserId(user.getUserId());
 
+        List<Notification> notificationList = notificationRepository.findAllByUserUserId(user.getUserId());
+
         // 사용자가 존재하는 경우에만 삭제를 진행합니다.
         if (user != null) {
             // 연관된 다른 엔티티들도 함께 삭제할 필요가 있다면 여기에서 처리합니다.
@@ -124,6 +130,9 @@ public class UserServiceImpl implements UserService{
             }
 
             // 알림목록도 삭제하는 로직 추가해야함
+            for(Notification notification : notificationList){
+                notificationRepository.delete(notification);
+            }
 
             // 사용자를 삭제합니다.
             userRepository.delete(user);
