@@ -1,6 +1,8 @@
 package com.ssafy.c202.formybaby.user.service;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.TopicManagementResponse;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.fcm.service.FCMService;
@@ -208,7 +210,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void setLocation(Long userId, Double lat, Double lon) {
+    public void setLocation(Long userId, double lat, double lon) {
         String familyCode = familyRepository.findFamilyCodeByUserId(userId);
         Map<String, LatLon> map = redisService.setLocation(familyCode, userId, lat, lon);
         String babyId = redisService.getBabyIdByToken(String.valueOf(userId));
@@ -216,18 +218,20 @@ public class UserServiceImpl implements UserService{
         LatLon baby = new LatLon(35.1483188, 126.9291854);
         for (String id : map.keySet()) {
             LatLon loc = map.get(id);
-            Double dist = baby.getDistance(loc);
+            double dist = baby.getDistance(loc);
             int oldRank = familyRepository.findFamilyRankByUserId(Long.valueOf(id));
             String token = userRepository.findFcmTokenByUserId(Long.valueOf(id));
             if(dist <= 0.5) {
                 familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 1);
                 try {
                     fcmService.unsubscribe(token, familyCode+"_"+oldRank);
+                    log.info("topic UNsubscribe: {}", familyCode+"_"+oldRank);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
                 try {
                     fcmService.subscribe(token, familyCode+"_"+1);
+                    log.info("topic subscribe: {}", familyCode+"_"+1);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
@@ -235,11 +239,13 @@ public class UserServiceImpl implements UserService{
                 familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 2);
                 try {
                     fcmService.unsubscribe(token, familyCode+"_"+oldRank);
+                    log.info("topic UNsubscribe: {}", familyCode+"_"+oldRank);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
                 try {
                     fcmService.subscribe(token, familyCode+"_"+2);
+                    log.info("topic subscribe: {}", familyCode+"_"+2);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
@@ -247,11 +253,13 @@ public class UserServiceImpl implements UserService{
                 familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 3);
                 try {
                     fcmService.unsubscribe(token, familyCode+"_"+oldRank);
+                    log.info("topic UNsubscribe: {}", familyCode+"_"+oldRank);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
                 try {
                     fcmService.subscribe(token, familyCode+"_"+3);
+                    log.info("topic subscribe: {}", familyCode+"_"+3);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }

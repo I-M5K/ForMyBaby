@@ -18,5 +18,5 @@ public interface UserService {
    UserProfileResponse updateUser(UserUpdateRequest userUpdateRequest);
    String findFcmToken(Long userId);
    void setFCMToken(Long userId, String fcmToken);
-   void setLocation(Long userId, Double lat, Double lon);
+   void setLocation(Long userId, double lat, double lon);
 }
