@@ -3,6 +3,7 @@ import './BabyAdd.css';
 import { Link } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore';
 import { addBabyInfo, addFirstBabyInfo } from '../../api/userApi';
+import BabyGender from '../../api/BabyGender';
 
 const BabyAddPage = () => {
     const { family, setFamily, id, babyList, setBabyList } = useUserStore();
@@ -39,18 +40,23 @@ const BabyAddPage = () => {
             const formData = new FormData();
             formData.append('userId', id);
             formData.append('babyName', babyName);
-            formData.append('babyGender', babyGender);
+            if (babyGender == 'male') {
+                formData.append('babyGender', BabyGender.Male);
+            } else {
+                formData.append('babyGender', BabyGender.Female);
+            }
+            
             console.log(babyBirthDate);
             formData.append('babyBirthDate', babyBirthDate);
             formData.append('profileImg', babyPhoto);
-            formData.append('role', "none");
-            if (!family){
+            //formData.append('role', "none");
+            if (family == null){
                 try {
                     const data = await addFirstBabyInfo(formData); // API 호출
                     console.log('First Baby information submitted successfully!');
                     console.log(data);
-                    setFamily(data.familyCode);
-                    setBabyList(data.setBabyList);
+                    // setFamily(data.familyCode);
+                    // setBabyList(data.setBabyList);
                 } catch (error) {
                     console.error(error);
                 }
@@ -59,7 +65,7 @@ const BabyAddPage = () => {
                     const data = await addBabyInfo(formData); // API 호출
                     console.log('Baby information submitted successfully!');
                     console.log(data);
-                    setBabyList(data);
+                    //setBabyList(data);
                 } catch (error) {
                     console.error(error);
                 }
