@@ -80,7 +80,7 @@ const Dashboard = () => {
       <div className="content">
         {selectedButton === 'button1' && (
           <div className="dashboard-content">
-            <div className="video-content" style={{ backgroundColor: imageData ? 'transparent' : '#f0f0f0', width: '80vw', height: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div className="video-content" >
               <h1>Real-time Video</h1>
               {/* 이미지가 없는 경우를 처리하여 메시지 표시 */}
               {!imageData && <p style={{ color: '#666' }}>No video available</p>}
