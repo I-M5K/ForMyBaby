@@ -44,14 +44,9 @@ public class RedisService {
 
     // babyName에 해당하는 babyId 조회하는 메서드
     public String getBabyIdByToken(String key) {
+        log.info("getBabyIdByToken key : " + key);
         log.info("getBabyId : " + stringRedisTemplate.opsForValue().get(key));
         return stringRedisTemplate.opsForValue().get(key);
-    }
-
-    // JWT 토큰에 해당하는 babyId 조회하는 메서드
-    public String getBabyIdByToken(String token, Long babyId) {
-        log.info("babyId2 : " + babyId);
-        return stringRedisTemplate.opsForValue().get(token);
     }
 
     public Map<String, LatLon> setLocation(String familyCode, Long id, Double lat, Double lon) {
