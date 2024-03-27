@@ -1,6 +1,5 @@
 package com.ssafy.c202.formybaby.baby.service;
 
-import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateListRequest;
 import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateRequest;
 import com.ssafy.c202.formybaby.baby.dto.request.BabyUpdateRequest;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
@@ -14,7 +13,7 @@ public interface BabyService {
 
     void addBaby(BabyCreateRequest babyCreateRequest);
 
-    void createNewBaby(BabyCreateListRequest babyCreateListRequest);
+    void createNewBaby(List<BabyCreateRequest> babyCreateListRequest);
 
     BabyReadResponse updateBaby(BabyUpdateRequest babyUpdateRequest);
     BabyReadResponse babyDetail(Long babyId);

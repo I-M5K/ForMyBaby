@@ -17,7 +17,7 @@ public class Stamp {
     @Column(nullable = false)
     private long stampId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "baby_id", nullable = false)
     private Baby baby;
 

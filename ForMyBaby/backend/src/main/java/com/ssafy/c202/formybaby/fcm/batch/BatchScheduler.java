@@ -33,6 +33,7 @@ public class BatchScheduler {
 
     // 매일 1시에 실행
     @Scheduled(cron = "0 0 3 * * *")
+//    @Scheduled(cron = "0/10 * * * * *")
     public void runJobs() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("JobID", String.valueOf(System.currentTimeMillis()))

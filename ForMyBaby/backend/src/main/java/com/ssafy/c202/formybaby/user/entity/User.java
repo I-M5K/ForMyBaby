@@ -27,7 +27,7 @@ public class User {
 
     @Column(nullable = false)
     @ColumnDefault("true")
-    private boolean sound;
+    private boolean isSound;
 
     private String fcmToken;
 
