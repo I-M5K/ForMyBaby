@@ -16,10 +16,13 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
 
   const handleSubmit = async (code) => { // 기존 회원과 가족
     const res = submitFamilyCode(code);
-    setFamily(code);
-    setBabyList(res); 
-    navigate('/baby-relation');
-   
+    if (res == 0){ // 다시 입력 - 프롬프트 출력
+      navigate('/family');
+    } else {
+      setFamily(code);
+      setBabyList(res); 
+      navigate('/baby-relation');
+    }
   };
 
   const handleChange = (index, value) => {
@@ -34,11 +37,11 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
   };
 
   const handleSkip = () => { // 신규회원
-    const code = getFamilyCode();
+    //const code = getFamilyCode();
     // if (code == null){
     //   navigate('')
     // }
-    setFamily(code);
+    //setFamily(code);
     navigate('/baby-add'); // 아이 정보 등록 페이지로
   };
 

@@ -19,11 +19,14 @@ const WelcomePage = () => {
             if (fcm == null){
                 requestPermission();
                 setFcm(localStorage.getItem('fcmToken'));
+                localStorage.removeItem('fcmToken');
             }
             // console.log('fetchData 직후');
             if (location && location.loaded && location.coordinates) {
                 //console.log('useEffect 안 if 문');
-                await sendLocation(location.coordinates.lat, location.coordinates.lng);
+                if(location.coordinates.lat != null && location.coordinates.lng != null){
+                    await sendLocation(location.coordinates.lat, location.coordinates.lng);
+                }
             }
         };
         fetchData();

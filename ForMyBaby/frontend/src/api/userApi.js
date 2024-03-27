@@ -19,11 +19,12 @@ export const sendLocation = async (latitude, longitude) => {
 // 가족 코드 인증하기
 export const submitFamilyCode = async (familyCode) => {
   console.log('familyCode: ', familyCode);
+  const role = 'none';
   try {
-    const response = await axiosWrapper.post('/v1/users/family', { familyCode });
+    const response = await axiosWrapper.post('/v1/users/family', { familyCode, role });
     console.log('Server Response:', response.data);
-    if (response == 1){ // 옳은 가족 코드
-      return 1;
+    if (response.data){ // 옳은 가족 코드
+      return response.data;
     } else { // 없는 가족 토드
       return 0;
     } 
@@ -33,10 +34,10 @@ export const submitFamilyCode = async (familyCode) => {
 }
 
 // 신규 가족 코드 받기
-export const getFamilyCode = async () => {
-  console.log('가족코드받기!');
+export const addFirstBabyInfo = async (formData) => {
+  console.log('아이 신규 등록!');
   try {
-    const response = await axiosWrapper.get('/v1/users/family');
+    const response = await axiosWrapper.post('/v1/baby');
     console.log('가족코드', response.data);
     return response.data;
   } catch (error) {
@@ -46,6 +47,7 @@ export const getFamilyCode = async () => {
 
 // 아이 정보 등록하기
 export const addBabyInfo = async (formData) => {
+  console.log('아이 추가 등록');
   try {
       const response = await axiosWrapper.post('/v1/users/baby', formData);
 
