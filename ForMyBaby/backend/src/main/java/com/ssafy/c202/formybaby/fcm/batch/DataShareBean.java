@@ -25,8 +25,11 @@ public class DataShareBean <T> {
             logger.error("Map is not initialize");
             return;
         }
-
-        shareDataMap.put(key, data);
+        if(!shareDataMap.containsKey(key)) {
+            shareDataMap.put(key, data);
+        } else {
+            logger.warn("Data with key '{}' already exists in DataShareBean, skipping duplicate addition", key);
+        }
     }
 
     public T getData (String key) {
@@ -40,11 +43,20 @@ public class DataShareBean <T> {
 
     public int getSize () {
         if (this.shareDataMap == null) {
-            logger.error("Map is not initialize");
+            logger.error("Map is not initialized");
             return 0;
         }
 
         return shareDataMap.size();
+    }
+
+    public Map<String, T> map() {
+        if (this.shareDataMap == null) {
+            logger.error("Map is not initialized");
+            return null;
+        }
+
+        return this.shareDataMap;
     }
 
 }

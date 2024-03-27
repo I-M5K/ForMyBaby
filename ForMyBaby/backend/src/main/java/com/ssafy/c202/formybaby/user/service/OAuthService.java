@@ -5,6 +5,8 @@ import com.ssafy.c202.formybaby.user.entity.Oauth;
 import java.util.Map;
 
 public interface OAuthService {
+    Oauth findByOauthId(Long oauthId);
     Map<String, Object> getKakaoUserInfo(String accessToken);
-    String processUserLoginOrRegistration(Map<String, Object> kakaoUserInfo);
+    String processUserLogin(Map<String, Object> kakaoUserInfo);
+    String processUserRegistration(Map<String, Object> kakaoUserInfo);
 }

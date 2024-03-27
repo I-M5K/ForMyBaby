@@ -7,5 +7,6 @@ public enum Role {
     Sister ,
     Grandfather,
     Grandmother ,
-    Others
+    Others,
+    None
 }

@@ -5,6 +5,8 @@ import com.ssafy.c202.formybaby.global.jpaEnum.NotificationType;
 import com.ssafy.c202.formybaby.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -37,6 +39,7 @@ public class Notification {
     private boolean isChecked;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private Timestamp createdAt;
 
 }
