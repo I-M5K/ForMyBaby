@@ -22,6 +22,7 @@ const MainPage = () => {
       if (fcm == null){
         requestPermission();
         setFcm(localStorage.getItem('fcmToken'));
+        localStorage.removeItem('fcmToken');
       }
       if (location && location.loaded && location.coordinates) {
         await sendLocation(location.coordinates.lat, location.coordinates.lng);

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './BabyAdd.css';
 import { Link } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore';
-import { addBabyInfo } from '../../api/userApi';
+import { addBabyInfo, addFirstBabyInfo } from '../../api/userApi';
 
 const BabyAddPage = () => {
-    const { id, babyList, setBabyList } = useUserStore();
+    const { family, setFamily, id, babyList, setBabyList } = useUserStore();
 
     const [babyName, setBabyName] = useState('');
     const [babyGender, setBabyGender] = useState('');
@@ -44,15 +44,27 @@ const BabyAddPage = () => {
             formData.append('babyBirthDate', babyBirthDate);
             formData.append('profileImg', babyPhoto);
             formData.append('role', "none");
-
-            try {
-                const data = await addBabyInfo(formData); // API 호출
-                console.log('Baby information submitted successfully!');
-                console.log(data);
-                setBabyList(data);
-            } catch (error) {
-                console.error(error);
+            if (!family){
+                try {
+                    const data = await addFirstBabyInfo(formData); // API 호출
+                    console.log('First Baby information submitted successfully!');
+                    console.log(data);
+                    setFamily(data.familyCode);
+                    setBabyList(data.setBabyList);
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                try {
+                    const data = await addBabyInfo(formData); // API 호출
+                    console.log('Baby information submitted successfully!');
+                    console.log(data);
+                    setBabyList(data);
+                } catch (error) {
+                    console.error(error);
+                }
             }
+            
         }
     };
 

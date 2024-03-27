@@ -25,15 +25,15 @@ export const useUserStore = create(persist((set) => ({
     storage: createJSONStorage(() => localStorage)
 }));
 
-export const useLocationStore = create(
-    persist(
-      (set) => ({
-        isExist: false,
-        setIsExist : (isExist) => set({isExist: isExist}),
-      }),
-      {
-        name: "location",
-        storage: createJSONStorage(() => sessionStorage)
-      }
-    )
-  )
+// export const useLocationStore = create(
+//     persist(
+//       (set) => ({
+//         isExist: false,
+//         setIsExist : (isExist) => set({isExist: isExist}),
+//       }),
+//       {
+//         name: "location",
+//         storage: createJSONStorage(() => sessionStorage)
+//       }
+//     )
+//   )
