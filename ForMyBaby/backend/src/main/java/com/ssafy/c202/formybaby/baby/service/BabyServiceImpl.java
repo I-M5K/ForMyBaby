@@ -47,10 +47,10 @@ public class BabyServiceImpl implements BabyService{
         familyRepository.save(family);
     }
 
-    public void createNewBaby(BabyCreateListRequest babyCreateListRequest) {
-        User user = userRepository.findByUserId(babyCreateListRequest.list().get(0).userId());
+    public void createNewBaby(List<BabyCreateRequest> babyCreateRequestList) {
+        User user = userRepository.findByUserId(babyCreateRequestList.get(0).userId());
         String familyCode = RandomStringUtils.randomAlphanumeric(6);
-        for(BabyCreateRequest babyCreateRequest : babyCreateListRequest.list()){
+        for(BabyCreateRequest babyCreateRequest : babyCreateRequestList){
             Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
             babyRepository.save(baby);
 

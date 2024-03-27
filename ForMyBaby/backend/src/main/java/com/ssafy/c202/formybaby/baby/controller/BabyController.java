@@ -23,9 +23,9 @@ public class BabyController {
     private final BabyService babyService;
 
     @PostMapping()
-    public ResponseEntity<List<BabyReadResponse>> create(@RequestBody BabyCreateListRequest babyCreateListRequest) {
-        babyService.createNewBaby(babyCreateListRequest);
-        return new ResponseEntity<>( babyService.babyList(babyCreateListRequest.list().get(0).userId()), HttpStatus.CREATED);
+    public ResponseEntity<List<BabyReadResponse>> create(@RequestBody List<BabyCreateRequest> babyCreateRequest) {
+        babyService.createNewBaby(babyCreateRequest);
+        return new ResponseEntity<>( babyService.babyList(babyCreateRequest.get(0).userId()), HttpStatus.CREATED);
     }
 
     @PostMapping("/add")
@@ -49,7 +49,7 @@ public class BabyController {
         return new ResponseEntity<>(babyService.babyList(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/list/{familyCode}")
+    @GetMapping("/list/code/{familyCode}")
     public ResponseEntity<List<BabyReadResponse>> getList(@PathVariable String familyCode) {
         return new ResponseEntity<>(babyService.babyList(familyCode), HttpStatus.OK);
     }
