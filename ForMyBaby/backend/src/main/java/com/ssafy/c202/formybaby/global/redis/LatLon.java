@@ -2,8 +2,10 @@ package com.ssafy.c202.formybaby.global.redis;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class LatLon {
+public class LatLon implements Serializable {
     private static final double EARTH_RADIUS = 6371.0;
 
     private Double lat;
