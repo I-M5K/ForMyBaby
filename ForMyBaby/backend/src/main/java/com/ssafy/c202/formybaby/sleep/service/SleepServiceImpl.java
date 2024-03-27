@@ -33,7 +33,7 @@ public class SleepServiceImpl implements SleepService {
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(userId));
         Baby baby = babyRepository.findByBabyId(babyId);
         // 베이비 아이디로 수면 목록을 가져온다.
-        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderByCreatedAtAsc(babyId);
+        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
 
         if (!sleepList.isEmpty()) {
             Sleep sleepCheck = sleepList.get(0);
@@ -65,7 +65,7 @@ public class SleepServiceImpl implements SleepService {
         Baby baby = babyRepository.findByBabyId(babyId);
 
         // 베이비 아이디로 수면 목록을 가져온다.
-        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderByCreatedAtAsc(babyId);
+        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
 
         if (!sleepList.isEmpty()) {
             // 가장 최근의 잠든 시간과 잠든 횟수를 가져온다.
