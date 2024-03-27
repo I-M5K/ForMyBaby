@@ -31,7 +31,7 @@ const KakaoRedirectPage = () => {
         setFcm(data.fcmToken);
 
         if (jwt != null) { // 로그인 성공
-          localStorage.removeItem("accessToken");
+          //localStorage.removeItem("accessToken");
           if (family){ // 로그인인 경우
             navigate('/main');
           } else { // 회원가입인 경우
