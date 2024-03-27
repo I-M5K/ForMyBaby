@@ -1,0 +1,64 @@
+.ParentingStamp {
+    position: relative;
+    padding: 20px;
+    overflow: hidden; 
+}
+
+.parenstamp-title {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.parenstamp-header button {
+    background-color: white;
+    color: orange;
+    border-radius: 20px;
+    border-color: orange;
+    padding: 10px 15px;
+    margin: 0 2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.parenstamp-header button:hover,
+.parenstamp-header button:active {
+    background-color: orange; 
+    color: white; 
+}
+
+.stamp_map {
+    width: 100%;
+    height: auto;
+
+}
+  
+.parenstamp-contents {
+    position: absoulte; 
+    top: 130px; 
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+@keyframes slideOut {
+    0% { opacity: 1; transform: translateX(0); }
+    110% { opacity: 0; transform: translateX(-100%); }
+  }
+  
+  @keyframes slideIn {
+    0% { opacity: 0; transform: translateX(100%); }
+    110% { opacity: 1; transform: translateX(0); }
+  }
+  
+  .slide-out {
+    animation: slideOut 0.5s forwards;
+  }
+  
+  .slide-in {
+    animation: slideIn 0.5s forwards;
+  }
+  

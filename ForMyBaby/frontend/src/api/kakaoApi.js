@@ -1,7 +1,4 @@
 // api/kakaoApi.js
-import { useRecoilState } from 'recoil'; // Recoil의 useRecoilState 임포트
-import { userDataState } from '../atoms/userDataState';
-
 const kakaoApi = async (code) => {
     try {
         const headers = {

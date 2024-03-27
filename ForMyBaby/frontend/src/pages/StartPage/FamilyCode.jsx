@@ -11,17 +11,15 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
   const [code, setCode] = useState('');
   const inputRefs = useRef([]);
   const navigate = useNavigate(); // useNavigate 훅 사용
-  const { setFamily } = useUserStore();
+  const { setFamily, setBabyList } = useUserStore();
 
 
   const handleSubmit = async (code) => { // 기존 회원과 가족
     const res = submitFamilyCode(code);
-    if (res == 1){
-      setFamily(code);
-      navigate('/main');
-    } else {
-      // 다시 입력하라는 프롬프트 보여주기
-    }
+    setFamily(code);
+    setBabyList(res); 
+    navigate('/baby-relation');
+   
   };
 
   const handleChange = (index, value) => {

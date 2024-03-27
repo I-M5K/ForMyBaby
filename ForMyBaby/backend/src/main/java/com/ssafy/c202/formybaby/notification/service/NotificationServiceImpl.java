@@ -4,9 +4,12 @@ import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.global.jpaEnum.NotificationType;
 import com.ssafy.c202.formybaby.global.util.StringCheck;
 import com.ssafy.c202.formybaby.health.entity.Health;
+import com.ssafy.c202.formybaby.notification.dto.request.SettingUpdateRequest;
+import com.ssafy.c202.formybaby.notification.dto.response.SettingReadResponse;
 import com.ssafy.c202.formybaby.notification.entity.Notification;
 import com.ssafy.c202.formybaby.notification.entity.NotificationCheck;
 import com.ssafy.c202.formybaby.notification.mapper.NotificationMapper;
+import com.ssafy.c202.formybaby.notification.repository.NotificationRepository;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
@@ -16,8 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -27,6 +28,7 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService{
 
     private final NotificationMapper notificationMapper;
+    private final NotificationRepository notificationRepository;
 
     @Override
     public String createTitle(Family family, NotificationType type, Vaccine vaccine) {
@@ -72,7 +74,38 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public NotificationCheck isChecked(Long notificationId) {
+    public NotificationCheck createIsChecked(Long notificationId) {
         return null;
+    }
+
+    @Override
+    public List<Notification> getList(Long userId) {
+        return notificationRepository.findAllByUserUserId(userId);
+    }
+
+    @Override
+    public SettingReadResponse getSetting(Long userId) {
+        return notificationRepository.findSettingByUserId(userId);
+    }
+
+    @Override
+    public void checkNotification(Long notificationId) {
+        notificationRepository.checkNotification(notificationId);
+    }
+
+    @Override
+    public SettingReadResponse updateSetting(SettingUpdateRequest settingUpdateRequest, Long userId) {
+        return notificationRepository.updateSettingByUserId(settingUpdateRequest.isGeneral(),
+                settingUpdateRequest.isDanger(), settingUpdateRequest.isSound(), userId);
+    }
+
+    @Override
+    public void delete(Long notificationId) {
+        notificationRepository.deleteByNotificationId(notificationId);
+    }
+
+    @Override
+    public void deleteAll(Long userId) {
+        notificationRepository.deleteAllByUserId(userId);
     }
 }

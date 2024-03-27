@@ -9,6 +9,8 @@ export const useUserStore = create(persist((set) => ({
     jwt: null,
     fcm: null,
     family: null,
+    babySelected: null, 
+    babyList: [],
     setId: (id) => set({ id: id}),
     setName: (name) => set({ name: name}),  
     setEmail: (email) => set({ email: email}),
@@ -16,6 +18,8 @@ export const useUserStore = create(persist((set) => ({
     setJwt: (jwt) => set({ jwt: jwt }),
     setFcm: (fcm) => set({ fcm: fcm }),
     setFamily: (family) => set({ family: family}),
+    setBabySelected: (babySelected) => set({ babySelected: babySelected }),
+    setBabyList: (list) => set({ babyList: list }),
 }), {
     name: "user",
     storage: createJSONStorage(() => localStorage)

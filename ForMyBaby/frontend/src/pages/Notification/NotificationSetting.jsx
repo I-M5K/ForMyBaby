@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './NotificationToggle.css';
+import './NotificationSetting.css';
 import { sendNotificationSetting, getNotificationSetting } from '../../api/notificationApi';
 import { Link, useNavigate } from 'react-router-dom'; 
+import arrowLeft from '../../assets/arrow_left.png'
 
 const NotificationSettings = () => {
   const [notificationStates, setNotificationStates] = useState({
@@ -43,28 +44,44 @@ const NotificationSettings = () => {
   };
 
   return (
-    <div>
-      <Link to="/main">
-        <button className="settings-button" onClick={handleSave}>뒤로가기</button>
-      </Link>
-      <h1>알림 설정</h1>
-      <p>알림 소리</p>
-      <label className="switch">
-        <input type="checkbox" checked={notificationStates.sound} onChange={() => toggleNotification('sound')} />
-        <span className="slider round"></span>
-      </label>
+    <div className='notification-setting-container'>
+      <div className='notification-setting-header'>
+        <Link to="/main">
+          <button className="settings-button" onClick={handleSave}>
+            <img src={arrowLeft} alt="Settings" />
+          </button>
+        </Link>
+        <div className='notification-setting-title'>알림 설정</div>
+      </div>
 
-      <p>건강/접종 알림</p>
-      <label className="switch">
-        <input type="checkbox" checked={notificationStates.health} onChange={() => toggleNotification('health')} />
-        <span className="slider round"></span>
-      </label>
-
-      <p>위험 예방 알림</p>
-      <label className="switch">
-        <input type="checkbox" checked={notificationStates.danger} onChange={() => toggleNotification('danger')} />
-        <span className="slider round"></span>
-      </label>
+      <div className='noti-list'>
+        <div className='noti-box'>
+          <div>알림 소리</div>
+          <label className="switch">
+            {/* <input type="checkbox" checked={notificationStates.sound} onChange={() => toggleNotification('sound')} /> */}
+            <input type="checkbox" />
+            <span className="slider round"></span>
+          </label>
+        </div>
+        <hr/>
+        <div className='noti-box'>
+          <div>건강/접종 알림</div>
+          <label className="switch">
+            {/* <input type="checkbox" checked={notificationStates.health} onChange={() => toggleNotification('health')} /> */}
+            <input type="checkbox" />
+            <span className="slider round"></span>
+          </label>
+        </div>
+        <hr/>
+        <div className='noti-box'>
+          <div>위험 예방 알림</div>
+          <label className="switch">
+            {/* <input type="checkbox" checked={notificationStates.danger} onChange={() => toggleNotification('danger')} /> */}
+            <input type="checkbox" />
+            <span className="slider round"></span>
+          </label>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import './BabyAdd.css';
 import { Link } from 'react-router-dom'
+import { useUserStore } from '../../stores/UserStore';
+import { addBabyInfo } from '../../api/userApi';
 
 const BabyAddPage = () => {
+    const { id, babyList, setBabyList } = useUserStore();
+
     const [babyName, setBabyName] = useState('');
     const [babyGender, setBabyGender] = useState('');
     const [babyBirthDate, setBabyBirthDate] = useState('');
     const [babyPhoto, setBabyPhoto] = useState(null);
     const [babyPhotoPreview, setBabyPhotoPreview] = useState(null); // 미리보기 URL 상태 추가
+    // const [userBabyList, setUserBabyList] = useState([]);
 
     const isFormValid = babyName && babyGender && babyBirthDate && babyPhoto;
 
@@ -28,12 +33,26 @@ const BabyAddPage = () => {
         setBabyGender(gender);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         if (isFormValid) {
-            // 실제 등록 로직 구현
-            console.log('Form Submitted');
-            console.log({ babyName, babyGender, babyBirthDate, babyPhoto });
+            const formData = new FormData();
+            formData.append('userId', id);
+            formData.append('babyName', babyName);
+            formData.append('babyGender', babyGender);
+            console.log(babyBirthDate);
+            formData.append('babyBirthDate', babyBirthDate);
+            formData.append('profileImg', babyPhoto);
+            formData.append('role', "none");
+
+            try {
+                const data = await addBabyInfo(formData); // API 호출
+                console.log('Baby information submitted successfully!');
+                console.log(data);
+                setBabyList(data);
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
@@ -70,11 +89,11 @@ const BabyAddPage = () => {
                     />
                 </div>
                 <Link to="/baby-add-more" className='baby-add-more-container'>
-                    <div className='baby-add-more-button'>+</div>
-                    <p className='baby-add-more-text'>추가하기</p>
+                    <div className='baby-add-more-button' onClick={handleSubmit}>+</div>
+                    <p className='baby-add-more-text' onClick={handleSubmit}>추가하기</p>
                 </Link>
                 <Link to='/baby-relation'>
-                    <button type="submit" className='baby-add-submit' disabled={!isFormValid}>등록하기</button>
+                    <button type="submit" onClick={handleSubmit} className='baby-add-submit' disabled={!isFormValid}>등록하기</button>
                 </Link>
             </form>
         </div>

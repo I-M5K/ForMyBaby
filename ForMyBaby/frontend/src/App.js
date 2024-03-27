@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import './App.css'
 import Tutorial from './components/tutorial/Tutorial'
 import Login from './pages/StartPage/Login'
-
+import WebSocketComponent from './Socket/WebSocketComponent'; 
 import { BrowserRouter, Navigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
@@ -27,18 +27,18 @@ import BabyGuard from './pages/Features/BabyGuard';
 // 건강/접종 타임라인
 import TimeLine from './pages/Features/timeline/TimeLine';
 // 성장 스탬프
-import ParentingStamp from './pages/Features/ParentingStamp';
+import ParentingStamp from './pages/ParentingStamp/ParentingStamp';
 // 스톱모션
 import Present from './pages/Features/Present';
 // 마이 페이지
 import MyPage from './pages/MyPage/MyPage';
 
 import TutorialAndLogin from './components/TutorialAndLogin'
-import VideoPage from './VideoPage'
+
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-
+  const socketUrl = 'http://localhost:3001';
   useEffect(() => {
     // 여기서 유저 정보를 확인하고 로그인 상태를 변경합니다.
     // 예를 들어, 로컬 스토리지에서 유저 정보를 가져온다고 가정합니다.
@@ -54,23 +54,89 @@ function App() {
     <div className='App'>
       <BrowserRouter>
         <Routes>
+        {/* 시작 페이지 */}
           <Route path="/" element={<TutorialAndLogin />} />
           <Route path="/oauth/redirected/kakao" element={<KakaoRedirectPage />} />
           <Route path="/agree" element={<AgreePage />} />
-          <Route path="/main" element={<MainPage />} />
           <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/baby-add" element={<BabyAdd />} />
           <Route path="/baby-add-more" element={<BabyAddMore />} />
           <Route path="/baby-relation" element={<BabyRelation />} />
           <Route path="/baby-welcome" element={<BabyWelcome />} />
-          <Route path="/baby-guard" element={<BabyGuard />} />
-          <Route path="/timeline" element={<TimeLine />} />
-          <Route path="/parenting-stamp" element={<ParentingStamp />} />
-          <Route path="/present" element={<Present />} />
-          <Route path="/my-page" element={<MyPage />} />
           <Route path="/family" element={<FamilyCode />} />
-          <Route path="/notification" element={<NotificationPage />} />
-          <Route path="/notification/setting" element={<NotificationSetting />} />
+          <Route path="/baby-guard" element={<BabyGuard />} />
+          <Route
+            path="/main"
+            element={
+              <div>
+                <WebSocketComponent endpoint={socketUrl} />
+                <MainPage />
+              </div>
+            }
+          />
+          {/* <Route
+            path="/baby-guard"
+            element={
+              <div>
+                <WebSocketComponent endpoint={socketUrl} />
+                <BabyGuard />
+              </div>
+            }
+          /> */}
+          <Route
+            path="/timeline"
+            element={
+              <div>
+                <WebSocketComponent endpoint={socketUrl} />
+                <TimeLine />
+              </div>
+            }
+          />
+          <Route
+            path="/parenting-stamp"
+            element={
+              <div>
+                <WebSocketComponent endpoint={socketUrl} />
+                <ParentingStamp />
+              </div>
+            }
+          />
+          <Route
+            path="/present"
+            element={
+              <div>
+                <WebSocketComponent endpoint={socketUrl} />
+                <Present />
+              </div>
+            }
+          />
+          <Route
+            path="/my-page"
+            element={
+              <div>
+                <WebSocketComponent endpoint={socketUrl} />
+                <MyPage />
+              </div>
+            }
+          />
+          <Route
+            path="/notification"
+            element={
+              <div>
+                <WebSocketComponent endpoint={socketUrl} />
+                <NotificationPage />
+              </div>
+            }
+          />
+          <Route
+            path="/notification/setting"
+            element={
+              <div>
+                <WebSocketComponent endpoint={socketUrl} />
+                <NotificationSetting />
+              </div>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

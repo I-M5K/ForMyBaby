@@ -4,6 +4,8 @@ package com.ssafy.c202.formybaby.notification.service;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.global.jpaEnum.NotificationType;
 import com.ssafy.c202.formybaby.health.entity.Health;
+import com.ssafy.c202.formybaby.notification.dto.request.SettingUpdateRequest;
+import com.ssafy.c202.formybaby.notification.dto.response.SettingReadResponse;
 import com.ssafy.c202.formybaby.notification.entity.Notification;
 import com.ssafy.c202.formybaby.notification.entity.NotificationCheck;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
@@ -20,5 +22,11 @@ public interface NotificationService {
     String createContent(Family family, NotificationType type, Vaccine vaccine);
     String createContent(Family family, NotificationType type, Health health);
     Notification createDangerNotification(List<User> users, List<Baby> babies, Danger danger);
-    NotificationCheck isChecked(Long notificationId);
+    NotificationCheck createIsChecked(Long notificationId);
+    List<Notification> getList(Long userId);
+    SettingReadResponse getSetting(Long userId);
+    void checkNotification(Long notificationId);
+    SettingReadResponse updateSetting(SettingUpdateRequest settingUpdateRequest, Long userId);
+    void delete(Long notificationId);
+    void deleteAll(Long userId);
 }

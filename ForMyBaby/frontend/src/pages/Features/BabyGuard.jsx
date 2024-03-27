@@ -1,84 +1,100 @@
 import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
 import NavBar from '../../components/NavBar';
+import DetailContent from './BabyGuardDetail';
+import ChangeContent from './BabyGuardChange';
+import SleepStatusContent from './SleepStatusContent'; // 수정된 부분
+import { useRecordStore } from '../../stores/RecordStore'; // 상태 관리 파일에서 가져옴
 
 import './BabyGuard.css';
 
-const ENDPOINT = 'http://localhost:3001'; // 서버의 엔드포인트에 맞게 수정
+const ENDPOINT = 'http://localhost:3001';
 
-const ClientComponent = () => {
+const ImageContent = ({ imageData, lineData }) => (
+  <div className="image-content">
+    <h1>Received Image</h1>
+    {imageData && <img src={imageData} alt="Received" />}
+    {lineData && <p>Received Line: {lineData}</p>}
+  </div>
+);
+
+const Dashboard = () => {
   const [imageData, setImageData] = useState(null);
+  const [lineData, setLineData] = useState('');
+  const [timestamp, setTimestamp] = useState('');
+  const [selectedButton, setSelectedButton] = useState('button1');
+  const [babyId, setBabyId] = useState('');
 
-  useEffect(() => {
-    const socket = socketIOClient(ENDPOINT, {
-      transports: ['websocket'], // WebSocket 프로토콜 강제 사용
-    });
+  const { danger, hours, awake } = useRecordStore(); // 상태 관리 파일에서 상태 가져오기
 
-    socket.on('image', (data) => {
-      // ArrayBuffer를 Base64로 변환
-      const base64String = btoa(
-        new Uint8Array(data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-      );
-      // 이미지 데이터를 Base64로 인코딩하여 상태 업데이트
-      setImageData(`data:image/jpeg;base64,${base64String}`);
-    });
-
-    return () => {
-      socket.disconnect(); // 컴포넌트가 언마운트될 때 소켓 연결 종료
-    };
-  }, []); // 페이지가 처음 로드될 때 한 번만 실행
-
-  return (
-    <div className="cctv-container">
-      <h1>Received Image</h1>
-      {imageData && <img src={imageData} alt="Received" />}
-    </div>
-  );
-};
-
-const App = () => {
-  const [selectedButton, setSelectedButton] = useState('button1'); // 디폴트로 'button1' 선택
-
-  const sleepStatus = {
-    movement: 80,
-    awake: 20,
-    danger: 10,
-    temperature: 25,
-    humidity: 60
-  };
 
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
   };
 
+  const handleBabyIdChange = (event) => {
+    setBabyId(event.target.value);
+  };
+
+  useEffect(() => {
+    const socket = socketIOClient(ENDPOINT, {
+      transports: ['websocket'],
+    });
+
+    socket.emit('babyId', babyId);
+
+    socket.on('image', ({ imageData, lineData, timestamp }) => {
+      const base64String = btoa(
+        new Uint8Array(imageData).reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      setImageData(`data:image/jpeg;base64,${base64String}`);
+      setLineData(lineData);
+      setTimestamp(timestamp);
+      console.log('온습도 데이터', lineData);
+      console.log('시간', timestamp);
+    });
+
+    // 소켓 위험 알림용 이벤트 수신
+    socket.on('dangerEvent', () => {
+      // 위험행동 상태 업데이트
+      useRecordStore.setState({ danger: danger + 1 });
+    });
+
+    // 소켓 수면 분석용 이벤트 수신
+    socket.on('sleepEvent', () => {
+      // 깨어남 상태 업데이트
+      useRecordStore.setState({ awake: awake + 1 });
+    });
+
+    return () => {};
+  }, [babyId]);
+
   return (
-    <div className="app">
+    <div className="dashboard">
       <p className="title">우리 아이 지킴이</p>
       <div className="button-container">
         <button className={selectedButton === 'button1' ? 'bold' : ''} onClick={() => handleButtonClick('button1')}>대시보드</button>
         <button className={selectedButton === 'button2' ? 'bold' : ''} onClick={() => handleButtonClick('button2')}>상세</button>
         <button className={selectedButton === 'button3' ? 'bold' : ''} onClick={() => handleButtonClick('button3')}>변화</button>
       </div>
-      {selectedButton === 'button1' && <ClientComponent />} {/* 대시보드가 선택되었을 때만 ClientComponent를 렌더링 */}
-      <div className="sleep-info">
-        <p className='sleep-title'>수면 정보</p>
-        <div className="sleep-status">
-          {Object.entries(sleepStatus).map(([key, value]) => (
-            <div className="sleep-status-item" key={key}>
-              <p className="sleep-status-label">{key}</p>
-              <div className="sleep-status-bar">
-                <div
-                  className="sleep-status-bar-fill"
-                  style={{ width: `${value}%`, backgroundColor: value > 50 ? '#5cb85c' : '#d9534f' }}
-                />
-              </div>
+      <div className="content">
+        {selectedButton === 'button1' && (
+          <div className="dashboard-content">
+            <div className="video-content" style={{ backgroundColor: imageData ? 'transparent' : '#f0f0f0', width: '80vw', height: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <h1>Real-time Video</h1>
+              {/* 이미지가 없는 경우를 처리하여 메시지 표시 */}
+              {!imageData && <p style={{ color: '#666' }}>No video available</p>}
+              {imageData && <img src={imageData} alt="Received" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
             </div>
-          ))}
-        </div>
+            <SleepStatusContent danger={danger} hours={hours} awake={awake} lineData={lineData} /> {/* 수정된 부분 */}
+          </div>
+        )}
+        {selectedButton === 'button2' && <DetailContent />}
+        {selectedButton === 'button3' && <ChangeContent />}
       </div>
       <NavBar />
     </div>
   );
 };
 
-export default App;
+export default Dashboard;
