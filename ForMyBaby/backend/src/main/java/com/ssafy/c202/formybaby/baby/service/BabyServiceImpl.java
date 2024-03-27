@@ -1,12 +1,16 @@
 package com.ssafy.c202.formybaby.baby.service;
 
+import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateListRequest;
 import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateRequest;
 import com.ssafy.c202.formybaby.baby.dto.request.BabyUpdateRequest;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
+import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse2;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.mapper.BabyMapper;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.fcm.service.FCMService;
+import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
 import com.ssafy.c202.formybaby.user.mapper.FamilyMapper;
@@ -32,28 +36,43 @@ public class BabyServiceImpl implements BabyService{
     private final BabyMapper babyMapper;
     private final FamilyMapper familyMapper;
     private final FCMService fcmService;
+    private final RedisService redisService;
     @Override
-    public void createBaby(BabyCreateRequest babyCreateRequest) {
+    public void addBaby(BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
         babyRepository.save(baby);
-
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
         familyRepository.save(family);
     }
 
-    public void createNewBaby(BabyCreateRequest babyCreateRequest) {
-        User user = userRepository.findByUserId(babyCreateRequest.userId());
-        Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
+    public void createNewBaby(BabyCreateListRequest babyCreateListRequest) {
+        User user = userRepository.findByUserId(babyCreateListRequest.list().get(0).userId());
         String familyCode = RandomStringUtils.randomAlphanumeric(6);
+        for(BabyCreateRequest babyCreateRequest : babyCreateListRequest.list()){
+            Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
+            babyRepository.save(baby);
+
+//        fcmService.sendTest("fGEU-9IwnPvJFXs8VcFrHe:APA91bGmQ0bqr_Hxut3dxXPA3qOkpuS3u0ZNnwAR0Mc6YmDWFMsw4WgN8Ncp1VSpdXHz-OYKijYEUK0MHKTRrr_je5EzL7KKDuBjuoBoclMKsWVoSqmIExHLl1v2VqdG2Fb_dA7f29BG");
+
+            Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+            familyRepository.save(family);
+        }
+    }
+    public FamilyReadResponse createNewBaby2(String token, BabyCreateRequest babyCreateRequest) {
+        User user = userRepository.findByUserId(babyCreateRequest.userId());
+        log.info("User : " + user);
+        Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
+        log.info("Baby : " + baby);
+        String familyCode = RandomStringUtils.randomAlphanumeric(6);
+        log.info("familyCode : " + familyCode);
         babyRepository.save(baby);
-
-        fcmService.sendTest("fnwM3OU363c7PthT1nsD5t:APA91bE-WIUrffTK4vj5e3r4M5KG-xA-MjMXPllTFIbK_pk-_8qna2337s6paCx_jE-2tHIkfWyt393FxKMrIPJ7q0q_nuMU9vhm02KHVMiZKvlsWpL7RPSnUrreDDe7pqBYCDl79Egi");
-
-
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
         familyRepository.save(family);
+        FamilyReadResponse familyReadResponse = new FamilyReadResponse(familyCode);
+        log.info("familyReadResponse : " + familyReadResponse);
+        return familyReadResponse;
     }
 
     @Override
@@ -80,6 +99,11 @@ public class BabyServiceImpl implements BabyService{
     @Override
     public List<BabyReadResponse> babyList(String familyCode) {
         return babyRepository.findBabiesByFamilyCode(familyCode);
+    }
+
+    @Override
+    public List<BabyReadResponse2> babyList2(String familyCode) {
+        return babyRepository.findBabiesByFamilyCode2(familyCode);
     }
 
     @Override

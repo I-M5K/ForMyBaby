@@ -1,33 +1,62 @@
+
 spring:
   #db
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://j10c202.p.ssafy.io:3307/formybaby?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: ssafy
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  #batch
+  batch:
+    job:
+      name: createHealth
+    jdbc:
+      initialize-schema: always
   #jpa
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 1000
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
   #oauth2
   oauth:
     kakao:
-      client_id: f9d3aa3c4d425c0ad175a6b95e366769 # REST API ?
-      redirect_uri: "http://localhost:3000/oauth/redirected/kakao"
-      client_secret: Mx4luiTuOBM8RAuJRU9AZ0UJdGtQrRVh
+      client_id: ${KAKAO_ID} # REST API ?
+      redirect_uri: ${KAKAO_REDIRECT_URI}
+      client_secret: ${KAKAO_PW}
       scope: name, account_email, profile_image
-#  redis
-#  data:
-#    redis:
-#      host: ${REDIS_HOST}
-#      port: ${REDIS_PORT}
-#      password: ${REDIS_PASSWORD}
-#      lettuce:
-#        pool:
-#          max-idle: 8
-#          min-idle: 0
-#          max-active: 8
-#          max-wait: -1
+  #redis
+  data:
+    redis:
+      host: ${REDIS_HOST} # Redis 서버의 공개 IP 주소
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+      lettuce:
+        pool:
+          max-idle: 8
+          min-idle: 0
+          max-active: 8
+          max-wait: -1
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+#AWS S3
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    region:
+      static: ${S3_REGION}
+    s3:
+      bucket: ${S3_BUCKET}
+    stack:
+      auto: false

@@ -2,15 +2,19 @@ pipeline {
     agent any
     environment {
         REPO = "s10-ai-image-sub2/S10P22C202"
-//         DB_URL = "${env.DB_URL}"
-//         DB_USER = "${env.DB_USER}"
-//         DB_PASSWORD = "${env.DB_PASSWORD}"
-//         REDIS_HOST = "${env.REDIS_HOST}"
-//         REDIS_PASSWORD = "${env.REDIS_PASSWORD}"
-//         REDIS_PORT = "${env.REDIS_PORT}"
-//         MAIL_ID = "${env.MAIL_ID}"
-//         MAIL_PASSWORD = "${env.MAIL_PASSWORD}"
-//         MAIL_PORT = "${env.MAIL_PORT}"
+        DB_URL = "${env.DB_URL}"
+        DB_USER = "${env.DB_USER}"
+        DB_PASSWORD = "${env.DB_PASSWORD}"
+        REDIS_HOST = "${env.REDIS_HOST}"
+        REDIS_PASSWORD = "${env.REDIS_PASSWORD}"
+        REDIS_PORT = "${env.REDIS_PORT}"
+        KAKAO_ID = "${env.KAKAO_ID}"
+        KAKAO_REDIRECT_URI = "${env.KAKAO_REDIRECT_URI}"
+        KAKAO_PW = "${env.KAKAO_PW}"
+        S3_ACCESS_KEY = "${env.S3_ACCESS_KEY}"
+        S3_SECRET_KEY = "${env.S3_SECRET_KEY}"
+        S3_REGION = "${env.S3_REGION}"
+        S3_BUCKET = "${env.S3_BUCKET}"
     }
     stages {
         stage('Checkout') {
@@ -89,12 +93,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        try{
-                            sh "docker rm -f back || true"
-                            sh "docker ps"
-                            sh "docker run -d --name back -p 8082:8080 ${DOCKER_USER_ID}/back"
-                            sh "docker ps"
-                        } catch (Exception e){
+                        try {
+                            sh "docker rm -f back || true && docker run -d --name back -p 8082:8080 -e DB_URL=${env.DB_URL} -e DB_USER=${env.DB_USER} -e DB_PASSWORD=${env.DB_PASSWORD} -e REDIS_HOST=${env.REDIS_HOST} -e REDIS_PASSWORD=${env.REDIS_PASSWORD} -e REDIS_PORT=${env.REDIS_PORT} -e KAKAO_ID=${env.KAKAO_ID} -e KAKAO_REDIRECT_URI=${env.KAKAO_REDIRECT_URI} -e KAKAO_PW=${env.KAKAO_PW} -e S3_ACCESS_KEY=${env.S3_ACCESS_KEY} -e S3_SECRET_KEY=${env.S3_SECRET_KEY} -e S3_REGION=${env.S3_REGION} -e S3_BUCKET=${env.S3_BUCKET} ${DOCKER_USER_ID}/back && docker ps"
+                        } catch (Exception e) {
                             sh "docker restart back || true"  // Ignore error if container doesn't exist
                         }
                     }
@@ -102,14 +103,6 @@ pipeline {
             }
         }
     }
-
-
-
-
-
-
-
-
 
 post {
         success {
@@ -127,17 +120,4 @@ post {
             }
         }
     }
-//     post {
-//         always {
-//             script {
-//                 def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
-//                 def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
-//                 mattermostSend (color: 'good',
-//                         message: "빌드 ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)",
-//                         endpoint: 'https://meeting.ssafy.com/hooks/q4qjarpscbf9pme4f46yiojzfe',
-//                         channel: 'C107-Jenkins'
-//                 )
-//             }
-//         }
-//     }
 }
