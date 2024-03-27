@@ -30,7 +30,7 @@ public class FamilyServiceImpl implements FamilyService{
 
     private final BabyService babyService;
 
-    private final BabyRepository babyRepository;
+    private final RedisService redisService;
 
     @Override
     public List<Family> familyList(Long userId) {
@@ -63,6 +63,9 @@ public class FamilyServiceImpl implements FamilyService{
     @Override
     public List<BabyReadResponse2> joinFamilyWithShareCode(String token, FamilyCodeCreateRequest familyCodeCreateRequest) {
         List<BabyReadResponse2> babyReadResponse2List = babyService.babyList2(familyCodeCreateRequest.familyCode());
+        // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
+        String userId = redisService.getUserIdByToken(token);
+        redisService.saveBabyIdsByToken(userId , babyReadResponse2List.get(0).babyId());
         if(babyReadResponse2List != null){
             for (BabyReadResponse2 baby : babyReadResponse2List) {
                 Family family = familyRepository.findFamilyByBabyBabyId(baby.babyId());

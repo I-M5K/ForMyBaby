@@ -18,19 +18,15 @@ public class Sleep {
     @JoinColumn(name = "baby_id")
     private Baby baby;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SleepCategory sleepCategory;
-
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Timestamp createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Timestamp endAt;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private int sleepCnt;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private int sleepTime;
 }

@@ -21,7 +21,7 @@ public class Health {
     @Column(nullable = false)
     private int start_at;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private int end_at;
 
 }

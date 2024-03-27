@@ -31,15 +31,16 @@ public class RedisService {
         return stringRedisTemplate.opsForValue().get(token);
     }
 
-    // JWT 토큰을 키로, babyId 값을 저장하는 메서드
-    public void saveBabyIdsByToken(String token, Long babyId) {
-        log.info("babyId : " + babyId);
-        stringRedisTemplate.opsForValue().set(token, String.valueOf(babyId));
+    // babyId을 키로, babyId 값을 저장하는 메서드
+    public void saveBabyIdsByToken(String key, Long babyId) {
+        log.info("savedBabyId : " + babyId);
+        stringRedisTemplate.opsForValue().set(key, String.valueOf(babyId));
     }
 
-    // JWT 토큰에 해당하는 babyId 조회하는 메서드
-    public String getBabyIdByToken(String token, Long babyId) {
-        log.info("babyId2 : " + babyId);
-        return stringRedisTemplate.opsForValue().get(token);
+    // babyName에 해당하는 babyId 조회하는 메서드
+    public String getBabyIdByToken(String key) {
+        log.info("getBabyIdByToken key : " + key);
+        log.info("getBabyId : " + stringRedisTemplate.opsForValue().get(key));
+        return stringRedisTemplate.opsForValue().get(key);
     }
 }
