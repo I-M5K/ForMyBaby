@@ -16,12 +16,12 @@ public class Health {
     private int healthId;
 
     @Column(nullable = false)
-    private String health_title;
+    private String healthTitle;
 
     @Column(nullable = false)
-    private int start_at;
+    private int startAt;
 
     @Column(nullable = false)
-    private int end_at;
+    private int endAt;
 
 }
