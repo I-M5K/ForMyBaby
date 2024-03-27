@@ -21,7 +21,7 @@ const AgreePage = () => {
             if (fcm == null){
                 requestPermission();
                 setFcm(localStorage.getItem('fcmToken'));
-                localStorage.removeItem('fcmToken');
+                //localStorage.removeItem('fcmToken');
             }
             // console.log('fetchData 직후');
         };
