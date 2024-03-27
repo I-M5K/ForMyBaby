@@ -1,4 +1,4 @@
-import axios from 'axios';
+import Role from './Role';
 import axiosWrapper from './axiosWrapper';
 
 // GPS 정보 보내기
@@ -21,23 +21,22 @@ export const submitFamilyCode = async (familyCode) => {
   console.log('familyCode: ', familyCode);
   const role = 'none';
   try {
-    const response = await axiosWrapper.post('/v1/users/family', { familyCode, role });
+    const response = await axiosWrapper.get('/v1/users/family', { params: { familyCode } });
     console.log('Server Response:', response.data);
-    if (response.data){ // 옳은 가족 코드
-      return response.data;
-    } else { // 없는 가족 토드
-      return 0;
-    } 
+    return response.data; // 응답 데이터 반환
   } catch (error) {
     console.error('제출 오류!', error);
+    throw error; // 에러를 상위로 전파
   }
 }
 
-// 신규 가족 코드 받기
+
+// 첫 아이 정보 등록 + 신규 가족 코드 발급 받기
 export const addFirstBabyInfo = async (formData) => {
+  formData.append('role', Role.None);
   console.log('아이 신규 등록!');
   try {
-    const response = await axiosWrapper.post('/v1/baby');
+    const response = await axiosWrapper.post('/v1/users/family', formData);
     console.log('가족코드', response.data);
     return response.data;
   } catch (error) {
@@ -47,6 +46,7 @@ export const addFirstBabyInfo = async (formData) => {
 
 // 아이 정보 등록하기
 export const addBabyInfo = async (formData) => {
+  formData.append('role', Role.None);
   console.log('아이 추가 등록');
   try {
       const response = await axiosWrapper.post('/v1/users/baby', formData);
