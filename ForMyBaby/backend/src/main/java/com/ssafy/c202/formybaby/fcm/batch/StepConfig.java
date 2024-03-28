@@ -27,11 +27,12 @@ public class StepConfig {
     @JobScope
     @Bean
     public Step getFamily(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                          ItemReader<Family> generalFamilyReader, ItemWriter<Family> generalFamilyWriter) {
+                          ItemReader<Family> generalFamilyReader, ItemProcessor<Family, Family> checkBeanProcessor,
+                          ItemWriter<Family> generalFamilyWriter) {
         return new StepBuilder("getFamily", jobRepository)
                 .<Family, Family>chunk(CHUNK_SIZE, transactionManager)
                 .reader(generalFamilyReader)
-//                .processor()
+                .processor(checkBeanProcessor)
                 .writer(generalFamilyWriter)
                 .build();
     }

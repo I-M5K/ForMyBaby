@@ -151,4 +151,17 @@ public class ItemProcessorConfig {
             return list;
         };
     }
+
+    @Bean
+    @StepScope
+    ItemProcessor<Family, Family> checkBeanProcessor() {
+        LocalDate today = LocalDate.now();
+        generalShareBean.map().forEach((s, family) -> {
+            if(today.minusYears(13).isAfter(family.getBaby().getBirthDate())) {
+                Family out = generalShareBean.map().remove(s);
+                log.info("Birth Exceeded : {} ", out);
+            }
+        });
+        return f -> f;
+    }
 }
