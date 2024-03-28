@@ -24,8 +24,8 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
     List<Family> findFamiliesByUserUserId(Long userId);
     List<Family> findFamiliesByBabyBabyId(Long babyId);
     List<Family> findByFamilyCode(String familyCode);
-    @Query("SELECT f.familyRank FROM Family f WHERE f.user.userId=:userId")
-    int findFamilyRankByUserId(Long userId);
+    @Query("SELECT f.familyRank FROM Family f WHERE f.user.userId=:userId AND f.baby.babyId=:babyId")
+    int findFamilyRankByUserId(Long userId, Long babyId);
     @Transactional
     @Modifying
     @Query("UPDATE Family f SET f.familyRank=:rank WHERE f.user.userId=:userId AND f.baby.babyId=:babyId")

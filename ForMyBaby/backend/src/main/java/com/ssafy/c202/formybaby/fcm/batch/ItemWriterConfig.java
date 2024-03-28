@@ -36,7 +36,6 @@ public class ItemWriterConfig {
                 try{
                     generalShareBean.putData((family.getFamilyId().toString()), family);
                     log.info("Data Stored : {}", family);
-
                 } catch (Exception e) {
                     log.info("Baby Share Bean error : {}", e.getMessage());
                 }
