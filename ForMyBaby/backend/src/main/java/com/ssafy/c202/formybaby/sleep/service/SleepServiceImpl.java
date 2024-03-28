@@ -4,6 +4,8 @@ import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.sleep.dto.response.SleepAllList;
+import com.ssafy.c202.formybaby.sleep.dto.response.SleepTodayAllList;
+import com.ssafy.c202.formybaby.sleep.dto.response.SleepWeekAllList;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
 import com.ssafy.c202.formybaby.sleep.entity.Sleep;
 import com.ssafy.c202.formybaby.sleep.repository.DangerRepository;
@@ -33,7 +35,83 @@ public class SleepServiceImpl implements SleepService {
     private final DangerRepository dangerRepository;
 
     @Override
-    public SleepAllList getTodayAllList(String token) {
+    public SleepWeekAllList getWeekAllList(String token, Timestamp endAt) {
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
+
+        // Calendar 객체를 이용하여 endAt을 처리
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTimeInMillis(endAt.getTime());
+
+        // endAt을 00:00:00으로 설정
+        endCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        endCalendar.set(Calendar.MINUTE, 0);
+        endCalendar.set(Calendar.SECOND, 0);
+        endCalendar.set(Calendar.MILLISECOND, 0);
+
+        // endAt의 7일 전 날짜 계산
+        endCalendar.add(Calendar.DAY_OF_MONTH, -7);
+
+        // 7일 전 날짜를 startDate로 설정
+        Timestamp startDate = new Timestamp(endCalendar.getTimeInMillis());
+
+        // 일주일 동안의 수면 목록 조회
+        List<Sleep> sleepList = sleepRepository.findByWeekSleep(babyId, startDate, endAt);
+
+        log.info("sleepList : " + sleepList);
+
+        // 일주일 동안의 위험 목록 조회
+        List<Danger> dangerList = dangerRepository.findByBaby_BabyIdAndCreatedAt(babyId, startDate, endAt);
+
+        log.info("dangerList : " + dangerList);
+
+        // SleepAllList 객체를 담을 리스트 생성
+        List<SleepAllList> sleepAllLists = new ArrayList<>();
+
+        // 수면 목록과 위험 목록을 SleepAllList에 추가
+        for (Timestamp date = startDate; date.getTime() <= endAt.getTime(); date.setTime(date.getTime() + 24 * 60 * 60 * 1000)) {
+            Sleep sleep = findSleepByDate(sleepList, date);
+            Danger danger = findDangerByDate(dangerList, date);
+            sleepAllLists.add(new SleepAllList(sleep, danger));
+        }
+
+        // SleepWeekAllList 객체 생성하여 반환
+        return new SleepWeekAllList(sleepAllLists);
+    }
+
+    // 주어진 날짜에 해당하는 수면 정보 찾기
+    private Sleep findSleepByDate(List<Sleep> sleepList, Timestamp date) {
+        for (Sleep sleep : sleepList) {
+            if (isSameDate(sleep.getCreatedAt(), date)) {
+                return sleep;
+            }
+        }
+        return null;
+    }
+
+    // 주어진 날짜에 해당하는 위험 정보 찾기
+    private Danger findDangerByDate(List<Danger> dangerList, Timestamp date) {
+        for (Danger danger : dangerList) {
+            if (isSameDate(danger.getCreatedAt(), date)) {
+                return danger;
+            }
+        }
+        return null;
+    }
+
+    // 두 Timestamp 객체가 같은 날짜인지 확인
+    private boolean isSameDate(Timestamp timestamp1, Timestamp timestamp2) {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTimeInMillis(timestamp1.getTime());
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTimeInMillis(timestamp2.getTime());
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
+    }
+
+
+    @Override
+    public SleepTodayAllList getTodayAllList(String token) {
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
         List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
         List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(babyId);
@@ -46,7 +124,7 @@ public class SleepServiceImpl implements SleepService {
         int dangerCnt = dangerList.size();
 
         // SleepAllList 객체 생성 후 반환
-        return new SleepAllList(sleepTime, sleepCnt, dangerCnt);
+        return new SleepTodayAllList(sleepTime, sleepCnt, dangerCnt);
     }
 
     @Override

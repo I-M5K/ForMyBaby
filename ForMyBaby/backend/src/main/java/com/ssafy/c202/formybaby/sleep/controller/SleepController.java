@@ -1,6 +1,8 @@
 package com.ssafy.c202.formybaby.sleep.controller;
 
 import com.ssafy.c202.formybaby.sleep.dto.response.SleepAllList;
+import com.ssafy.c202.formybaby.sleep.dto.response.SleepTodayAllList;
+import com.ssafy.c202.formybaby.sleep.dto.response.SleepWeekAllList;
 import com.ssafy.c202.formybaby.sleep.service.SleepService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +29,10 @@ public class SleepController {
     }
 
     @GetMapping("/today")
-    public ResponseEntity<SleepAllList> getTodayAllList(@RequestHeader(name = "Authorization") String token){
+    public ResponseEntity<SleepTodayAllList> getTodayAllList(@RequestHeader(name = "Authorization") String token){
         try{
-            SleepAllList sleepAllList = sleepService.getTodayAllList(token);
-            return new ResponseEntity<>(sleepAllList,HttpStatus.OK);
+            SleepTodayAllList sleepTodayAllList = sleepService.getTodayAllList(token);
+            return new ResponseEntity<>(sleepTodayAllList,HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
@@ -43,6 +45,14 @@ public class SleepController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/week")
+    public ResponseEntity<SleepWeekAllList> getWeekAllList(@RequestHeader(name = "Authorization") String token, @RequestParam Timestamp endAt){
+        try{
+            return new ResponseEntity<>(sleepService.getWeekAllList(token,endAt),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    };
 
 
 }
