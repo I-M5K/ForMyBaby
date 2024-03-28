@@ -224,42 +224,42 @@ public class UserServiceImpl implements UserService{
             if(dist <= 0.5) {
                 familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 1);
                 try {
-                    fcmService.unsubscribe(token, familyCode+"_"+oldRank);
-                    log.info("topic UNsubscribe: {}", familyCode+"_"+oldRank);
+                    fcmService.unsubscribe(token, familyCode+"_"+babyId+"_"+oldRank);
+                    log.info("topic UNsubscribe: {}", familyCode+"_"+babyId+"_"+oldRank);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
                 try {
-                    fcmService.subscribe(token, familyCode+"_"+1);
-                    log.info("topic subscribe: {}", familyCode+"_"+1);
+                    fcmService.subscribe(token, familyCode+"_"+babyId+"_"+1);
+                    log.info("topic subscribe: {}", familyCode+"_"+babyId+"_"+1);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
             } else if (dist <= 2) {
                 familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 2);
                 try {
-                    fcmService.unsubscribe(token, familyCode+"_"+oldRank);
-                    log.info("topic UNsubscribe: {}", familyCode+"_"+oldRank);
+                    fcmService.unsubscribe(token, familyCode+"_"+babyId+"_"+oldRank);
+                    log.info("topic UNsubscribe: {}", familyCode+"_"+babyId+"_"+oldRank);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
                 try {
-                    fcmService.subscribe(token, familyCode+"_"+2);
-                    log.info("topic subscribe: {}", familyCode+"_"+2);
+                    fcmService.subscribe(token, familyCode+"_"+babyId+"_"+2);
+                    log.info("topic subscribe: {}", familyCode+"_"+babyId+"_"+2);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
             } else {
                 familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 3);
                 try {
-                    fcmService.unsubscribe(token, familyCode+"_"+oldRank);
-                    log.info("topic UNsubscribe: {}", familyCode+"_"+oldRank);
+                    fcmService.unsubscribe(token, familyCode+"_"+babyId+"_"+oldRank);
+                    log.info("topic UNsubscribe: {}", familyCode+"_"+babyId+"_"+oldRank);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
                 try {
-                    fcmService.subscribe(token, familyCode+"_"+3);
-                    log.info("topic subscribe: {}", familyCode+"_"+3);
+                    fcmService.subscribe(token, familyCode+"_"+babyId+"_"+3);
+                    log.info("topic subscribe: {}", familyCode+"_"+babyId+"_"+3);
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
                 }
