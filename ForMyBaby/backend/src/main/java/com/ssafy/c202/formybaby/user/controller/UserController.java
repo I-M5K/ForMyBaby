@@ -39,6 +39,17 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/select")
+    public ResponseEntity<?> changeBaby(@RequestHeader(name = "Authorization") String token, @RequestParam Long babyId) {
+        try {
+            userService.changeBaby(token, babyId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping
     public ResponseEntity<UserProfileResponse> updateUser(@RequestBody UserUpdateRequest userUpdateRequest){
         try {
@@ -58,6 +69,7 @@ public class UserController {
 //            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 //        }
 //    }
+
     @DeleteMapping()
     public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId){
         try{

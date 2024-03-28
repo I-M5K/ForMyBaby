@@ -25,7 +25,7 @@ self.addEventListener("install", function (e) {
     console.log("push: ", { resultData, notificationTitle, notificationOptions });
   
     type = data.type
-    console.log(type);
+    console.log("type : ", type);
     self.registration.showNotification(notificationTitle, notificationOptions);
   });
   

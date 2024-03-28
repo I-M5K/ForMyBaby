@@ -36,7 +36,8 @@ public class Notification {
     private String content;
 
     @Column(nullable = false)
-    private boolean isChecked;
+    @ColumnDefault("false")
+    private Boolean isChecked;
 
     @Column(nullable = false)
     @CreationTimestamp
