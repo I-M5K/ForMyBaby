@@ -59,4 +59,5 @@ public class DataShareBean <T> {
         return this.shareDataMap;
     }
 
+
 }

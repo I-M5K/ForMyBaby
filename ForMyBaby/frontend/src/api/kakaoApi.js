@@ -15,14 +15,13 @@ const kakaoApi = async (code) => {
         }
 
         // 헤더에서 토큰 값을 추출하여 저장
-        const token = response.headers.get('Authorization');
+        //const token = response.headers.get('Authorization');
         //const [userData, setUserData] = useRecoilState(userDataState);
         //token.replace('Bearer ', '');
         //setUserData({ ...userData, jwt: token });
-        localStorage.setItem('accessToken', token.replace('Bearer ', ''));
+        //localStorage.setItem('accessToken', token.replace('Bearer ', ''));
         //localStorage.setItem('id', )
-        const data = await response.json();
-        return data;
+        return response;
     } catch (error) {
         console.error("오류 발생", error);
         throw error; // 오류를 다시 throw하여 호출한 곳에서 처리할 수 있도록 함

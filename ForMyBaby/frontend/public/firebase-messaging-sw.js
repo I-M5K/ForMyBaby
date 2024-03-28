@@ -7,7 +7,7 @@ self.addEventListener("install", function (e) {
     console.log("fcm sw activate..");
   });
 
-  var key = ''
+  var type = ''
   
   self.addEventListener("push", function (e) {
     console.log("push: ", e.data.json());
@@ -24,20 +24,20 @@ self.addEventListener("install", function (e) {
     };
     console.log("push: ", { resultData, notificationTitle, notificationOptions });
   
-    key = data.key
-    console.log(key);
+    type = data.type
+    console.log("type : ", type);
     self.registration.showNotification(notificationTitle, notificationOptions);
   });
   
   self.addEventListener("notificationclick", function (event) {
     console.log("notification click");
     var url = "/main";
-    console.log('key: ', key);
-    if (key === 'danger'){ // 위험 감지
+    console.log('type: ', type);
+    if (type === 'danger'){ // 위험 감지
       url = '/baby-guard';
-    } else if (key === 'health'){ // 건강검진
+    } else if (type === 'health'){ // 건강검진
       url = '/timeline';
-    } else if (key === 'vaccine'){ // 접종
+    } else if (type === 'vaccine'){ // 접종
       url = '/timeline';
     }
     event.notification.close();

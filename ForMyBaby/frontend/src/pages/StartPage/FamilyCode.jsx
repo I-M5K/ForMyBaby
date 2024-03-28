@@ -1,5 +1,3 @@
-// src/FamilyCodeForm.js
-
 import React, { useState, useRef } from 'react';
 import './FamilyCode.css';
 import axios from 'axios';
@@ -7,21 +5,28 @@ import { submitFamilyCode, getFamilyCode } from '../../api/userApi';
 import { useUserStore, useLocationStore } from '../../stores/UserStore'; // Zustand 스토어 import
 import { useNavigate } from 'react-router-dom';
 
-function FamilyCodeForm({ onSubmit, goToNextPage }) {
+function FamilyCodeForm() {
   const [code, setCode] = useState('');
+  const [invalidCode, setInvalidCode] = useState(false); // 잘못된 가족 코드 여부 상태 추가
   const inputRefs = useRef([]);
   const navigate = useNavigate(); // useNavigate 훅 사용
   const { setFamily, setBabyList } = useUserStore();
 
-
-  const handleSubmit = async (code) => { // 기존 회원과 가족
-    const res = submitFamilyCode(code);
-    if (res == 0){ // 다시 입력 - 프롬프트 출력
-      navigate('/family');
-    } else {
+  const handleSubmit = async () => {
+    try {
+      const res = await submitFamilyCode(code);
+      if (res == null || res.length === 0) { // 잘못된 가족 코드 처리
+        setInvalidCode(true); // 잘못된 가족 코드 여부 상태 업데이트
+        setCode(''); // 코드 상태 초기화
+        inputRefs.current[0].focus(); // 첫 번째 입력란에 포커스
+        return; // 함수 종료
+      }
       setFamily(code);
       setBabyList(res); 
       navigate('/baby-relation');
+    } catch (error) {
+      console.error("가족 코드 제출 오류:", error);
+      // 오류 처리
     }
   };
 
@@ -29,6 +34,7 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
     const newCode = code.split('');
     newCode[index] = value;
     setCode(newCode.join(''));
+    setInvalidCode(false); // 입력이 변경되면 잘못된 코드 상태 초기화
 
     // 다음 칸으로 포커스 이동
     if (value !== '' && index < inputRefs.current.length - 1) {
@@ -37,11 +43,6 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
   };
 
   const handleSkip = () => { // 신규회원
-    //const code = getFamilyCode();
-    // if (code == null){
-    //   navigate('')
-    // }
-    //setFamily(code);
     navigate('/baby-add'); // 아이 정보 등록 페이지로
   };
 
@@ -65,7 +66,8 @@ function FamilyCodeForm({ onSubmit, goToNextPage }) {
           />
         ))}
       </div>
-      <button type="submit" className="submit-button" onClick={handleSubmit}>확인하기</button>
+      {invalidCode && <p style={{ color: 'red' }}>잘못된 가족 코드입니다.</p>} {/* 잘못된 코드 메시지 */}
+      <button type="button" className="submit-button" onClick={handleSubmit}>확인하기</button>
       <button type="button" className="skip-button" onClick={handleSkip}>공유 없이 가입하기</button>
     </form>
   );
