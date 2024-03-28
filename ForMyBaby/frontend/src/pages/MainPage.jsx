@@ -15,14 +15,17 @@ import PresentBox from '../assets/presentBox.png'
 
 const MainPage = () => {
   const location = useGeoLocation();
-  const { id, name, email, fcm, setFcm } = useUserStore();
+  const { babyList, fcm, setFcm, uncheckedCnt, setUncheckedCnt, babySelected, setBabySelected } = useUserStore();
 
   useEffect(() => {
     const fetchData = async () => {
+      if (babySelected == null || babySelected == 0){
+        setBabySelected(babyList[0].babyId);
+      }
       if (fcm == null){
         requestPermission();
         setFcm(localStorage.getItem('fcmToken'));
-        localStorage.removeItem('fcmToken');
+        //localStorage.removeItem('fcmToken');
       }
       if (location && location.loaded && location.coordinates) {
         await sendLocation(location.coordinates.lat, location.coordinates.lng);
@@ -35,6 +38,10 @@ const MainPage = () => {
     localStorage.clear();
   };
 
+  const handleNotificationClick = () => {
+    setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
+  };
+
   return (
     <div className="main-container">
       <div className="main-header">
@@ -43,8 +50,11 @@ const MainPage = () => {
             낮잠 잘 시간이에요!
         </span>
         <Link to="/notification">
-          <div className="main-notificationIcon">
+          <div className="main-notificationIcon" onClick={handleNotificationClick}>
             <img src={require('../assets/mdi_bell.png')} alt="Notification Bell"/>
+            {uncheckedCnt > 0 && ( // 읽지 않은 알림이 있을 때만 표시
+            <span className="notification-count">{uncheckedCnt}</span>
+          )}
           </div>
         </Link>
       </div>
