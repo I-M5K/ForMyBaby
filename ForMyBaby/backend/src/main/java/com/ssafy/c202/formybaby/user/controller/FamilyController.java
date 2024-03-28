@@ -4,6 +4,8 @@ import com.ssafy.c202.formybaby.baby.dto.request.BabyCreateRequest;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse2;
 import com.ssafy.c202.formybaby.baby.service.BabyService;
+import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
+import com.ssafy.c202.formybaby.global.jpaEnum.Role;
 import com.ssafy.c202.formybaby.user.dto.request.FamilyCodeCreateRequest;
 import com.ssafy.c202.formybaby.user.dto.request.FamilyCodeUpdateRequest;
 import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,11 +47,28 @@ public class FamilyController {
         }
     }
     @PostMapping("/family")
-    public ResponseEntity<FamilyReadResponse> joinFamilyDirectly(@RequestHeader(name = "Authorization") String token, @RequestBody BabyCreateRequest babyCreateRequest) {
-        try{
-            return new ResponseEntity<>(babyService.createNewBaby2(token, babyCreateRequest), HttpStatus.CREATED);
-        }catch (Exception e){
+    public ResponseEntity<FamilyReadResponse> joinFamilyDirectly(
+            @RequestHeader(name = "Authorization") String token,
+            @RequestParam("userId") Long userId,
+            @RequestParam("babyName") String babyName,
+            @RequestParam("babyGender") BabyGender babyGender,
+            @RequestParam("babyBirthDate") String babyBirthDate,
+            @RequestParam("profileImg") MultipartFile profileImg,
+            @RequestParam("role") Role role
+    ) {
+        try {
+            BabyCreateRequest babyCreateRequest = new BabyCreateRequest(
+                    userId,
+                    babyName,
+                    babyBirthDate,
+                    babyGender,
+                    profileImg,
+                    role
+            );
+            return new ResponseEntity<>(babyService.createNewBabyNoShareCode(token, babyCreateRequest), HttpStatus.CREATED);
+        } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
 }
