@@ -30,10 +30,10 @@ const BabyRelationPage = () => {
                 const roleUpdatePromises = [];
                 // Iterate over babyList to find babies with role "none" and update their roles
                 babyList.forEach(baby => {
-                    if (baby.role === "none") {
+                    if (baby.role === "None") {
                         const data = {
                             'familyCode': family,
-                            'babyId': baby.id,
+                            'babyId': baby.babyId,
                             'userId': id,
                             'role': relationship
                         }
@@ -49,7 +49,7 @@ const BabyRelationPage = () => {
                 console.log('Relationship updated successfully:', relationship);
                 // Update baby roles in local state (zustand-persist) for babies with role "none"
                 const updatedBabyList = babyList.map(baby => {
-                    if (baby.role === "none") {
+                    if (baby.role === "None") {
                         return {
                             ...baby,
                             role: relationship
@@ -71,36 +71,36 @@ const BabyRelationPage = () => {
                 <div className="relationship-buttons">
                     <button
                         type="button"
-                        className={`relation-btn ${relationship === '엄마' ? 'selected' : ''}`}
-                        onClick={() => handleSelectRelationship('엄마')}
+                        className={`relation-btn ${relationship === 'Mother' ? 'selected' : ''}`}
+                        onClick={() => handleSelectRelationship('Mother')}
                     >
                         엄마
                     </button>
                     <button
                         type="button"
-                        className={`relation-btn ${relationship === '아빠' ? 'selected' : ''}`}
-                        onClick={() => handleSelectRelationship('아빠')}
+                        className={`relation-btn ${relationship === 'Father' ? 'selected' : ''}`}
+                        onClick={() => handleSelectRelationship('Father')}
                     >
                         아빠
                     </button>
                     <button
                         type="button"
-                        className={`relation-btn ${relationship === '할머니' ? 'selected' : ''}`}
-                        onClick={() => handleSelectRelationship('할머니')}
+                        className={`relation-btn ${relationship === 'Grandmother' ? 'selected' : ''}`}
+                        onClick={() => handleSelectRelationship('Grandmother')}
                     >
                         할머니
                     </button>
                     <button
                         type="button"
-                        className={`relation-btn ${relationship === '할아버지' ? 'selected' : ''}`}
-                        onClick={() => handleSelectRelationship('할아버지')}
+                        className={`relation-btn ${relationship === 'Grandfather' ? 'selected' : ''}`}
+                        onClick={() => handleSelectRelationship('Grandfather')}
                     >
                         할아버지
                     </button>
                     <button
                         type="button"
-                        className={`relation-btn ${relationship === '기타' ? 'selected' : ''}`}
-                        onClick={() => handleSelectRelationship('기타')}
+                        className={`relation-btn ${relationship === 'Others' ? 'selected' : ''}`}
+                        onClick={() => handleSelectRelationship('Others')}
                     >
                         기타
                     </button>

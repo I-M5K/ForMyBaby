@@ -7,59 +7,59 @@ import arrowLeft from '../../assets/arrow_left.png'
 import './NotificationPage.css'
 
 const NotificationPage = () => {
- // const { notifications, fetchNotificationList, deleteNotificationById, deleteAllNotifications } = useNotificationStore();
- const {  deleteNotificationById, deleteAllNotifications } = useNotificationStore();
-  // useEffect(() => {
-  //   fetchNotificationList(); // 페이지가 처음 렌더링될 때 알림 데이터를 가져옴
-  // }, []); // 빈 배열을 전달하여 이펙트가 한 번만 실행되도록 함
-  const [notifications, setNotifications] = useState([
-    {
-      notificationId: 1,
-      type: 'info',
-      content: '새로운 알림이 도착했습니다.',
-      createdAt: new Date().toISOString() // 현재 시간으로 설정
-    },
-    {
-      notificationId: 2,
-      type: 'warning',
-      content: '중요한 공지사항입니다.',
-      createdAt: new Date().toISOString() // 현재 시간으로 설정
-    },
-    {
-      notificationId: 1,
-      type: 'info',
-      content: '새로운 알림이 도착했습니다. 새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.',
-      createdAt: new Date().toISOString() // 현재 시간으로 설정
-    },
-    {
-      notificationId: 2,
-      type: 'warning',
-      content: '중요한 공지사항입니다.',
-      createdAt: new Date().toISOString() // 현재 시간으로 설정
-    },
-    {
-      notificationId: 1,
-      type: 'info',
-      content: '새로운 알림이 도착했습니다.',
-      createdAt: new Date().toISOString() // 현재 시간으로 설정
-    },
-    {
-      notificationId: 2,
-      type: 'warning',
-      content: '중요한 공지사항입니다.',
-      createdAt: new Date().toISOString() // 현재 시간으로 설정
-    }
-  ]);
+ const { notifications, fetchNotificationList, deleteNotificationById, deleteAllNotifications } = useNotificationStore();
+ //const {  deleteNotificationById, deleteAllNotifications } = useNotificationStore();
+  useEffect(() => {
+    fetchNotificationList(); // 페이지가 처음 렌더링될 때 알림 데이터를 가져옴
+  }, []); // 빈 배열을 전달하여 이펙트가 한 번만 실행되도록 함
+  // const [notifications, setNotifications] = useState([
+  //   {
+  //     notificationId: 1,
+  //     type: 'info',
+  //     content: '새로운 알림이 도착했습니다.',
+  //     createdAt: new Date().toISOString() // 현재 시간으로 설정
+  //   },
+  //   {
+  //     notificationId: 2,
+  //     type: 'warning',
+  //     content: '중요한 공지사항입니다.',
+  //     createdAt: new Date().toISOString() // 현재 시간으로 설정
+  //   },
+  //   {
+  //     notificationId: 1,
+  //     type: 'info',
+  //     content: '새로운 알림이 도착했습니다. 새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.',
+  //     createdAt: new Date().toISOString() // 현재 시간으로 설정
+  //   },
+  //   {
+  //     notificationId: 2,
+  //     type: 'warning',
+  //     content: '중요한 공지사항입니다.',
+  //     createdAt: new Date().toISOString() // 현재 시간으로 설정
+  //   },
+  //   {
+  //     notificationId: 1,
+  //     type: 'info',
+  //     content: '새로운 알림이 도착했습니다.',
+  //     createdAt: new Date().toISOString() // 현재 시간으로 설정
+  //   },
+  //   {
+  //     notificationId: 2,
+  //     type: 'warning',
+  //     content: '중요한 공지사항입니다.',
+  //     createdAt: new Date().toISOString() // 현재 시간으로 설정
+  //   }
+  // ]);
 
   const handleDeleteNotification = async (notificationId) => {
     await deleteNotificationById(notificationId);
     // 삭제 후 상태 업데이트
-    setNotifications(notifications.filter(n => n.notificationId !== notificationId));
+    //setNotifications(notifications.filter(n => n.notificationId !== notificationId));
   };
 
   const handleDeleteAllNotifications = async () => {
     await deleteAllNotifications();
-    setNotifications([]); // 모든 알림을 삭제한 후 상태를 빈 배열로 설정
+    //setNotifications([]); // 모든 알림을 삭제한 후 상태를 빈 배열로 설정
   };
 
   const timeSince = (date) => {

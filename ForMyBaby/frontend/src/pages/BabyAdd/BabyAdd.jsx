@@ -54,17 +54,22 @@ const BabyAddPage = () => {
                 try {
                     const data = await addFirstBabyInfo(formData); // API 호출
                     console.log('First Baby information submitted successfully!');
-                    console.log(data);
+                    const babyList = data.babyReadResponseList;
+                    setBabyList(babyList);
+                    console.log(babyList[0].familyCode)
+                    setFamily(babyList[0].familyCode);
                     // setFamily(data.familyCode);
-                    // setBabyList(data.setBabyList);
+                    //setBabyList(data.get("babyReadResponseList"));
                 } catch (error) {
                     console.error(error);
                 }
             } else {
                 try {
-                    const data = await addBabyInfo(formData); // API 호출
+                    const data = await addFirstBabyInfo(formData); // API 호출
                     console.log('Baby information submitted successfully!');
                     console.log(data);
+                    const babyList = data.babyReadResponseList;
+                    setBabyList(babyList);
                     //setBabyList(data);
                 } catch (error) {
                     console.error(error);
