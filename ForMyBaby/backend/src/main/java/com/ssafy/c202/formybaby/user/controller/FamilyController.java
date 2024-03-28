@@ -70,9 +70,10 @@ public class FamilyController {
                     profileImg,
                     role
             );
-            return new ResponseEntity<>(babyService.createNewBaby2(token, babyCreateRequest), HttpStatus.CREATED);
+            return new ResponseEntity<>(babyService.createNewBabyNoShareCode(token, babyCreateRequest), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
 }

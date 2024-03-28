@@ -10,6 +10,7 @@ import com.ssafy.c202.formybaby.baby.mapper.BabyMapper;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.fcm.service.FCMService;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.global.s3.AwsS3Service;
 import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class BabyServiceImpl implements BabyService{
     private final FamilyMapper familyMapper;
     private final FCMService fcmService;
     private final RedisService redisService;
+    private final AwsS3Service awsS3Service;
     @Override
     public void addBaby(BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
@@ -60,16 +63,18 @@ public class BabyServiceImpl implements BabyService{
             familyRepository.save(family);
         }
     }
-    public FamilyReadResponse createNewBaby2(String token, BabyCreateRequest babyCreateRequest) {
+    public FamilyReadResponse createNewBabyNoShareCode(String token, BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
         log.info("User : " + user);
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         log.info("Baby : " + baby);
         String familyCode = RandomStringUtils.randomAlphanumeric(6);
         log.info("familyCode : " + familyCode);
-        babyRepository.save(baby);
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
         familyRepository.save(family);
+        String uploadFileName = awsS3Service.uploadFile(babyCreateRequest.files());
+        baby.setProfileImg(uploadFileName);
+        babyRepository.save(baby);
 
         // 현재 db에서 baby목록 가져와서
         List<BabyReadResponse> babyReadResponseList = babyRepository.findBabiesByFamilyCode(familyCode);
@@ -84,7 +89,7 @@ public class BabyServiceImpl implements BabyService{
         //새로운 아이 등록 시 아이 번호 레디스에 저장.
         redisService.saveBabyIdsByToken(userId, baby.getBabyId());
 
-        FamilyReadResponse familyReadResponse = new FamilyReadResponse(familyCode);
+        FamilyReadResponse familyReadResponse = new FamilyReadResponse(babyReadResponseList);
         log.info("familyReadResponse : " + familyReadResponse);
         return familyReadResponse;
     }
