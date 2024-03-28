@@ -10,6 +10,7 @@ import com.ssafy.c202.formybaby.baby.mapper.BabyMapper;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.fcm.service.FCMService;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.notification.repository.NotificationRepository;
 import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
@@ -36,6 +37,7 @@ public class BabyServiceImpl implements BabyService{
     private final BabyMapper babyMapper;
     private final FamilyMapper familyMapper;
     private final RedisService redisService;
+    private final NotificationRepository notificationRepository;
     @Override
     public void addBaby(BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
@@ -121,6 +123,7 @@ public class BabyServiceImpl implements BabyService{
 
     @Override
     public void deleteBaby(Long babyId) {
+        notificationRepository.deleteAllByBabyId(babyId);
         familyRepository.deleteFamiliesByBabyBabyId(babyId);
         babyRepository.deleteByBabyId(babyId);
     }
