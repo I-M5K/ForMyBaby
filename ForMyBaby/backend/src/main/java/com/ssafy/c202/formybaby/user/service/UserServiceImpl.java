@@ -219,7 +219,7 @@ public class UserServiceImpl implements UserService{
         for (String id : map.keySet()) {
             LatLon loc = map.get(id);
             double dist = baby.getDistance(loc);
-            int oldRank = familyRepository.findFamilyRankByUserId(Long.valueOf(id));
+            int oldRank = familyRepository.findFamilyRankByUserId(Long.valueOf(id), Long.valueOf(babyId));
             String token = userRepository.findFcmTokenByUserId(Long.valueOf(id));
             if(dist <= 0.5) {
                 familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 1);
