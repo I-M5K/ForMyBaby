@@ -24,7 +24,7 @@ export const deleteNotification = async (notificationId) => {
 export const deleteNotificationAll = async () => {
     console.log('모든 알림 삭제하기!');
     try {
-        await axiosWrapper.delete(`/v1/notification`);
+        await axiosWrapper.delete('/v1/notification/deleteall');
         console.log('모든 알림 삭제 완료!');
     } catch(error) {
         console.log('모든 알림 삭제 에러 발생!');
@@ -53,3 +53,23 @@ export const getNotificationSetting = async () => {
       console.error('알림 설정 에러', error);
     }
 };
+
+export const checkNotification = async (notificationId) => {
+  console.log('해당 알림 확인하기!');
+  try {
+      await axiosWrapper.patch(`/v1/notification/check/${notificationId}`);
+      console.log('알림 확인 완료!');
+  } catch(error) {
+      console.log('알림 확인 에러 발생!');
+  }
+};
+
+export const checkNotificationAll = async () => {
+  console.log("모든 알림 확인하기!");
+  try {
+    await axiosWrapper.patch('/v1/notification/check/all');
+    console.log('알림 확인 완료!');
+} catch(error) {
+    console.log('알림 확인 에러 발생!');
+}
+}
