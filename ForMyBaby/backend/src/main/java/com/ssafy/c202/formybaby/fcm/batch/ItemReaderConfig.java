@@ -20,6 +20,7 @@ import java.util.Collections;
 public class ItemReaderConfig {
 
     private final EntityManagerFactory emf;
+    private final DataShareBean<Family> generalShareBean;
 
 
     @Bean
@@ -28,7 +29,7 @@ public class ItemReaderConfig {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate limit = LocalDate.now().minusYears(13);
         LocalDate formattedDate = LocalDate.parse(limit.format(formatter));
-
+        generalShareBean.map().clear();
         String query = "SELECT f FROM Family f JOIN FETCH f.user u JOIN FETCH f.baby b " +
                 "WHERE b.birthDate >= :startDate AND u.isGeneral = true";
         return new JpaPagingItemReaderBuilder<Family>()
