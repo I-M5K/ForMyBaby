@@ -89,7 +89,7 @@ public class BabyServiceImpl implements BabyService{
         //새로운 아이 등록 시 아이 번호 레디스에 저장.
         redisService.saveBabyIdsByToken(userId, baby.getBabyId());
 
-        FamilyReadResponse familyReadResponse = new FamilyReadResponse(familyCode);
+        FamilyReadResponse familyReadResponse = new FamilyReadResponse(babyReadResponseList);
         log.info("familyReadResponse : " + familyReadResponse);
         return familyReadResponse;
     }
