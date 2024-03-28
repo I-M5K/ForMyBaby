@@ -95,7 +95,12 @@ public class UserServiceImpl implements UserService{
         return user;
     }
 
-//    @Override
+    @Override
+    public void changeBaby(String token, Long babyId) {
+        redisService.saveBabyIdsByToken(redisService.getUserIdByToken(token),babyId);
+    }
+
+    //    @Override
 //    public void deleteUser(String token) {
 //        String redisGetUserId = redisService.getUserIdByToken(token);
 //        // Redis에서 가져온 값이 null이 아니고, 길이가 충분히 길다면

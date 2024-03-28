@@ -133,13 +133,13 @@ public class DangerServiceImpl implements DangerService {
         if (!dangerList.isEmpty()) {
             // dangerList가 비어있지 않은 경우에만 첫 번째 Danger 엔티티를 가져옴
             Danger firstDanger = dangerList.get(0);
-
+            Danger danger = new Danger();
             // Danger 엔티티를 수정하여 저장
-            firstDanger.setDangerCnt(firstDanger.getDangerCnt() + 1);
-            firstDanger.setCreatedAt(dangerCreateRequest.createdAt());
-            firstDanger.setDangerType(dangerCreateRequest.dangerType());
-            firstDanger.setBaby(baby);
-            dangerRepository.save(firstDanger);
+            danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
+            danger.setCreatedAt(dangerCreateRequest.createdAt());
+            danger.setDangerType(dangerCreateRequest.dangerType());
+            danger.setBaby(baby);
+            dangerRepository.save(danger);
         } else {
             // dangerList가 비어있는 경우 새로운 Danger 엔티티를 생성하여 저장
             Danger newDanger = new Danger();
