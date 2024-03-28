@@ -9,7 +9,7 @@ import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
 import java.util.List;
 
 public interface BabyService {
-    FamilyReadResponse createNewBaby2(String token, BabyCreateRequest babyCreateRequest);
+    FamilyReadResponse createNewBabyNoShareCode(String token, BabyCreateRequest babyCreateRequest);
 
     void addBaby(BabyCreateRequest babyCreateRequest);
 

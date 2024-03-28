@@ -61,10 +61,10 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public String createContent(Family family, NotificationType type, Health health) {
         if(health.getHealthId() == 1) {
-            return StringCheck.getPostWord(health.getHealthTitle(), "은 ", "는 ") + health.getStartAt()
+            return StringCheck.getPostWord(health.getHealthTitle(), "은 ", "는 생후 ") + health.getStartAt()
                     + "일에서 " + health.getEndAt() + "일 사이에 검진 받아야 합니다.";
         }
-        return StringCheck.getPostWord(health.getHealthTitle(), "은 ", "는 ") + health.getStartAt()
+        return StringCheck.getPostWord(health.getHealthTitle(), "은 ", "는 생후 ") + health.getStartAt()
                 + "개월에서 " + health.getEndAt() + "개월 사이에 검진 받아야 합니다.";
     }
 
