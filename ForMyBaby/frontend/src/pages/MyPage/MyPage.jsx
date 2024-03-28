@@ -12,7 +12,7 @@ const MyPage = () => {
 
     return (
         <div className='mypage'>
-            <p className='mypage-title'>마이페이지</p>
+            {/* <p className='mypage-title'>마이페이지</p> */}
             <Profile />
             <hr/>
             <ChildInfo />

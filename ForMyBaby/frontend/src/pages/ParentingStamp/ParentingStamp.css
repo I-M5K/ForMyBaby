@@ -1,13 +1,12 @@
 .ParentingStamp {
     position: relative;
-    padding: 20px;
     overflow: hidden; 
 }
 
 .parenstamp-title {
     text-align: center;
-    font-size: 30px;
-    margin-bottom: 20px;
+    font-size: 20px;
+    margin: 20px;
 }
 
 .parenstamp-header button {
