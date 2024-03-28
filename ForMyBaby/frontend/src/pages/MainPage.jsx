@@ -7,7 +7,7 @@ import { sendLocation } from '../api/userApi';
 import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { useUserStore } from '../stores/UserStore'; // Zustand 스토어 import
 
-import BabyPhoto from '../assets/bangabanga.png'
+import BabyPhoto from '../assets/child_sleep.jpg'
 import Books from '../assets/books.png'
 import SleepChart from '../assets/sleepChart.png'
 import Syringe from '../assets/syringe.png'
@@ -32,14 +32,14 @@ const MainPage = () => {
   }, [location]);
 
   return (
-    <div className="container">
-      <div className="header">
-        <span className="headerText">
-            지금은 무준이가<br />
+    <div className="main-container">
+      <div className="main-header">
+        <span className="main-headerText">
+            지금은 땡구가<br />
             낮잠 잘 시간이에요!
         </span>
         <Link to="/notification">
-          <div className="notificationIcon">
+          <div className="main-notificationIcon">
             <img src={require('../assets/mdi_bell.png')} alt="Notification Bell"/>
           </div>
         </Link>
@@ -47,61 +47,63 @@ const MainPage = () => {
       <img src={require('../assets/babybear.png')} className="gombaImage" alt="Baby Bear" />
       <Link to="/present">
         <div className="rectangleBox">
-          <span className="rectangleBoxText">
+          <img src={PresentBox} className='presentbox' />
+          <div className="rectangleBoxText">
             100% 채우면 과연 어떤 선물이?
-          </span>
+          </div>
         </div>
       </Link>
 
-      <div className="boxContainerRight">
-        <Link to="/my-page">
-          <div className="smallmiddleBox">
-            <img src={BabyPhoto} className='babyphoto' />
-          </div>
-        </Link>
-        <Link to="/sleep-pattern">
-          <div className="smallBox">
-              <span className="boxText">
-                <span className="textSmall">우리아이</span><br />
-                <span className="textLarge">수면패턴</span>
-              </span>
-                <img src={SleepChart} className='syringe' />
-          </div>
-        </Link>
-      </div>
-      
-      <div className="boxContainerLeft">
-        <Link to="/baby-age">
-          <div className="smallBox">
-              <span className="boxText">
-                  <span className="textLarge">무준이가 태어난지</span><br />
-                  <span className="textExSmall">
-                    '72'
-                    일 되었어요
-                  </span>
-              </span>
-          </div>
-        </Link>
-        <Link to="/timeline">
-          <div className="smallBox">
-              <span className="boxText">
-                <span className="textSmall">이번주</span><br />
-                <span className="textLarge">건강/검진</span>
-              </span>
-                <img src={Syringe} className='syringe' />
-          </div>
-        </Link>
-        <Link to="/parenting-tips">
-          <div className="smallBox">
-              <span className="boxText">
-                <span className="textSmall">우리아이</span><br />
-                <span className="textLarge">육아꿀팁</span>
-              </span>
-                <img src={Books} className='syringe' />
-          </div>
-        </Link>
-      </div>
+      <div className="main-content">
+        <div className="boxContainerLeft">
+          <Link to="/baby-age">
+            <div className="smallBox">
+                <span className="boxText">
+                    <span className="textLarge">땡구가 태어난지</span><br />
+                    <span className="textExSmall">
+                      '72'
+                      일 되었어요
+                    </span>
+                </span>
+            </div>
+          </Link>
+          <Link to="/timeline">
+            <div className="smallBox">
+                <span className="boxText">
+                  <span className="textSmall">이번주</span><br />
+                  <span className="textLarge">건강/검진</span>
+                </span>
+                  <img src={Syringe} className='syringe' />
+            </div>
+          </Link>
+          <Link to="/parenting-tips">
+            <div className="smallBox">
+                <span className="boxText">
+                  <span className="textSmall">우리아이</span><br />
+                  <span className="textLarge">육아꿀팁</span>
+                </span>
+                  <img src={Books} className='syringe' />
+            </div>
+          </Link>
+        </div>
 
+        <div className="boxContainerRight">
+          <Link to="/my-page">
+            <div className="smallmiddleBox">
+              <img src={BabyPhoto} className='babyphoto' />
+            </div>
+          </Link>
+          <Link to="/sleep-pattern">
+            <div className="smallBox">
+                <span className="boxText">
+                  <span className="textSmall">우리아이</span><br />
+                  <span className="textLarge">수면패턴</span>
+                </span>
+                  <img src={SleepChart} className='syringe' />
+            </div>
+          </Link>
+        </div>
+      </div>
       <NavBar />
     </div>
   );

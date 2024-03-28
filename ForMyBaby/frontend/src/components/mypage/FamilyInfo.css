@@ -12,7 +12,6 @@
 .family-container {
     max-width: 350px;
     display: flex;
-    padding: 10px;
     overflow-x: auto;
     scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
     -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨기기 */
@@ -21,7 +20,7 @@
 .family-member {
     flex: 0 0 auto;
     position: relative;
-    margin: 10px;
+    margin: 5px;
     padding: 10px;
 }
 
