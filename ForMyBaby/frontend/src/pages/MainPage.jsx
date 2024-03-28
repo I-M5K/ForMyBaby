@@ -31,6 +31,10 @@ const MainPage = () => {
     fetchData();
   }, [location]);
 
+  const handleLogout = () => {
+    localStorage.clear();
+  };
+
   return (
     <div className="main-container">
       <div className="main-header">
@@ -104,6 +108,10 @@ const MainPage = () => {
           </Link>
         </div>
       </div>
+
+      <Link to="/">
+        <button onClick={() => handleLogout()} className='logout-btn'>로그아웃</button>
+      </Link>
       <NavBar />
     </div>
   );

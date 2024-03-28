@@ -55,6 +55,7 @@ function App() {
         <Routes>
         {/* 시작 페이지 */}
           <Route path="/" element={<MainPage />} />
+          <Route path="/kakao" element={<TutorialAndLogin />} />
           <Route path="/oauth/redirected/kakao" element={<KakaoRedirectPage />} />
           <Route path="/agree" element={<AgreePage />} />
           <Route path="/welcome" element={<WelcomePage />} />
