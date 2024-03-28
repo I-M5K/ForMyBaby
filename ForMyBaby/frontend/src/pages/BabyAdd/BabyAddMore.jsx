@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './BabyAdd.css';
 import { useUserStore } from '../../stores/UserStore';
-import { addBabyInfo } from '../../api/userApi';
+import { addFirstBabyInfo } from '../../api/userApi';
 import BabyGender from '../../api/BabyGender';
 
 const BabyAddPage = () => {
@@ -48,9 +48,11 @@ const BabyAddPage = () => {
             //formData.append('role', "엄마");
 
             try {
-                const data = await addBabyInfo(formData); // API 호출
+                const data = await addFirstBabyInfo(formData); // API 호출
                 console.log('Baby information submitted successfully!');
                 console.log(data);
+                const babyList = data.babyReadResponseList;
+                setBabyList(babyList);
                 //setBabyList(data);
             } catch (error) {
                 console.error(error);
