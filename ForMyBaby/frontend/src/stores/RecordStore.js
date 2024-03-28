@@ -2,9 +2,9 @@ import create from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 export const useRecordStore = create(persist((set) => ({
-    danger: 0,
-    hours: 0,
-    awake: 0,
+    danger: null,
+    hours: null,
+    awake: null,
     setDanger: (danger) => set({ danger: danger }),
     setHours: (hours) => set({ hours: hours }),
     setAwake: (awake) => set({ awake: awake}),

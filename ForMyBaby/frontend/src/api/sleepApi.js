@@ -14,7 +14,7 @@ export const getTodayData = async () => {
 export const getWeekData = async (timeData) => {
     console.log('1주일 데이터 가져오기!');
     try {
-        await axiosWrapper.delete(`/v1/sleep/week/${timeData}`);
+        const response = await axiosWrapper.delete(`/v1/sleep/week/${timeData}`);
         console.log('1주일 데이터 가져오기 완료!', response.data);
         return response.data;
     } catch(error) {
@@ -42,7 +42,7 @@ export const sendAwake = async (data) => {
 
 export const sendDanger = async (data) => {
     try {
-        await axiosWrapper.post('/v1/sleep/danger', data); // 받은 data를 그대로 전송
+        await axiosWrapper.post('/v1/danger', data); // 받은 data를 그대로 전송
         console.log('위험 이벤트 완료!');
     } catch (error) {
         throw new Error('위험 이벤트 저장 실패', error);
