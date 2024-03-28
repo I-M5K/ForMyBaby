@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NotificationBox from '../../components/notification/NotificationBox';
 import { useNotificationStore } from '../../stores/NotificationStore'; // Zustand 스토어 import
+import { useUserStore } from '../../stores/UserStore';
 import { Link } from 'react-router-dom'; // Link 컴포넌트 import
 import arrowLeft from '../../assets/arrow_left.png'
 
@@ -8,6 +9,7 @@ import './NotificationPage.css'
 
 const NotificationPage = () => {
  const { notifications, fetchNotificationList, deleteNotificationById, deleteAllNotifications } = useNotificationStore();
+ const { uncheckdCnt, setUncheckedCnt } = useUserStore();
  //const {  deleteNotificationById, deleteAllNotifications } = useNotificationStore();
   useEffect(() => {
     fetchNotificationList(); // 페이지가 처음 렌더링될 때 알림 데이터를 가져옴

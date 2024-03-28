@@ -6,7 +6,7 @@ import { addBabyInfo, addFirstBabyInfo } from '../../api/userApi';
 import BabyGender from '../../api/BabyGender';
 
 const BabyAddPage = () => {
-    const { family, setFamily, id, babyList, setBabyList } = useUserStore();
+    const { family, setFamily, id, babyList, setBabyList, babySelected, setBabySelected } = useUserStore();
 
     const [babyName, setBabyName] = useState('');
     const [babyGender, setBabyGender] = useState('');
@@ -55,6 +55,9 @@ const BabyAddPage = () => {
                     const data = await addFirstBabyInfo(formData); // API 호출
                     console.log('First Baby information submitted successfully!');
                     const babyList = data.babyReadResponseList;
+                    if (babySelected == null){
+                        setBabySelected(babyList[0].babyId);
+                    }
                     setBabyList(babyList);
                     console.log(babyList[0].familyCode)
                     setFamily(babyList[0].familyCode);
@@ -69,6 +72,9 @@ const BabyAddPage = () => {
                     console.log('Baby information submitted successfully!');
                     console.log(data);
                     const babyList = data.babyReadResponseList;
+                    if (babySelected == null){
+                        setBabySelected(babyList[0].babyId);
+                    }
                     setBabyList(babyList);
                     //setBabyList(data);
                 } catch (error) {
