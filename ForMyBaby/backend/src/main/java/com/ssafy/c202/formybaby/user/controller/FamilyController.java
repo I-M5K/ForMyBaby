@@ -35,15 +35,16 @@ public class FamilyController {
     public ResponseEntity<List<BabyReadResponse2>> checkFamily(@RequestHeader(name = "Authorization") String token,
                                                                @RequestParam(name = "familyCode") String familyCode){
         FamilyCodeUpdateRequest familyCodeUpdateRequest = new FamilyCodeUpdateRequest(familyCode, Role.None);
-
- //       try{
+        log.info("familyCodeUpdateRequest : " + familyCodeUpdateRequest);
+        try{
             return new ResponseEntity<List<BabyReadResponse2>>(familyService.checkFamily(token,familyCodeUpdateRequest),HttpStatus.OK);
-//        }catch (Exception e){
-//            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-//        }
+        }catch (Exception e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
     }
     @PostMapping("/role")
     public ResponseEntity<?> joinFamilyWithShareCode(@RequestHeader(name = "Authorization") String token, @RequestBody FamilyCodeCreateRequest familyCodeCreateRequest){
+        log.info("familyCodeCreateRequest : {}" + familyCodeCreateRequest);
         List<BabyReadResponse2> babyReadResponse2List = familyService.joinFamilyWithShareCode(token, familyCodeCreateRequest);
         try{
             return new ResponseEntity<>(babyReadResponse2List,HttpStatus.OK);

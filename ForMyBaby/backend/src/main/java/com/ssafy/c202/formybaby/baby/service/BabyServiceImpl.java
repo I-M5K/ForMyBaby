@@ -24,6 +24,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -69,24 +70,30 @@ public class BabyServiceImpl implements BabyService{
         log.info("Baby : " + baby);
         String familyCode = RandomStringUtils.randomAlphanumeric(6);
         log.info("familyCode : " + familyCode);
-        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
-        familyRepository.save(family);
         String uploadFileName = awsS3Service.uploadFile(babyCreateRequest.files());
         baby.setProfileImg(uploadFileName);
         babyRepository.save(baby);
+        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+        familyRepository.save(family);
 
-        // 현재 db에서 baby목록 가져와서
-        List<BabyReadResponse> babyReadResponseList = babyRepository.findBabiesByFamilyCode(familyCode);
-        for(BabyReadResponse babyReadResponse : babyReadResponseList){
-            if(baby.getBabyId() == null || baby.getBabyId()<= babyReadResponse.babyId())
-            baby.setBabyId(babyReadResponseList.get(0).babyId());
-        }
+        List<BabyReadResponse> babyReadResponseList = new ArrayList<>();
+
+        BabyReadResponse babyReadResponse = new BabyReadResponse(
+                baby.getBabyId(),
+                baby.getBabyName(),
+                baby.getBirthDate(),
+                baby.getBabyGender(),
+                baby.getProfileImg(),
+                family.getFamilyCode(),
+                family.getRole()
+        );
+
+        babyReadResponseList.add(babyReadResponse);
+
         log.info("babyReadResponseList :" + babyReadResponseList);
 
-        String userId = redisService.getUserIdByToken(token);
-
         //새로운 아이 등록 시 아이 번호 레디스에 저장.
-        redisService.saveBabyIdsByToken(userId, baby.getBabyId());
+        redisService.saveBabyIdsByToken(redisService.getUserIdByToken(token), baby.getBabyId());
 
         FamilyReadResponse familyReadResponse = new FamilyReadResponse(babyReadResponseList);
         log.info("familyReadResponse : " + familyReadResponse);
