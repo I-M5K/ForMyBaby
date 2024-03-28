@@ -52,6 +52,7 @@ public class ItemProcessorConfig {
                 boolean isDay = false;
                 boolean isWeek = false;
                 LocalDate birthDate = family.getBaby().getBirthDate();
+                String fcmToken = family.getUser().getFcmToken();
                 int startAt = health.getStartAt();
                 if(health.getHealthId() == 1) {
                     if(today.isEqual(birthDate.plusDays(7))){
@@ -68,10 +69,10 @@ public class ItemProcessorConfig {
                     }
                 }
                 if(isWeek) {
-                    FCMMessage message = fcmService.toGeneralFcm(family.getFamilyCode(),
+                    FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, health),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, health),
-                            "health");
+                            fcmToken, "health");
 
                     log.info("HEALTH NOTIFICATION : {}", message);
 
@@ -82,10 +83,10 @@ public class ItemProcessorConfig {
                             notificationService.createContent(family, NotificationType.generalHealthWeek, health)));
                 }
                 if(isDay) {
-                    FCMMessage message = fcmService.toGeneralFcm(family.getFamilyCode(),
+                    FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, health),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, health),
-                            "health");
+                            fcmToken, "health");
 
                     log.info("HEALTH NOTIFICATION : {}", message);
 
@@ -109,6 +110,7 @@ public class ItemProcessorConfig {
             generalShareBean.map().forEach((s, family) -> {
                 boolean isDay = false;
                 boolean isWeek = false;
+                String fcmToken = family.getUser().getFcmToken();
                 LocalDate birthDate = family.getBaby().getBirthDate();
                 LocalDate target = birthDate.plusMonths(vaccine.getStartAt());
                 if(today.isEqual(target.minusWeeks(1))) {
@@ -118,10 +120,10 @@ public class ItemProcessorConfig {
                 }
 
                 if(isWeek) {
-                    FCMMessage message = fcmService.toGeneralFcm(family.getFamilyCode(),
+                    FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, vaccine),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, vaccine),
-                            "vaccine");
+                            fcmToken, "vaccine");
 
                     log.info("VACCINE NOTIFICATION : {}", message);
 
@@ -132,10 +134,10 @@ public class ItemProcessorConfig {
                             notificationService.createContent(family, NotificationType.generalHealthWeek, vaccine)));
                 }
                 if(isDay) {
-                    FCMMessage message = fcmService.toGeneralFcm(family.getFamilyCode(),
+                    FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, vaccine),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, vaccine),
-                            "vaccine");
+                            fcmToken, "vaccine");
 
                     log.info("VACCINE NOTIFICATION : {}", message);
 

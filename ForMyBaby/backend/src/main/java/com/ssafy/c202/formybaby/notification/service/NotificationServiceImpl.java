@@ -45,10 +45,10 @@ public class NotificationServiceImpl implements NotificationService{
     public String createTitle(Family family, NotificationType type, Health health) {
         if(type.equals(NotificationType.generalHealthDay)) {
             return StringCheck.getPostWord(family.getBaby().getBabyName().substring(1), "이", "") + "의 "
-                    + StringCheck.getPostWord(health.getHealthTitle(), "이", "가") + "1일 전입니다.";
+                    + StringCheck.getPostWord(health.getHealthTitle(), "이 ", "가 ") + "1일 전입니다.";
         } else {
             return StringCheck.getPostWord(family.getBaby().getBabyName().substring(1), "이", "") + "의 "
-                    + StringCheck.getPostWord(health.getHealthTitle(), "이", "가") + "7일 전입니다.";
+                    + StringCheck.getPostWord(health.getHealthTitle(), "이 ", "가 ") + "7일 전입니다.";
         }
     }
 
@@ -61,10 +61,10 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public String createContent(Family family, NotificationType type, Health health) {
         if(health.getHealthId() == 1) {
-            return StringCheck.getPostWord(health.getHealthTitle(), "은", "는") + health.getStartAt()
+            return StringCheck.getPostWord(health.getHealthTitle(), "은 ", "는 ") + health.getStartAt()
                     + "일에서 " + health.getEndAt() + "일 사이에 검진 받아야 합니다.";
         }
-        return StringCheck.getPostWord(health.getHealthTitle(), "은", "는") + health.getStartAt()
+        return StringCheck.getPostWord(health.getHealthTitle(), "은 ", "는 ") + health.getStartAt()
                 + "개월에서 " + health.getEndAt() + "개월 사이에 검진 받아야 합니다.";
     }
 

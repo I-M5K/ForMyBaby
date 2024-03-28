@@ -14,8 +14,8 @@ public class FCMMessage {
 
     private String body;
 
-    private String key;
-
     private String topic;
+
+    private String type;
 
 }

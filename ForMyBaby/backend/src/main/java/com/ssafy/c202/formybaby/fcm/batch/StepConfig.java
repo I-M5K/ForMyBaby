@@ -31,6 +31,7 @@ public class StepConfig {
         return new StepBuilder("getFamily", jobRepository)
                 .<Family, Family>chunk(CHUNK_SIZE, transactionManager)
                 .reader(generalFamilyReader)
+//                .processor()
                 .writer(generalFamilyWriter)
                 .build();
     }
