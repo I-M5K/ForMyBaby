@@ -16,13 +16,13 @@ const SleepStatusContent = () => {
     const awake = 2;
 
     const data = {
-      labels: ['Temperature', 'Humidity', 'Danger', 'Hours', 'Awake'],
+      labels: ['온도', '습도', '위험 감지', '수면 총 시간', '기상 횟수'],
       datasets: [
         {
           label: 'Value',
           backgroundColor: ['#5cb85c', '#5bc0de', '#f0ad4e', '#5bc0de', '#d9534f'],
           data: [temperature, humidity, danger, hours, awake],
-          barThickness: 30 // 막대 두께 조절
+          barThickness: 20 // 막대 두께 조절
         }
       ]
     };
@@ -53,8 +53,8 @@ const SleepStatusContent = () => {
   
     return (
         <div className="sleep-status-content">
-        <p className='sleep-title'>오늘의 수면 현황</p>
-        <div className="sleep-status">
+        <p className='sleep-status-title'>오늘의 수면 현황</p>
+        <div className="sleep-status-chart">
           <div className="sleep-status-item">
             <Bar data={data} options={options} />
           </div>
