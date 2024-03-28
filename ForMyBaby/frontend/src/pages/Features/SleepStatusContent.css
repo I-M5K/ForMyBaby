@@ -1,22 +1,16 @@
-
 .sleep-status-content {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .sleep-status-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .sleep-status-chart {
-    margin-top: 20px;
-  }
-  
-  .sleep-status-item {
-    margin-bottom: 20px;
-  }
-  
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.sleep-status-title {
+  font-size: 20px; /* 제목 크기를 더 크게 */
+  font-weight: bold;
+  text-align: left; /* 가운데 정렬 */
+  padding-top: 20px;
+  margin-left: 10px;
+}
+
