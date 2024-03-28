@@ -118,3 +118,16 @@
 .smallmiddleBox {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 수평으로 0px, 수직으로 4px, 흐림 정도 8px, 색상은 rgba(0, 0, 0, 0.1) */
 }
+
+.logout-btn {
+  display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    color: black;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
