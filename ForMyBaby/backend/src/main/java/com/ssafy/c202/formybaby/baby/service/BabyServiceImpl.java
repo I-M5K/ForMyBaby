@@ -35,7 +35,6 @@ public class BabyServiceImpl implements BabyService{
     private final UserRepository userRepository;
     private final BabyMapper babyMapper;
     private final FamilyMapper familyMapper;
-    private final FCMService fcmService;
     private final RedisService redisService;
     @Override
     public void addBaby(BabyCreateRequest babyCreateRequest) {
