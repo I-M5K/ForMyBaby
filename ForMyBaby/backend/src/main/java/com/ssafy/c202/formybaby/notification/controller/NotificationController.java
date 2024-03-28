@@ -9,6 +9,7 @@ import com.ssafy.c202.formybaby.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +37,18 @@ public class NotificationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteall/{userId}")
-    public ResponseEntity<?> deleteAllNotification (@PathVariable Long userId) {
-        notificationService.deleteAll(userId);
+    @DeleteMapping("/deleteall")
+    public ResponseEntity<?> deleteAllNotification (@RequestHeader(name="Authorization") String token) {
+        Long userId = Long.valueOf(redisService.getUserIdByToken(token));
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(token));
+        notificationService.deleteAll(userId, babyId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/check/{notificationId}")
+    public ResponseEntity<?> checkNotification(@RequestHeader(name="Authorization") String token,
+                                               @PathVariable Long notificationId) {
+        notificationService.checkNotification(notificationId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 //
