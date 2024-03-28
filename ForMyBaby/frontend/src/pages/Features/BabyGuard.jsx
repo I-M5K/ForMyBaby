@@ -71,13 +71,13 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <p className="title">우리 아이 지킴이</p>
+      <div className="sleep-title">우리 아이 지킴이</div>
       <div className="button-container">
         <button className={selectedButton === 'button1' ? 'bold' : ''} onClick={() => handleButtonClick('button1')}>대시보드</button>
         <button className={selectedButton === 'button2' ? 'bold' : ''} onClick={() => handleButtonClick('button2')}>상세</button>
         <button className={selectedButton === 'button3' ? 'bold' : ''} onClick={() => handleButtonClick('button3')}>변화</button>
       </div>
-      <div className="content">
+      <div className="babyguard-content">
         {selectedButton === 'button1' && (
           <div className="dashboard-content">
             <div className="video-content" >
