@@ -15,7 +15,7 @@ public class Health {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int healthId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String healthTitle;
 
     @Column(nullable = false)

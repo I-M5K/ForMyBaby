@@ -30,8 +30,7 @@ public class BatchScheduler {
 
     @Autowired
     private Job createVaccine;
-
-    // 매일 1시에 실행
+    // 매일 3시에 실행
     @Scheduled(cron = "0 0 3 * * *")
 //    @Scheduled(cron = "0/10 * * * * *")
     public void runJobs() throws Exception {

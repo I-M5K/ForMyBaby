@@ -13,11 +13,11 @@ public class Family {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "baby_id")
     private Baby baby;
 

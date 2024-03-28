@@ -28,4 +28,6 @@ public interface NotificationService {
     SettingReadResponse updateSetting(SettingUpdateRequest settingUpdateRequest, Long userId);
     void delete(Long notificationId);
     void deleteAll(Long userId, Long babyId);
+
+    void checkAll(Long userId, Long babyId);
 }

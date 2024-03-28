@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import StampMap from '../../../assets/paren_stamp_map.png';
-import MoonBaby from '../../../assets/presentbaby.png'
+import MoonBaby from '../../../assets/child_sleep.jpg'
 import InfoModal from './InfoModal'
 import './StampPage.css'; 
 
 const AgeGroup4To6Months = () => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -14,19 +15,19 @@ const AgeGroup4To6Months = () => {
     <div className="age-group-container">
       <div className="image-container">
         <img src={StampMap} alt="Stamp Map" className="stamp-map" />
-        <button className="stamp-button" style={{ top: '5.5%', left: '47.5%' }} onClick={openModal}>
+        <button className="stamp-button" style={{ top: '1.5%', left: '47%' }} onClick={openModal}>
           <img src={MoonBaby} alt="" />
         </button>
-        <button className="stamp-button" style={{ top: '22.5%', left: '8%' }} onClick={openModal}>
+        <button className="stamp-button" style={{ top: '19.8%', left: '7%' }} onClick={openModal}>
           <img src={MoonBaby} alt="" />
         </button>
-        <button className="stamp-button" style={{ top: '32%', left: '62.5%' }} onClick={openModal}>
+        <button className="stamp-button" style={{ top: '30.2%', left: '62.7%' }} onClick={openModal}>
           <img src={MoonBaby} alt="" />
         </button>
-        <button className="stamp-button" style={{ top: '65.5%', left: '70%' }} onClick={openModal}>
+        <button className="stamp-button" style={{ top: '65%', left: '70%' }} onClick={openModal}>
           <img src={MoonBaby} alt="" />
         </button>
-        <button className="stamp-button" style={{ top: '72%', left: '16%' }} onClick={openModal}>
+        <button className="stamp-button" style={{ top: '74%', left: '23%' }} onClick={openModal}>
           <img src={MoonBaby} alt="" />
         </button>
       </div>
