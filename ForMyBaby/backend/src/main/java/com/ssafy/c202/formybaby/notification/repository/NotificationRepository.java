@@ -18,16 +18,16 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     @Query("SELECT n " +
             "FROM Notification n " +
-            "WHERE n.user.userId = :userId AND n.isChecked=false")
-    List<Notification> findAllUncheckedByUserId(Long userId);
+            "WHERE n.user.userId = :userId AND n.baby.babyId = :babyId AND n.isChecked=false")
+    List<Notification> findAllUncheckedByUserId(Long userId, Long babyId);
 
     @Query("SELECT COUNT(n) " +
             "FROM Notification n " +
-            "WHERE n.user.userId = :userId AND n.isChecked=false")
-    int findUncheckedCountByUserId(Long userId);
+            "WHERE n.user.userId = :userId AND n.baby.babyId=:babyId AND n.isChecked=false")
+    int findUncheckedCountByUserId(Long userId, Long babyId);
 
-    @Query("SELECT COUNT(n) FROM Notification n WHERE n.user.userId = :userId")
-    int findAllCntByUserId(Long userId);
+    @Query("SELECT COUNT(n) FROM Notification n WHERE n.user.userId = :userId AND n.baby.babyId = :babyId")
+    int findAllCntByUserId(Long userId, Long babyId);
 
     @Query("SELECT u.isGeneral, u.isDanger, u.isSound from User u where u.userId=:userId")
     SettingReadResponse findSettingByUserId(Long userId);
@@ -40,6 +40,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
                                               Long userId);
 
     void deleteByNotificationId(Long notificationId);
-    @Query("DELETE FROM Notification n WHERE n.user.userId = : userId")
-    void deleteAllByUserId(Long userId);
+    @Query("DELETE FROM Notification n WHERE n.user.userId = :userId AND n.baby.babyId = :babyId")
+    void deleteAllByUserId(Long userId, Long babyId);
 }
