@@ -13,7 +13,7 @@ public class Vaccine {
     @Column(nullable = false)
     private String target;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String type;
 
     @Column(nullable = false)

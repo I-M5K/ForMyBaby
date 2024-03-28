@@ -2,6 +2,7 @@ package com.ssafy.c202.formybaby.notification.dto.response;
 
 import com.ssafy.c202.formybaby.global.jpaEnum.NotificationType;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public record NotificationReadResponse(
@@ -10,6 +11,6 @@ public record NotificationReadResponse(
         String title,
         String content,
         Boolean isChecked,
-        LocalDate createdAt
+        Timestamp createdAt
 ) {
 }
