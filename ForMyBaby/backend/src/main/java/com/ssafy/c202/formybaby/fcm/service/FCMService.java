@@ -2,6 +2,7 @@ package com.ssafy.c202.formybaby.fcm.service;
 
 import com.google.firebase.FirebaseException;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.ssafy.c202.formybaby.fcm.entity.FCMMessage;
@@ -10,6 +11,8 @@ import com.ssafy.c202.formybaby.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -88,5 +91,12 @@ public class FCMService {
 
     public void send(Message message) throws FirebaseException {
         firebaseMessaging.sendAsync(message);
+    }
+
+    public void unsubscribe(String token, String topic) throws FirebaseMessagingException {
+        firebaseMessaging.unsubscribeFromTopic(Arrays.asList(token), topic);
+    }
+    public void subscribe(String token, String topic) throws FirebaseMessagingException {
+        firebaseMessaging.subscribeToTopic(Arrays.asList(token), topic);
     }
 }

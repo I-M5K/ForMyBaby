@@ -1,4 +1,3 @@
-
 spring:
   #db
   datasource:
@@ -9,7 +8,7 @@ spring:
   #batch
   batch:
     job:
-      name: createHealth
+      name: dataShareBeanJob
     jdbc:
       initialize-schema: always
   #jpa

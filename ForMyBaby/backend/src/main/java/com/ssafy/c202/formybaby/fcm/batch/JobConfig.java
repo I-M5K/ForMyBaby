@@ -16,6 +16,13 @@ import org.springframework.context.annotation.Configuration;
 public class JobConfig {
     public static final Integer CHUNK_SIZE = 100;
 
+    @Bean(name="dataShareBeanJob")
+    public Job createDataShareBean (JobRepository jobRepository, Step getFamily) {
+        return new JobBuilder("dataShareBeanJob", jobRepository)
+                .incrementer(new RunIdIncrementer())
+                .start(getFamily)
+                .build();
+    }
     @Bean(name = "createHealth")
     public Job createHealth(JobRepository jobRepository, Step getFamily, Step getHealth) {
         return new JobBuilder("createHealth", jobRepository)

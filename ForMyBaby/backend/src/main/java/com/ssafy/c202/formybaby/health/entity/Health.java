@@ -24,4 +24,5 @@ public class Health {
     @Column(nullable = false)
     private int endAt;
 
+
 }

@@ -1,9 +1,14 @@
 package com.ssafy.c202.formybaby.user.service;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
+import com.ssafy.c202.formybaby.fcm.service.FCMService;
 import com.ssafy.c202.formybaby.global.jpaEnum.Role;
+import com.ssafy.c202.formybaby.global.redis.LatLon;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.notification.entity.Notification;
+import com.ssafy.c202.formybaby.notification.repository.NotificationRepository;
 import com.ssafy.c202.formybaby.user.dto.request.UserUpdateRequest;
 import com.ssafy.c202.formybaby.user.dto.response.UserProfileResponse;
 import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
@@ -15,12 +20,10 @@ import com.ssafy.c202.formybaby.user.repository.OauthRepository;
 import com.ssafy.c202.formybaby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Slf4j
@@ -29,13 +32,18 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
-    //private final RedisService redisService;
+    private final RedisService redisService;
 
     private final OauthRepository oauthRepository;
 
     private final FamilyRepository familyRepository;
 
     private final BabyRepository babyRepository;
+
+    private final FCMService fcmService;
+
+    private final NotificationRepository notificationRepository;
+
 
     @Override
     public UserReadResponse findUser(Long userId) {
@@ -111,6 +119,8 @@ public class UserServiceImpl implements UserService{
 
         List<Family> familyList = familyRepository.findFamiliesByUserUserId(user.getUserId());
 
+        List<Notification> notificationList = notificationRepository.findAllByUserUserId(user.getUserId());
+
         // 사용자가 존재하는 경우에만 삭제를 진행합니다.
         if (user != null) {
             // 연관된 다른 엔티티들도 함께 삭제할 필요가 있다면 여기에서 처리합니다.
@@ -124,6 +134,9 @@ public class UserServiceImpl implements UserService{
             }
 
             // 알림목록도 삭제하는 로직 추가해야함
+            for(Notification notification : notificationList){
+                notificationRepository.delete(notification);
+            }
 
             // 사용자를 삭제합니다.
             userRepository.delete(user);
@@ -186,6 +199,63 @@ public class UserServiceImpl implements UserService{
             return fcmToken;
         }catch (Exception e){
             return null;
+        }
+    }
+
+    @Override
+    public void setFCMToken(Long userId, String fcmToken) {
+        userRepository.updateFcmTokenByUserId(userId, fcmToken);
+    }
+
+    @Override
+    public void setLocation(Long userId, Double lat, Double lon) {
+        String familyCode = familyRepository.findFamilyCodeByUserId(userId);
+        Map<String, LatLon> map = redisService.setLocation(familyCode, userId, lat, lon);
+        String babyId = redisService.getBabyIdByToken(String.valueOf(userId));
+//        LatLon baby = map.remove(babyId);
+        LatLon baby = new LatLon(35.1483188, 126.9291854);
+        for (String id : map.keySet()) {
+            LatLon loc = map.get(id);
+            Double dist = baby.getDistance(loc);
+            int oldRank = familyRepository.findFamilyRankByUserId(Long.valueOf(id));
+            String token = userRepository.findFcmTokenByUserId(Long.valueOf(id));
+            if(dist <= 0.5) {
+                familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 1);
+                try {
+                    fcmService.unsubscribe(token, familyCode+"_"+oldRank);
+                } catch (FirebaseMessagingException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    fcmService.subscribe(token, familyCode+"_"+1);
+                } catch (FirebaseMessagingException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (dist <= 2) {
+                familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 2);
+                try {
+                    fcmService.unsubscribe(token, familyCode+"_"+oldRank);
+                } catch (FirebaseMessagingException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    fcmService.subscribe(token, familyCode+"_"+2);
+                } catch (FirebaseMessagingException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                familyRepository.updateRankByFamilyCode(Long.valueOf(id), Long.valueOf(babyId), 3);
+                try {
+                    fcmService.unsubscribe(token, familyCode+"_"+oldRank);
+                } catch (FirebaseMessagingException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    fcmService.subscribe(token, familyCode+"_"+3);
+                } catch (FirebaseMessagingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 }
