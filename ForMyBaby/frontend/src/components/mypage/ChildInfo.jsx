@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import './ChildInfo.css'
 
 import ChildPhoto from '../../assets/smilebaby.png'
 
 const ChildInfo = () => {
-const [children, setChildren] = useState([]);
+    const [children, setChildren] = useState([]);
+    const navigate = useNavigate()
 
-const addChild = () => {
-    setChildren([...children, { name: '김싸피', photo: 'child_photo_url' }]);
+    const addChild = () => {
+        setChildren([...children, { name: '김싸피', photo: 'child_photo_url' }]);
 };
 
 return (

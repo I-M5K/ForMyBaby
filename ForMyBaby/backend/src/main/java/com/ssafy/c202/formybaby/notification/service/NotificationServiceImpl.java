@@ -5,9 +5,9 @@ import com.ssafy.c202.formybaby.global.jpaEnum.NotificationType;
 import com.ssafy.c202.formybaby.global.util.StringCheck;
 import com.ssafy.c202.formybaby.health.entity.Health;
 import com.ssafy.c202.formybaby.notification.dto.request.SettingUpdateRequest;
+import com.ssafy.c202.formybaby.notification.dto.response.NotificationReadResponse;
 import com.ssafy.c202.formybaby.notification.dto.response.SettingReadResponse;
 import com.ssafy.c202.formybaby.notification.entity.Notification;
-import com.ssafy.c202.formybaby.notification.entity.NotificationCheck;
 import com.ssafy.c202.formybaby.notification.mapper.NotificationMapper;
 import com.ssafy.c202.formybaby.notification.repository.NotificationRepository;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
@@ -73,14 +73,10 @@ public class NotificationServiceImpl implements NotificationService{
         return null;
     }
 
-    @Override
-    public NotificationCheck createIsChecked(Long notificationId) {
-        return null;
-    }
 
     @Override
-    public List<Notification> getList(Long userId) {
-        return notificationRepository.findAllByUserUserId(userId);
+    public List<NotificationReadResponse> getList(Long userId, Long babyId) {
+        return notificationRepository.findListByUserId(userId, babyId);
     }
 
     @Override
@@ -105,7 +101,7 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void deleteAll(Long userId) {
-        notificationRepository.deleteAllByUserId(userId);
+    public void deleteAll(Long userId, Long babyId) {
+        notificationRepository.deleteAllByUserId(userId, babyId);
     }
 }
