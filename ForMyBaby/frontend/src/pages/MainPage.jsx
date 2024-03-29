@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Link 컴포넌트 import
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import './MainPage.css';
 import useGeoLocation from "../hooks/useGeolocation";
 import { sendLocation } from '../api/userApi';
 import { requestPermission } from "../FCM/firebase-messaging-sw";
-import { useUserStore } from '../stores/UserStore'; // Zustand 스토어 import
+import { useUserStore } from '../stores/UserStore';
 
-import BabyPhoto from '../assets/child_sleep.jpg'
-import Books from '../assets/books.png'
-import SleepChart from '../assets/sleepChart.png'
-import Syringe from '../assets/syringe.png'
-import PresentBox from '../assets/presentBox.png'
+import ChildSelect from '../components/babyselect/babyselect.jsx';
+
+import BabyPhoto from '../assets/child_sleep.jpg';
+import Books from '../assets/books.png';
+import SleepChart from '../assets/sleepChart.png';
+import Syringe from '../assets/syringe.png';
+import PresentBox from '../assets/presentBox.png';
 
 const MainPage = () => {
   const location = useGeoLocation();
@@ -38,16 +40,20 @@ const MainPage = () => {
     localStorage.clear();
   };
 
-  const handleNotificationClick = () => {
-    setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const toggleBottomSheet = () => {
+    setShowBottomSheet(!showBottomSheet);
+    setShowOverlay(!showOverlay);
   };
 
   return (
     <div className="main-container">
       <div className="main-header">
         <span className="main-headerText">
-            지금은 땡구가<br />
-            낮잠 잘 시간이에요!
+          지금은 땡구가<br />
+          낮잠 잘 시간이에요!
         </span>
         <Link to="/notification">
           <div className="main-notificationIcon" onClick={handleNotificationClick}>
@@ -72,52 +78,58 @@ const MainPage = () => {
         <div className="boxContainerLeft">
           <Link to="/baby-age">
             <div className="smallBox">
-                <span className="boxText">
-                    <span className="textLarge">땡구가 태어난지</span><br />
-                    <span className="textExSmall">
-                      '72'
-                      일 되었어요
-                    </span>
+              <span className="boxText">
+                <span className="textLarge">땡구가 태어난지</span><br />
+                <span className="textExSmall">
+                  '72'
+                  일 되었어요
                 </span>
+              </span>
             </div>
           </Link>
           <Link to="/timeline">
             <div className="smallBox">
-                <span className="boxText">
-                  <span className="textSmall">이번주</span><br />
-                  <span className="textLarge">건강/검진</span>
-                </span>
-                  <img src={Syringe} className='syringe' />
+              <span className="boxText">
+                <span className="textSmall">이번주</span><br />
+                <span className="textLarge">건강/검진</span>
+              </span>
+              <img src={Syringe} className='syringe' />
             </div>
           </Link>
           <Link to="/parenting-tips">
             <div className="smallBox">
-                <span className="boxText">
-                  <span className="textSmall">우리아이</span><br />
-                  <span className="textLarge">육아꿀팁</span>
-                </span>
-                  <img src={Books} className='syringe' />
+              <span className="boxText">
+                <span className="textSmall">우리아이</span><br />
+                <span className="textLarge">육아꿀팁</span>
+              </span>
+              <img src={Books} className='syringe' />
             </div>
           </Link>
         </div>
 
         <div className="boxContainerRight">
-          <Link to="/my-page">
-            <div className="smallmiddleBox">
-              <img src={BabyPhoto} className='babyphoto' />
-            </div>
-          </Link>
+          <div className="smallmiddleBox" onClick={toggleBottomSheet}>
+            <img src={BabyPhoto} className='babyphoto' />
+          </div>
           <Link to="/sleep-pattern">
             <div className="smallBox">
-                <span className="boxText">
-                  <span className="textSmall">우리아이</span><br />
-                  <span className="textLarge">수면패턴</span>
-                </span>
-                  <img src={SleepChart} className='syringe' />
+              <span className="boxText">
+                <span className="textSmall">우리아이</span><br />
+                <span className="textLarge">수면패턴</span>
+              </span>
+              <img src={SleepChart} className='syringe' />
             </div>
           </Link>
         </div>
       </div>
+
+      <div className={`bottomSheet ${showBottomSheet ? 'showBottomSheet' : ''}`}>
+        <div className="bottomSheetContent">
+          <ChildSelect handleClose={toggleBottomSheet} />
+        </div>
+      </div>
+
+      <div className={`overlay ${showOverlay ? 'showOverlay' : ''}`} onClick={toggleBottomSheet}></div>
 
       <Link to="/">
         <button onClick={() => handleLogout()} className='logout-btn'>로그아웃</button>

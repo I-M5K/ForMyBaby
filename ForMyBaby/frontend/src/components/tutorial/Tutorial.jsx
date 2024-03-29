@@ -61,7 +61,7 @@ export default function App() {
     <>
       <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
         {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={index} className='tutorial-swiper'>
             <div className="slide-content">
               <img src={slide.image} alt="이미지" className="slide-image" />
               <h2 className="slide-title">{slide.title}</h2>

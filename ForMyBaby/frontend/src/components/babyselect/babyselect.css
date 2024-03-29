@@ -1,0 +1,98 @@
+/* ChildSelect.css */
+
+.child-select-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .children-list {
+    width: 100%; /* 리스트 너비를 부모 요소에 맞춤 */
+  }
+  
+  .child-box {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  .child-box:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .selected {
+    background-color: #b3ffb3;
+  }
+  
+  .child-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 10px;
+  }
+  
+  .child-info {
+    display: flex; 
+    flex-grow: 1;
+  }
+  
+  .child-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .child-birthday {
+    font-size: 16px;
+  }
+  
+  .selected-icon {
+    font-size: 24px;
+    color: green;
+  }
+  
+  .add-child-btn {
+    flex: 0 0 auto;
+    position: relative;
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 12px;
+  }
+  
+  .selected-child-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #b3ffb3; /* 선택된 아이의 배경색 */
+  }
+  
+  .selected-child-box .child-info {
+    flex-grow: 1;
+  }
+  
+  .selected-child-box .selected-icon {
+    font-size: 24px;
+    color: green;
+  }
+  
+  .child-select-container {
+    max-height: 360px; /* 팝업 창의 최대 높이 지정 */
+    overflow-y: auto; /* 스크롤 가능하도록 설정 */
+  }
+  
+  .child-select-container::-webkit-scrollbar {
+    width: 0; /* 스크롤바 너비를 0으로 설정하여 숨깁니다. */
+  }

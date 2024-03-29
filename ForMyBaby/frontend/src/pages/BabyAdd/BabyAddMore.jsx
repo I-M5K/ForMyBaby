@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './BabyAdd.css';
 import { useUserStore } from '../../stores/UserStore';
 import { addBabyInfo } from '../../api/userApi';
 import BabyGender from '../../api/BabyGender';
 
+import Back from '../../assets/x_button.png'
 const BabyAddPage = () => {
     const { id, babyList, setBabyList } = useUserStore();
 
@@ -62,6 +64,9 @@ const BabyAddPage = () => {
 
     return (
         <div className="baby-add-container">
+            <Link to="/main">
+                <img src={Back} className='back-btn'/>
+            </Link>
             <p className="baby-add-comment">추가할 아이 정보를 입력해주세요</p>
             <form className='baby-add-form' onSubmit={handleSubmit}>
                 <div className='photo-gender'>
