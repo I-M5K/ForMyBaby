@@ -24,9 +24,12 @@ const GuardDetail = () => {
             }
             // 어제 날짜 yyyyMMdd 문자열 형식으로
             const today = new Date(); // 현재 날짜
+            // console.log(today);
             const yesterday = new Date(today);
             yesterday.setDate(today.getDate() - 1); // 어제 날짜 설정
+            const formattedYesterday = yesterday.toISOString(); // 이는 ISO 8601 형식으로 변환됩니다. 예: "2024-03-28T00:00:00.000Z"
 
+            console.log(formattedYesterday);
             const year = yesterday.getFullYear(); // 년도
             let month = yesterday.getMonth() + 1; // 월 (0부터 시작하므로 1을 더함)
             if (month < 10) {
@@ -43,7 +46,7 @@ const GuardDetail = () => {
             if (endTime == null || endTime != yesterdayStr){
                 try {
                     // API 호출하여 데이터 가져오기
-                    const response = await getWeekData(yesterdayStr);
+                    const response = await getWeekData(formattedYesterday);
                     // 가져온 데이터를 상태로 업데이트
                     useRecordDetailStore.setState({
                         dangerList: response.dangerList,
