@@ -24,6 +24,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +46,12 @@ public class BabyServiceImpl implements BabyService{
     public List<BabyReadResponse> addBaby(BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
-        String uploadFileName = awsS3Service.uploadFile(babyCreateRequest.files());
-        baby.setProfileImg(uploadFileName);
-        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
+        Timestamp timestamp = getCurrentTimestamp();
         babyRepository.save(baby);
+        String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp,"pro");
+        baby.setProfileImg(uploadFileName);
+        babyRepository.save(baby);
+        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode,1 );
         familyRepository.save(family);
         log.info("{}", babyRepository.findBabiesByUserId(user.getUserId()));
@@ -73,7 +76,11 @@ public class BabyServiceImpl implements BabyService{
         log.info("Baby : " + baby);
         String familyCode = RandomStringUtils.randomAlphanumeric(6);
         log.info("familyCode : " + familyCode);
-        String uploadFileName = awsS3Service.uploadFile(babyCreateRequest.files());
+
+        Timestamp timestamp = getCurrentTimestamp();
+
+        babyRepository.save(baby);
+        String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp, "pro");
         baby.setProfileImg(uploadFileName);
         babyRepository.save(baby);
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode, 1);
@@ -138,5 +145,13 @@ public class BabyServiceImpl implements BabyService{
         notificationRepository.deleteAllByBabyId(babyId);
         familyRepository.deleteFamiliesByBabyBabyId(babyId);
         babyRepository.deleteByBabyId(babyId);
+    }
+
+    // 현재 시간을 Timestamp 객체로 가져오는 메서드
+    public Timestamp getCurrentTimestamp() {
+        // 현재 시간을 밀리초로 가져옴
+        long currentTimeMillis = System.currentTimeMillis();
+        // 밀리초를 Timestamp 객체로 변환하여 반환
+        return new Timestamp(currentTimeMillis);
     }
 }
