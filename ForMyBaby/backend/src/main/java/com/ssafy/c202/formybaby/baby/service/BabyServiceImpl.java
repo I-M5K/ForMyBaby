@@ -46,10 +46,12 @@ public class BabyServiceImpl implements BabyService{
     public List<BabyReadResponse> addBaby(BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
-        String uploadFileName = awsS3Service.uploadFile(babyCreateRequest.files());
-        baby.setProfileImg(uploadFileName);
-        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
+        Timestamp timestamp = getCurrentTimestamp();
         babyRepository.save(baby);
+        String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp,"pro");
+        baby.setProfileImg(uploadFileName);
+        babyRepository.save(baby);
+        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
         Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode,1 );
         familyRepository.save(family);
         log.info("{}", babyRepository.findBabiesByUserId(user.getUserId()));
