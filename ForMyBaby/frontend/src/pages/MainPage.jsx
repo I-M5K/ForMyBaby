@@ -19,22 +19,22 @@ const MainPage = () => {
   const location = useGeoLocation();
   const { babyList, fcm, setFcm, uncheckedCnt, setUncheckedCnt, babySelected, setBabySelected } = useUserStore();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (babySelected == null || babySelected == 0){
-        setBabySelected(babyList[0].babyId);
-      }
-      if (fcm == null){
-        requestPermission();
-        setFcm(localStorage.getItem('fcmToken'));
-        //localStorage.removeItem('fcmToken');
-      }
-      if (location && location.loaded && location.coordinates) {
-        await sendLocation(location.coordinates.lat, location.coordinates.lng);
-      }
-    };
-    fetchData();
-  }, [location]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (babySelected == null || babySelected == 0){
+  //       setBabySelected(babyList[0].babyId);
+  //     }
+  //     if (fcm == null){
+  //       requestPermission();
+  //       setFcm(localStorage.getItem('fcmToken'));
+  //       //localStorage.removeItem('fcmToken');
+  //     }
+  //     if (location && location.loaded && location.coordinates) {
+  //       await sendLocation(location.coordinates.lat, location.coordinates.lng);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [location]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -46,6 +46,10 @@ const MainPage = () => {
   const toggleBottomSheet = () => {
     setShowBottomSheet(!showBottomSheet);
     setShowOverlay(!showOverlay);
+  };
+
+  const handleNotificationClick = () => {
+    setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
   };
 
   return (

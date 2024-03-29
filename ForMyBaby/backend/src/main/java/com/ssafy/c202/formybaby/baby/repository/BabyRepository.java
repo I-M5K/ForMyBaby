@@ -17,7 +17,8 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             "b.birthDate, " +
             "b.babyGender, " +
             "b.profileImg, " +
-            "f.familyCode " +
+            "f.familyCode," +
+            "f.role" +
             ")" +
             "FROM Baby b " +
             "left JOIN Family f ON b.babyId = f.baby.babyId " +
@@ -29,7 +30,8 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             "b.birthDate, " +
             "b.babyGender, " +
             "b.profileImg, " +
-            "f.familyCode " +
+            "f.familyCode," +
+            "f.role" +
             ")" +
             "FROM Baby b " +
             "left JOIN Family f ON b.babyId = f.baby.babyId " +
@@ -58,11 +60,12 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             "b.birthDate," +
             "b.babyGender," +
             "b.profileImg," +
-            "f.familyCode" +
+            "f.familyCode," +
+            "f.role" +
             ")" +
             "FROM Baby b " +
             "left JOIN Family f ON b.babyId = f.baby.babyId " +
-            "WHERE f.baby.babyId = :babyId")
+            "WHERE b.babyId = :babyId")
     Optional<BabyReadResponse> findBabyByBabyId(Long babyId);
 
     Baby findByBabyId(Long babyId);

@@ -53,6 +53,7 @@ public class ItemProcessorConfig {
                 boolean isDay = false;
                 boolean isWeek = false;
                 LocalDate birthDate = family.getBaby().getBirthDate();
+                String babyId = String.valueOf(family.getBaby().getBabyId());
                 String fcmToken = family.getUser().getFcmToken();
                 int startAt = health.getStartAt();
                 if(health.getHealthId() == 1) {
@@ -73,7 +74,7 @@ public class ItemProcessorConfig {
                     FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, health),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, health),
-                            fcmToken, "health");
+                            fcmToken, "health", babyId);
 
                     log.info("HEALTH NOTIFICATION : {}", message);
 
@@ -87,7 +88,7 @@ public class ItemProcessorConfig {
                     FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalHealthDay, health),
                             notificationService.createContent(family, NotificationType.generalHealthDay, health),
-                            fcmToken, "health");
+                            fcmToken, "health", babyId);
 
                     log.info("HEALTH NOTIFICATION : {}", message);
 
@@ -110,12 +111,14 @@ public class ItemProcessorConfig {
             LocalDate today = LocalDate.now();
             List<Notification> list = new ArrayList<>();
             generalShareBean.map().forEach((s, family) -> {
-                System.out.println("AAAAAAA " + a.getAndIncrement());
+//                System.out.println("AAAAAAA " + a.getAndIncrement());
                 boolean isDay = false;
                 boolean isWeek = false;
                 String fcmToken = family.getUser().getFcmToken();
+                String babyId = String.valueOf(family.getBaby().getBabyId());
                 LocalDate birthDate = family.getBaby().getBirthDate();
                 LocalDate target = birthDate.plusMonths(vaccine.getStartAt());
+//                System.out.println(target.minusDays(1));
                 if(today.isEqual(target.minusWeeks(1))) {
                     isWeek = true;
                 } else if(today.isEqual(target.minusDays(1))) {
@@ -126,7 +129,7 @@ public class ItemProcessorConfig {
                     FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalVaccineWeek, vaccine),
                             notificationService.createContent(family, NotificationType.generalVaccineWeek, vaccine),
-                            fcmToken, "vaccine");
+                            fcmToken, "vaccine", babyId);
 
                     log.info("VACCINE WEEK NOTIFICATION : {}", message);
 
@@ -140,7 +143,7 @@ public class ItemProcessorConfig {
                     FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalVaccineWeek, vaccine),
                             notificationService.createContent(family, NotificationType.generalVaccineWeek, vaccine),
-                            fcmToken, "vaccine");
+                            fcmToken, "vaccine", babyId);
 
                     log.info("VACCINE DAY NOTIFICATION : {}", message);
 

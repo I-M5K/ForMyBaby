@@ -12,7 +12,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface FamilyMapper {
-    Family initFamilyEntity(User user, Baby baby, BabyCreateRequest babyCreateRequest, String familyCode);
+    Family initFamilyEntity(User user, Baby baby, BabyCreateRequest babyCreateRequest, String familyCode, int familyRank);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Family updateFamilyChild(BabyCreateRequest babyCreateRequest, @MappingTarget Family family);
 }

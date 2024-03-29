@@ -75,8 +75,8 @@ public class NotificationServiceImpl implements NotificationService{
 
 
     @Override
-    public List<NotificationReadResponse> getList(Long userId, Long babyId) {
-        return notificationRepository.findListByUserId(userId, babyId);
+    public List<NotificationReadResponse> getList(Long userId) {
+        return notificationRepository.findListByUserId(userId);
     }
 
     @Override
@@ -91,17 +91,24 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     public SettingReadResponse updateSetting(SettingUpdateRequest settingUpdateRequest, Long userId) {
-        return notificationRepository.updateSettingByUserId(settingUpdateRequest.isGeneral(),
+
+        notificationRepository.updateSettingByUserId(settingUpdateRequest.isGeneral(),
                 settingUpdateRequest.isDanger(), settingUpdateRequest.isSound(), userId);
+        return notificationRepository.findSettingByUserId(userId);
     }
 
     @Override
     public void delete(Long notificationId) {
-        notificationRepository.deleteByNotificationId(notificationId);
+        notificationRepository.deleteNotificationByNotificationId(notificationId);
     }
 
     @Override
     public void deleteAll(Long userId, Long babyId) {
         notificationRepository.deleteAllByUserId(userId, babyId);
+    }
+
+    @Override
+    public void checkAll(Long userId, Long babyId) {
+        notificationRepository.checkAll(userId, babyId);
     }
 }

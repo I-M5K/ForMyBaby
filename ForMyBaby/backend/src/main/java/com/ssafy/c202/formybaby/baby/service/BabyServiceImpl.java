@@ -8,9 +8,9 @@ import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse2;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.mapper.BabyMapper;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
-import com.ssafy.c202.formybaby.fcm.service.FCMService;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.global.s3.AwsS3Service;
+import com.ssafy.c202.formybaby.notification.repository.NotificationRepository;
 import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
@@ -24,6 +24,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,14 +41,21 @@ public class BabyServiceImpl implements BabyService{
     private final FamilyMapper familyMapper;
     private final RedisService redisService;
     private final AwsS3Service awsS3Service;
+    private final NotificationRepository notificationRepository;
     @Override
-    public void addBaby(BabyCreateRequest babyCreateRequest) {
+    public List<BabyReadResponse> addBaby(BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
-        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
+        Timestamp timestamp = getCurrentTimestamp();
         babyRepository.save(baby);
-        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+        String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp,"pro");
+        baby.setProfileImg(uploadFileName);
+        babyRepository.save(baby);
+        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
+        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode,1 );
         familyRepository.save(family);
+        log.info("{}", babyRepository.findBabiesByUserId(user.getUserId()));
+        return babyRepository.findBabiesByUserId(user.getUserId());
     }
 
     public void createNewBaby(List<BabyCreateRequest> babyCreateRequestList) {
@@ -57,9 +65,7 @@ public class BabyServiceImpl implements BabyService{
             Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
             babyRepository.save(baby);
 
-//        fcmService.sendTest("fGEU-9IwnPvJFXs8VcFrHe:APA91bGmQ0bqr_Hxut3dxXPA3qOkpuS3u0ZNnwAR0Mc6YmDWFMsw4WgN8Ncp1VSpdXHz-OYKijYEUK0MHKTRrr_je5EzL7KKDuBjuoBoclMKsWVoSqmIExHLl1v2VqdG2Fb_dA7f29BG");
-
-            Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+            Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode, 1);
             familyRepository.save(family);
         }
     }
@@ -70,10 +76,14 @@ public class BabyServiceImpl implements BabyService{
         log.info("Baby : " + baby);
         String familyCode = RandomStringUtils.randomAlphanumeric(6);
         log.info("familyCode : " + familyCode);
-        String uploadFileName = awsS3Service.uploadFile(babyCreateRequest.files());
+
+        Timestamp timestamp = getCurrentTimestamp();
+
+        babyRepository.save(baby);
+        String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp, "pro");
         baby.setProfileImg(uploadFileName);
         babyRepository.save(baby);
-        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode, 1);
         familyRepository.save(family);
 
         List<BabyReadResponse> babyReadResponseList = new ArrayList<>();
@@ -118,7 +128,6 @@ public class BabyServiceImpl implements BabyService{
 
     @Override
     public List<BabyReadResponse> babyList(Long userId) {
-        String familyCode = familyRepository.findFamilyCodeByUserId(userId);
         return babyRepository.findBabiesByUserId(userId);
     }
     @Override
@@ -133,7 +142,16 @@ public class BabyServiceImpl implements BabyService{
 
     @Override
     public void deleteBaby(Long babyId) {
+        notificationRepository.deleteAllByBabyId(babyId);
         familyRepository.deleteFamiliesByBabyBabyId(babyId);
         babyRepository.deleteByBabyId(babyId);
+    }
+
+    // 현재 시간을 Timestamp 객체로 가져오는 메서드
+    public Timestamp getCurrentTimestamp() {
+        // 현재 시간을 밀리초로 가져옴
+        long currentTimeMillis = System.currentTimeMillis();
+        // 밀리초를 Timestamp 객체로 변환하여 반환
+        return new Timestamp(currentTimeMillis);
     }
 }

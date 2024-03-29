@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface DangerService {
     List<DangerReadResponse> selectWeekDangerList(Long babyId, String endDate);
-
     List<DangerCntResponse> selectWeekDangerCntList(int cnt, String endDate);
     void createDanger (String code, DangerCreateRequest dangerCreateRequest);
 }

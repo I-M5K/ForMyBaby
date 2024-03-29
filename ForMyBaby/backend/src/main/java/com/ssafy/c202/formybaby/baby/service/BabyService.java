@@ -11,7 +11,7 @@ import java.util.List;
 public interface BabyService {
     FamilyReadResponse createNewBabyNoShareCode(String token, BabyCreateRequest babyCreateRequest);
 
-    void addBaby(BabyCreateRequest babyCreateRequest);
+    List<BabyReadResponse> addBaby(BabyCreateRequest babyCreateRequest);
 
     void createNewBaby(List<BabyCreateRequest> babyCreateListRequest);
 

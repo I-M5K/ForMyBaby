@@ -1,6 +1,8 @@
 package com.ssafy.c202.formybaby.user.controller;
 
+import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse2;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
+import com.ssafy.c202.formybaby.baby.service.BabyService;
 import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
 import com.ssafy.c202.formybaby.global.jwt.JwtProperties;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
@@ -40,6 +42,9 @@ public class OauthController {
 
     @Autowired
     private FamilyService familyService;
+
+    @Autowired
+    private BabyService babyService;
 
     @Autowired
     private RestTemplate restTemplate; // RestTemplate 의존성 주입
@@ -98,9 +103,12 @@ public class OauthController {
 
             String fcmToken = userService.findFcmToken(Long.valueOf(getUserId));
 
+            List<BabyReadResponse2> babyReadResponse2List = babyService.babyList2(familyCode);
+
             userInfo.put("userId",getUserId);
             userInfo.put("familyCode",familyCode);
             userInfo.put("fcmToken",fcmToken);
+            userInfo.put("babyList",babyReadResponse2List);
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);

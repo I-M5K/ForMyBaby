@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface SleepRepository extends JpaRepository<Sleep, Long> {
-    @Query("SELECT s FROM Sleep s WHERE s.baby.babyId = ?1 AND s.createdAt BETWEEN ?2 AND ?3")
-    List<Sleep> findByWeekSleepCnt(Long babyId, Timestamp startDate, Timestamp endDate);
+    @Query("SELECT s FROM Sleep s WHERE s.baby.babyId = ?1 AND s.createdAt BETWEEN ?2 AND ?3 AND s.createdAt = (SELECT MAX(s2.createdAt) FROM Sleep s2 WHERE s2.baby.babyId = ?1 AND DATE(s2.createdAt) = DATE(s.createdAt)) ORDER BY s.createdAt DESC")
+    List<Sleep> findByWeekSleep(Long babyId, Timestamp startDate, Timestamp endDate);
     List<Sleep> findAllByBaby_BabyIdOrderBySleepIdDesc(Long babyId);
 }

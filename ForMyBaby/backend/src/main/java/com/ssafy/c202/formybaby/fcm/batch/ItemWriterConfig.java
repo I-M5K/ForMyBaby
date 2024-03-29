@@ -48,7 +48,6 @@ public class ItemWriterConfig {
         return lists -> {
             for(List<Notification> list : lists) {
                 notificationRepository.saveAll(list);
-//                log.info("AAAAAA : {}", generalShareBean.getSize());
             }
         };
     }
