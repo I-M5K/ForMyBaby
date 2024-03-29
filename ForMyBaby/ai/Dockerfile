@@ -1,5 +1,5 @@
 # FROM python:3.9
-# FROM node:21.7.1-alpine
+FROM node:21.7.1-alpine
 FROM ubuntu:jammy
 
 # WORKDIR /AI/workspace/python-logic/common/edge_lp3

@@ -65,7 +65,7 @@ pipeline {
                             sh "docker rm -f ai || true"
                             sh "docker run -d --name ai -p 8083:3002 ${DOCKER_USER_ID}/ai"
                         } catch (Exception e){
-                            // sh "docker restart ai"
+                            sh "docker restart ai"
                         }
                     }
                 }
