@@ -77,4 +77,28 @@ public class FamilyController {
         }
     }
 
+    @PostMapping("/family/add")
+    public ResponseEntity<List<BabyReadResponse>> addBabyToFamily(
+            @RequestHeader(name = "Authorization") String token,
+            @RequestParam("userId") Long userId,
+            @RequestParam("babyName") String babyName,
+            @RequestParam("babyGender") BabyGender babyGender,
+            @RequestParam("babyBirthDate") String babyBirthDate,
+            @RequestParam("profileImg") MultipartFile profileImg,
+            @RequestParam("role") Role role
+    ) {
+        try {
+            BabyCreateRequest babyCreateRequest = new BabyCreateRequest(
+                    userId,
+                    babyName,
+                    babyBirthDate,
+                    babyGender,
+                    profileImg,
+                    role
+            );
+            return new ResponseEntity<>(babyService.addBaby(babyCreateRequest), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

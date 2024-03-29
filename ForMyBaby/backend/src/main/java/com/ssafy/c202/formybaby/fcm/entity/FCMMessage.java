@@ -18,4 +18,6 @@ public class FCMMessage {
 
     private String type;
 
+    private String babyId;
+
 }

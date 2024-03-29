@@ -32,12 +32,13 @@ public class FCMService {
                 .build();
     }
 
-    public FCMMessage toGeneralFcm(String title, String content, String fcmToken, String type) {
+    public FCMMessage toGeneralFcm(String title, String content, String fcmToken, String type, String babyId) {
         return FCMMessage.builder()
                 .title(title)
                 .body(content)
                 .fcmToken(fcmToken)
                 .type(type)
+                .babyId(babyId)
                 .build();
     }
     public void sendFCM(FCMMessage fcmMessage) {
@@ -50,7 +51,8 @@ public class FCMService {
 
         Message.Builder messageBuilder = Message.builder()
                 .setNotification(googleNotification)
-                .putData("type", fcmMessage.getType());
+                .putData("type", fcmMessage.getType())
+                .putData("babyId", fcmMessage.getBabyId());
 
         if(fcmMessage.getTopic() != null) {
             messageBuilder.setTopic(fcmMessage.getTopic());

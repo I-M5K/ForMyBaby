@@ -22,7 +22,7 @@ public interface NotificationService {
     String createContent(Family family, NotificationType type, Vaccine vaccine);
     String createContent(Family family, NotificationType type, Health health);
     Notification createDangerNotification(List<User> users, List<Baby> babies, Danger danger);
-    List<NotificationReadResponse> getList(Long userId, Long babyId);
+    List<NotificationReadResponse> getList(Long userId);
     SettingReadResponse getSetting(Long userId);
     void checkNotification(Long notificationId);
     SettingReadResponse updateSetting(SettingUpdateRequest settingUpdateRequest, Long userId);

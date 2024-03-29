@@ -7,6 +7,8 @@ import java.time.LocalDate;
 
 public record NotificationReadResponse(
         Long notificationId,
+        Long userId,
+        Long babyId,
         NotificationType notificationType,
         String title,
         String content,
