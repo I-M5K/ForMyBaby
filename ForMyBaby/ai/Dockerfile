@@ -1,32 +1,26 @@
-# FROM python:3.9
+# 베이스 이미지로 node와 python을 포함하는 이미지를 사용합니다.
 FROM node:21.7.1-alpine
-FROM ubuntu:jammy
 
-# WORKDIR /AI/workspace/python-logic/common/edge_lp3
-WORKDIR /python
-COPY ./workspace/python-logic/common/edge_lp3 .
+# 필요한 패키지를 설치하기 위해 apk를 업데이트하고 python3와 pip를 설치합니다.
+RUN apk update && apk add --no-cache python3 python3-dev py3-pip
 
-# 필요한 Python 패키지가 있다면 requirements.txt를 이용하여 설치할 수 있습니다.
-# COPY ./python-logic/common/edge_ino\sensors/edge_lp3/requirements.txt .
-# COPY . .
-RUN apt update && apt install -y python3 python3-pip
-# RUN apk update && apk add --no-cache \
-#     python3-dev \
-#     py3-pip \
-#     gcc \
-#     libc-dev
-RUN pip install -r ./requirements.txt
-RUN ls -al
-Run pwd
-CMD ["python3", "main.py"]
+# Python 애플리케이션에 필요한 파일을 복사합니다.
+WORKDIR /app/python-logic/common/edge_lp3
+COPY ./workspace/python-logic/common/edge_lp3/main.py /app/python-logic/common/edge_lp3/main.py
+COPY ./workspace/python-logic/common/edge_lp3/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
 
-# WORKDIR /AI/workspace/express-network
-WORKDIR /node
-COPY ./workspace/express-network .
-# RUN npm install
-CMD ["node", "index.js"]
+# Python 의존성을 설치합니다.
+RUN pip install -r /app/python-logic/common/edge_lp3/requirements.txt
 
+# Node.js 애플리케이션에 필요한 파일을 복사합니다.
+WORKDIR /app/express-network
+COPY ./workspace/express-network/index.js /app/express-network/index.js
 
-# Docker 컨테이너에서 노출할 포트를 지정합니다.
-EXPOSE 3001
-EXPOSE 3002
+# Node.js 패키지를 설치합니다.
+RUN npm install
+
+# 애플리케이션 실행을 위해 적절한 디렉토리로 이동합니다.
+WORKDIR /app
+
+# 실행할 명령을 지정합니다.
+CMD ["node", "express-network/index.js"]
