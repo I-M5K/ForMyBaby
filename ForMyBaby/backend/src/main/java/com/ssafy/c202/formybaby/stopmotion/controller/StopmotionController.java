@@ -1,3 +1,5 @@
+package com.ssafy.c202.formybaby.stopmotion.controller;
+
 import com.ssafy.c202.formybaby.global.s3.AwsS3Service;
 import com.ssafy.c202.formybaby.stopmotion.dto.response.StopMotionCntResponse;
 import com.ssafy.c202.formybaby.stopmotion.dto.response.StopMotionVideoResponse;
