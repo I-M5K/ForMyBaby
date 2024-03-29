@@ -1,6 +1,5 @@
 package com.ssafy.c202.formybaby.sleep.service;
 
-import com.ssafy.c202.formybaby.sleep.dto.response.SleepAllList;
 import com.ssafy.c202.formybaby.sleep.dto.response.SleepTodayAllList;
 import com.ssafy.c202.formybaby.sleep.dto.response.SleepWeekAllList;
 

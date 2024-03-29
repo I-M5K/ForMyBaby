@@ -2,7 +2,6 @@ package com.ssafy.c202.formybaby.sleep.controller;
 
 import com.ssafy.c202.formybaby.sleep.dto.request.AwakeCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.request.SleepOnCreateRequest;
-import com.ssafy.c202.formybaby.sleep.dto.response.SleepAllList;
 import com.ssafy.c202.formybaby.sleep.dto.response.SleepTodayAllList;
 import com.ssafy.c202.formybaby.sleep.dto.response.SleepWeekAllList;
 import com.ssafy.c202.formybaby.sleep.service.SleepService;
@@ -55,6 +54,4 @@ public class SleepController {
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     };
-
-
 }

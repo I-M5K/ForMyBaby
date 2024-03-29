@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface DangerRepository extends JpaRepository<Danger, Long> {
-
     @Query("SELECT d FROM Danger d WHERE d.baby.babyId = ?1 AND d.createdAt BETWEEN ?2 AND ?3 AND d.createdAt = (SELECT MAX(d2.createdAt) FROM Danger d2 WHERE d2.baby.babyId = ?1 AND DATE(d2.createdAt) = DATE(d.createdAt))")
     List<Danger> findByBaby_BabyIdAndCreatedAt(Long babyId, Timestamp startDate, Timestamp endDate);
     @Query("SELECT d FROM Danger d WHERE d.dangerCnt = ?1 AND d.createdAt BETWEEN ?2 AND ?3")

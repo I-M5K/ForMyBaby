@@ -3,7 +3,6 @@ package com.ssafy.c202.formybaby.sleep.service;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
-import com.ssafy.c202.formybaby.sleep.dto.response.SleepAllList;
 import com.ssafy.c202.formybaby.sleep.dto.response.SleepTodayAllList;
 import com.ssafy.c202.formybaby.sleep.dto.response.SleepWeekAllList;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
@@ -15,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -54,6 +51,9 @@ public class SleepServiceImpl implements SleepService {
         // 7일 전 날짜를 startDate로 설정
         Timestamp startDate = new Timestamp(endCalendar.getTimeInMillis());
 
+        log.info("babyId : " + babyId);
+        log.info("startDate :" + startDate);
+        log.info("endAt :" + endAt);
         // 일주일 동안의 수면 목록 조회
         List<Sleep> sleepList = sleepRepository.findByWeekSleep(babyId, startDate, endAt);
 
@@ -64,50 +64,11 @@ public class SleepServiceImpl implements SleepService {
 
         log.info("dangerList : " + dangerList);
 
-        // SleepAllList 객체를 담을 리스트 생성
-        List<SleepAllList> sleepAllLists = new ArrayList<>();
-
-        // 수면 목록과 위험 목록을 SleepAllList에 추가
-        for (Timestamp date = startDate; date.getTime() <= endAt.getTime(); date.setTime(date.getTime() + 24 * 60 * 60 * 1000)) {
-            Sleep sleep = findSleepByDate(sleepList, date);
-            Danger danger = findDangerByDate(dangerList, date);
-            sleepAllLists.add(new SleepAllList(sleep, danger));
-        }
-
         // SleepWeekAllList 객체 생성하여 반환
-        return new SleepWeekAllList(sleepAllLists);
+        return new SleepWeekAllList(sleepList, dangerList);
     }
 
-    // 주어진 날짜에 해당하는 수면 정보 찾기
-    private Sleep findSleepByDate(List<Sleep> sleepList, Timestamp date) {
-        for (Sleep sleep : sleepList) {
-            if (isSameDate(sleep.getCreatedAt(), date)) {
-                return sleep;
-            }
-        }
-        return null;
-    }
 
-    // 주어진 날짜에 해당하는 위험 정보 찾기
-    private Danger findDangerByDate(List<Danger> dangerList, Timestamp date) {
-        for (Danger danger : dangerList) {
-            if (isSameDate(danger.getCreatedAt(), date)) {
-                return danger;
-            }
-        }
-        return null;
-    }
-
-    // 두 Timestamp 객체가 같은 날짜인지 확인
-    private boolean isSameDate(Timestamp timestamp1, Timestamp timestamp2) {
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTimeInMillis(timestamp1.getTime());
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTimeInMillis(timestamp2.getTime());
-        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
-                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
-    }
 
 
     @Override
@@ -116,15 +77,30 @@ public class SleepServiceImpl implements SleepService {
         List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
         List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(babyId);
 
-        // sleepList가 비어있지 않으면 첫 번째 Sleep 객체의 sleepTime을 가져옴
-        int sleepTime = sleepList.isEmpty() ? 0 : sleepList.get(0).getSleepTime();
+        Sleep sleep = new Sleep();
+        // sleepList가 비어있지 않으면 첫 번째 Sleep 객체를 가져옴.
+        if(!sleepList.isEmpty()){
+            sleep = sleepList.get(0);
+        }else{
+            log.info("sleepList가 비어 있습니다.");
+        }
+        Danger danger = new Danger();
+        // dangerList가 비어있찌 않으면 첫 번째 Danger 객체를 가져옴.
+        if(!dangerList.isEmpty()){
+            danger = dangerList.get(0);
+        }else{
+            log.info(("dangerList가 비어있습니다."));
+        }
 
-        // sleepList와 dangerList의 크기를 각각 가져옴
-        int sleepCnt = sleepList.size();
-        int dangerCnt = dangerList.size();
+        // 각각의 수면 시간,횟수, 위험 행동 횟수,  생성 시간들을 가져와서 저장한다.
+        int sleepTime = sleep.getSleepTime();
+        int sleepCnt = sleep.getSleepCnt();
+        Timestamp sleepCreatedAt = sleep.getCreatedAt();
+        int dangerCnt = danger.getDangerCnt();
+        Timestamp dangerCreatedAt = danger.getCreatedAt();
 
         // SleepAllList 객체 생성 후 반환
-        return new SleepTodayAllList(sleepTime, sleepCnt, dangerCnt);
+        return new SleepTodayAllList(sleepTime, sleepCnt, dangerCnt,sleepCreatedAt,dangerCreatedAt);
     }
 
     @Override
@@ -210,7 +186,7 @@ public class SleepServiceImpl implements SleepService {
             Timestamp createdAt = latestSleep.getCreatedAt();
             int sleepCnt = latestSleep.getSleepCnt() + 1;
 
-            // 주어진 endAt와 createdAt의 날짜를 비교하여 다를 경우에는 time을 차이를 더하고 cnt를 1 증가시킵니다.
+
             Calendar endAtCal = Calendar.getInstance();
             endAtCal.setTimeInMillis(endAt.getTime());
             int endAtYear = endAtCal.get(Calendar.YEAR);
@@ -229,15 +205,18 @@ public class SleepServiceImpl implements SleepService {
 
             // 주어진 endAt와 createdAt의 날짜가 다를 경우
             if (!endAtCal.equals(createdAtCal)) {
+                log.info("날짜가 다름");
                 // 시간의 차이를 분 단위로 계산하여 time에 추가하고 cnt를 1 증가시킵니다.
                 long diffMillis = endAt.getTime() - createdAt.getTime();
                 long diffMinutes = diffMillis / (60 * 1000);
                 int currSleepTime = latestSleep.getSleepTime() + (int) diffMinutes;
 
+                //현재 목록에 시간과 횟수를 갱신해서 넣고
                 latestSleep.setSleepTime(currSleepTime);
                 latestSleep.setSleepCnt(sleepCnt);
                 sleepRepository.save(latestSleep);
 
+                // 새로운 슬립에 시간과 횟수를 0으로 설정합니다.
                 Sleep sleep = new Sleep();
                 sleep.setSleepCnt(0);
                 sleep.setBaby(baby);
@@ -247,11 +226,13 @@ public class SleepServiceImpl implements SleepService {
                 sleepRepository.save(sleep);
 
             } else {
+                log.info("날짜까 같음");
                 // 날짜가 같은 경우에는 시간의 차이만큼 time을 증가시킵니다.
                 long diffMillis = endAt.getTime() - createdAt.getTime();
                 long diffMinutes = diffMillis / (60 * 1000);
                 int currSleepTime = latestSleep.getSleepTime() + (int) diffMinutes;
 
+                //현재 목록만 갱신합니다.
                 latestSleep.setSleepTime(currSleepTime);
                 latestSleep.setSleepCnt(sleepCnt);
                 latestSleep.setBaby(baby);
@@ -261,5 +242,4 @@ public class SleepServiceImpl implements SleepService {
 
         }
     }
-
 }
