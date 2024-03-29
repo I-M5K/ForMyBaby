@@ -1,6 +1,7 @@
 package com.ssafy.c202.formybaby.sleep.controller;
 
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerCntResponse;
+import com.ssafy.c202.formybaby.sleep.dto.response.DangerCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerReadResponse;
 import com.ssafy.c202.formybaby.sleep.service.DangerService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,13 @@ public class DangerController {
         } catch (Exception e) {
             return  new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createDanger(@RequestHeader("Authorization") String code, @RequestBody DangerCreateRequest dangerCreateRequest) {
+        log.info("dangerCreateRequest : "+ dangerCreateRequest);
+        dangerService.createDanger(code, dangerCreateRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

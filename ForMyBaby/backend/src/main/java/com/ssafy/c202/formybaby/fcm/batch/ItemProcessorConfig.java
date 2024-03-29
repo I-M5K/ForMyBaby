@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Configuration
 @RequiredArgsConstructor
@@ -45,13 +46,14 @@ public class ItemProcessorConfig {
     @Bean
     @StepScope
     ItemProcessor<Health, List<Notification>> checkHealthProcessor() {
-        LocalDate today = LocalDate.now();
-        List<Notification> list = new ArrayList<>();
         return health -> {
+            LocalDate today = LocalDate.now();
+            List<Notification> list = new ArrayList<>();
             generalShareBean.map().forEach((s, family) -> {
                 boolean isDay = false;
                 boolean isWeek = false;
                 LocalDate birthDate = family.getBaby().getBirthDate();
+                String fcmToken = family.getUser().getFcmToken();
                 int startAt = health.getStartAt();
                 if(health.getHealthId() == 1) {
                     if(today.isEqual(birthDate.plusDays(7))){
@@ -68,10 +70,10 @@ public class ItemProcessorConfig {
                     }
                 }
                 if(isWeek) {
-                    FCMMessage message = fcmService.toGeneralFcm(family.getFamilyCode(),
+                    FCMMessage message = fcmService.toGeneralFcm(
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, health),
                             notificationService.createContent(family, NotificationType.generalHealthWeek, health),
-                            "health");
+                            fcmToken, "health");
 
                     log.info("HEALTH NOTIFICATION : {}", message);
 
@@ -79,13 +81,13 @@ public class ItemProcessorConfig {
 
                     list.add(notificationMapper.fromBatch(family, NotificationType.generalHealthWeek,
                             notificationService.createTitle(family, NotificationType.generalHealthWeek, health),
-                            notificationService.createContent(family, NotificationType.generalHealthWeek, health)));
+                            notificationService.createContent(family, NotificationType.generalHealthWeek, health), false));
                 }
                 if(isDay) {
-                    FCMMessage message = fcmService.toGeneralFcm(family.getFamilyCode(),
-                            notificationService.createTitle(family, NotificationType.generalHealthWeek, health),
-                            notificationService.createContent(family, NotificationType.generalHealthWeek, health),
-                            "health");
+                    FCMMessage message = fcmService.toGeneralFcm(
+                            notificationService.createTitle(family, NotificationType.generalHealthDay, health),
+                            notificationService.createContent(family, NotificationType.generalHealthDay, health),
+                            fcmToken, "health");
 
                     log.info("HEALTH NOTIFICATION : {}", message);
 
@@ -93,7 +95,7 @@ public class ItemProcessorConfig {
 
                     list.add(notificationMapper.fromBatch(family, NotificationType.generalHealthDay,
                             notificationService.createTitle(family, NotificationType.generalHealthDay, health),
-                            notificationService.createContent(family, NotificationType.generalHealthDay, health)));
+                            notificationService.createContent(family, NotificationType.generalHealthDay, health), false));
                 }
             });
             return list;
@@ -103,12 +105,15 @@ public class ItemProcessorConfig {
     @Bean
     @StepScope
     ItemProcessor<Vaccine, List<Notification>> checkVaccineProcessor() {
-        LocalDate today = LocalDate.now();
-        List<Notification> list = new ArrayList<>();
+        AtomicInteger a = new AtomicInteger(1);
         return vaccine -> {
+            LocalDate today = LocalDate.now();
+            List<Notification> list = new ArrayList<>();
             generalShareBean.map().forEach((s, family) -> {
+                System.out.println("AAAAAAA " + a.getAndIncrement());
                 boolean isDay = false;
                 boolean isWeek = false;
+                String fcmToken = family.getUser().getFcmToken();
                 LocalDate birthDate = family.getBaby().getBirthDate();
                 LocalDate target = birthDate.plusMonths(vaccine.getStartAt());
                 if(today.isEqual(target.minusWeeks(1))) {
@@ -118,35 +123,49 @@ public class ItemProcessorConfig {
                 }
 
                 if(isWeek) {
-                    FCMMessage message = fcmService.toGeneralFcm(family.getFamilyCode(),
-                            notificationService.createTitle(family, NotificationType.generalHealthWeek, vaccine),
-                            notificationService.createContent(family, NotificationType.generalHealthWeek, vaccine),
-                            "vaccine");
+                    FCMMessage message = fcmService.toGeneralFcm(
+                            notificationService.createTitle(family, NotificationType.generalVaccineWeek, vaccine),
+                            notificationService.createContent(family, NotificationType.generalVaccineWeek, vaccine),
+                            fcmToken, "vaccine");
 
-                    log.info("VACCINE NOTIFICATION : {}", message);
+                    log.info("VACCINE WEEK NOTIFICATION : {}", message);
 
                     fcmService.sendFCM(message);
 
                     list.add(notificationMapper.fromBatch(family, NotificationType.generalVaccineWeek,
-                            notificationService.createTitle(family, NotificationType.generalHealthWeek, vaccine),
-                            notificationService.createContent(family, NotificationType.generalHealthWeek, vaccine)));
+                            notificationService.createTitle(family, NotificationType.generalVaccineWeek, vaccine),
+                            notificationService.createContent(family, NotificationType.generalVaccineWeek, vaccine), false));
                 }
                 if(isDay) {
-                    FCMMessage message = fcmService.toGeneralFcm(family.getFamilyCode(),
-                            notificationService.createTitle(family, NotificationType.generalHealthWeek, vaccine),
-                            notificationService.createContent(family, NotificationType.generalHealthWeek, vaccine),
-                            "vaccine");
+                    FCMMessage message = fcmService.toGeneralFcm(
+                            notificationService.createTitle(family, NotificationType.generalVaccineWeek, vaccine),
+                            notificationService.createContent(family, NotificationType.generalVaccineWeek, vaccine),
+                            fcmToken, "vaccine");
 
-                    log.info("VACCINE NOTIFICATION : {}", message);
+                    log.info("VACCINE DAY NOTIFICATION : {}", message);
 
                     fcmService.sendFCM(message);
 
                     list.add(notificationMapper.fromBatch(family, NotificationType.generalVaccineDay,
                             notificationService.createTitle(family, NotificationType.generalVaccineDay, vaccine),
-                            notificationService.createContent(family, NotificationType.generalVaccineDay, vaccine)));
+                            notificationService.createContent(family, NotificationType.generalVaccineDay, vaccine), false));
                 }
             });
             return list;
         };
+    }
+
+    @Bean
+    @StepScope
+    ItemProcessor<Family, Family> checkBeanProcessor() {
+        LocalDate today = LocalDate.now();
+        generalShareBean.map().forEach((s, family) -> {
+            if(today.minusYears(13).isAfter(family.getBaby().getBirthDate())) {
+                Family out = generalShareBean.map().remove(s);
+                log.info("Birth Exceeded : {} ", out);
+            }
+        });
+        log.info("Stored Families : {} ", generalShareBean.map());
+        return f -> f;
     }
 }

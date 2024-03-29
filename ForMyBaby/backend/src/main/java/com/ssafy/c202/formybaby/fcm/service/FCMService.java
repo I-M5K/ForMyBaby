@@ -21,21 +21,23 @@ public class FCMService {
 
     private final FirebaseMessaging firebaseMessaging;
 
-    public FCMMessage toDangerFcm(User user, com.ssafy.c202.formybaby.notification.entity.Notification notification, String key) {
+    public FCMMessage toDangerFcm(User user, com.ssafy.c202.formybaby.notification.entity.Notification notification,
+                                  String topic) {
         return FCMMessage.builder()
                 .fcmToken(user.getFcmToken())
                 .title(notification.getTitle())
                 .body(notification.getContent())
-                .key(key)
+                .topic(topic)
+                .type("danger")
                 .build();
     }
 
-    public FCMMessage toGeneralFcm(String topic, String title, String content, String key) {
+    public FCMMessage toGeneralFcm(String title, String content, String fcmToken, String type) {
         return FCMMessage.builder()
                 .title(title)
                 .body(content)
-                .key(key)
-                .topic(topic)
+                .fcmToken(fcmToken)
+                .type(type)
                 .build();
     }
     public void sendFCM(FCMMessage fcmMessage) {
@@ -48,7 +50,7 @@ public class FCMService {
 
         Message.Builder messageBuilder = Message.builder()
                 .setNotification(googleNotification)
-                .putData("key", fcmMessage.getKey());
+                .putData("type", fcmMessage.getType());
 
         if(fcmMessage.getTopic() != null) {
             messageBuilder.setTopic(fcmMessage.getTopic());
@@ -60,7 +62,7 @@ public class FCMService {
 
         try {
             send(message);
-
+            log.info("FCM SUCCESS : {} ", message);
         } catch(FirebaseException e) {
             log.info("fcm error" + e.getMessage());
         }

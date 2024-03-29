@@ -1,6 +1,10 @@
 package com.ssafy.c202.formybaby.sleep.service;
 
+import com.ssafy.c202.formybaby.baby.entity.Baby;
+import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
+import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerCntResponse;
+import com.ssafy.c202.formybaby.sleep.dto.response.DangerCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerReadResponse;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
 import com.ssafy.c202.formybaby.sleep.repository.DangerRepository;
@@ -20,6 +24,10 @@ import java.util.List;
 public class DangerServiceImpl implements DangerService {
 
     private final DangerRepository dangerRepository;
+
+    private final RedisService redisService;
+
+    private final BabyRepository babyRepository;
 
     @Override
     public List<DangerReadResponse> selectWeekDangerList(Long babyId, String endDate) {
@@ -110,5 +118,36 @@ public class DangerServiceImpl implements DangerService {
         }
 
         return dangerCntResponseList;
+    }
+
+    @Override
+    public void createDanger(String code, DangerCreateRequest dangerCreateRequest) {
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(code)));
+        Baby baby = babyRepository.findByBabyId(babyId);
+
+        log.info("dangerCreateRequest {} : " +dangerCreateRequest);
+
+        // Danger 엔티티를 조회
+        List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(baby.getBabyId());
+
+        if (!dangerList.isEmpty()) {
+            // dangerList가 비어있지 않은 경우에만 첫 번째 Danger 엔티티를 가져옴
+            Danger firstDanger = dangerList.get(0);
+            Danger danger = new Danger();
+            // Danger 엔티티를 수정하여 저장
+            danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
+            danger.setCreatedAt(dangerCreateRequest.createdAt());
+            danger.setDangerType(dangerCreateRequest.dangerType());
+            danger.setBaby(baby);
+            dangerRepository.save(danger);
+        } else {
+            // dangerList가 비어있는 경우 새로운 Danger 엔티티를 생성하여 저장
+            Danger newDanger = new Danger();
+            newDanger.setDangerCnt(1);
+            newDanger.setCreatedAt(dangerCreateRequest.createdAt());
+            newDanger.setDangerType(dangerCreateRequest.dangerType());
+            newDanger.setBaby(baby);
+            dangerRepository.save(newDanger);
+        }
     }
 }

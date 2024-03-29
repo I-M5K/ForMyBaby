@@ -1,6 +1,7 @@
 package com.ssafy.c202.formybaby.baby.dto.response;
 
 import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
+import com.ssafy.c202.formybaby.global.jpaEnum.Role;
 
 import java.time.LocalDate;
 
@@ -10,5 +11,6 @@ public record BabyReadResponse(
         LocalDate birthDate,
         BabyGender babyGender,
         String profileImg,
-        String familyCode
+        String familyCode,
+        Role role
 ){}

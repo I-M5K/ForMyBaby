@@ -1,10 +1,10 @@
-.swiper {
+.mySwiper {
     width: 100%;
     height: 600px;
     margin-top: 50px;
   }
   
-.swiper-slide {
+.tutorial-swiper {
   text-align: center;
   font-size: 18px;
   background: #fff;
@@ -13,7 +13,7 @@
   align-items: center;
 }
   
-.swiper-slide img {
+.tutorial-swiper img {
   width: 300px;
   height: 300px;
   object-fit: cover;

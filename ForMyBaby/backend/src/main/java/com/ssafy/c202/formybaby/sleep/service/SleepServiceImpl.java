@@ -3,7 +3,10 @@ package com.ssafy.c202.formybaby.sleep.service;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.sleep.dto.response.SleepAllList;
+import com.ssafy.c202.formybaby.sleep.entity.Danger;
 import com.ssafy.c202.formybaby.sleep.entity.Sleep;
+import com.ssafy.c202.formybaby.sleep.repository.DangerRepository;
 import com.ssafy.c202.formybaby.sleep.repository.SleepRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,26 @@ public class SleepServiceImpl implements SleepService {
     private final BabyRepository babyRepository;
 
     private final RedisService redisService;
+
+    private final DangerRepository dangerRepository;
+
+    @Override
+    public SleepAllList getTodayAllList(String token) {
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
+        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
+        List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(babyId);
+
+        // sleepList가 비어있지 않으면 첫 번째 Sleep 객체의 sleepTime을 가져옴
+        int sleepTime = sleepList.isEmpty() ? 0 : sleepList.get(0).getSleepTime();
+
+        // sleepList와 dangerList의 크기를 각각 가져옴
+        int sleepCnt = sleepList.size();
+        int dangerCnt = dangerList.size();
+
+        // SleepAllList 객체 생성 후 반환
+        return new SleepAllList(sleepTime, sleepCnt, dangerCnt);
+    }
+
     @Override
     public void getSleepOnTime(String token, Timestamp createdAt) {
         log.info("createdAt : " + createdAt);
@@ -33,7 +56,7 @@ public class SleepServiceImpl implements SleepService {
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(userId));
         Baby baby = babyRepository.findByBabyId(babyId);
         // 베이비 아이디로 수면 목록을 가져온다.
-        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderByCreatedAtAsc(babyId);
+        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
 
         if (!sleepList.isEmpty()) {
             Sleep sleepCheck = sleepList.get(0);
@@ -65,7 +88,7 @@ public class SleepServiceImpl implements SleepService {
         Baby baby = babyRepository.findByBabyId(babyId);
 
         // 베이비 아이디로 수면 목록을 가져온다.
-        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderByCreatedAtAsc(babyId);
+        List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
 
         if (!sleepList.isEmpty()) {
             // 가장 최근의 잠든 시간과 잠든 횟수를 가져온다.

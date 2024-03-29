@@ -1,5 +1,6 @@
 package com.ssafy.c202.formybaby.sleep.controller;
 
+import com.ssafy.c202.formybaby.sleep.dto.response.SleepAllList;
 import com.ssafy.c202.formybaby.sleep.service.SleepService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +26,23 @@ public class SleepController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/today")
+    public ResponseEntity<SleepAllList> getTodayAllList(@RequestHeader(name = "Authorization") String token){
+        try{
+            SleepAllList sleepAllList = sleepService.getTodayAllList(token);
+            return new ResponseEntity<>(sleepAllList,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/awake")
     public ResponseEntity<?> getAwakeTimeList(@RequestHeader(name = "Authorization") String token, @RequestParam Timestamp endAt) {
         log.info("endAt : " + endAt);
         sleepService.getAwakeTimeList(token, endAt);
         return ResponseEntity.ok().build();
     }
+
+
 
 }

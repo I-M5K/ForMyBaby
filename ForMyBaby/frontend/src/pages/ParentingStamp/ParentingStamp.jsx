@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import NavBar from '../../components/NavBar';
 import StampPage1 from '../../components/feature/parentingstamp/StampPage1';
 import StampPage2 from '../../components/feature/parentingstamp/StampPage2';
@@ -13,12 +15,9 @@ function ParentingStamp() {
   const [animationClass, setAnimationClass] = useState('');
   const [stampList, setStampList] = useState([]);
 
-  const handlePageSelection = (newPage) => {
-    setAnimationClass('slide-out');
-    setTimeout(() => {
-      setSelectedPage(newPage);
-      setAnimationClass('slide-in');
-    }, 200); // 애니메이션 지속 시간과 일치
+  // 스와이퍼 설정
+  const swiperSettings = {
+    slidesPerView: 1,
   };
 
   useEffect(() => {
@@ -43,6 +42,7 @@ function ParentingStamp() {
     // 노트 저장 로직 추가
   };
 
+
   return (
     <div className="ParentingStamp">
       <div className='parenstamp-title'>성장 스탬프</div>
@@ -54,8 +54,13 @@ function ParentingStamp() {
         <button onClick={() => handlePageSelection(<StampPage4 stampList={stampList} />)}>10~12개월</button>
       </div>
       <hr />
-      <div className={`parenstamp-contents ${animationClass}`}>
-        {selectedPage}
+      <div className='parenstamp-contents'>
+        <Swiper {...swiperSettings}>
+          <SwiperSlide><StampPage1 /></SwiperSlide>
+          <SwiperSlide><StampPage2 /></SwiperSlide>
+          <SwiperSlide><StampPage3 /></SwiperSlide>
+          <SwiperSlide><StampPage4 /></SwiperSlide>
+        </Swiper>
       </div>
       <NavBar />
     </div>

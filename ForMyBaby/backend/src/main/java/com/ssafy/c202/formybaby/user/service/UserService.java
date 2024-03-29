@@ -14,9 +14,10 @@ public interface UserService {
    User registerUser(User user);
 
    //void deleteUser(String token);
+   void changeBaby(String token, Long babyId);
    void deleteUser(Long userId);
    UserProfileResponse updateUser(UserUpdateRequest userUpdateRequest);
    String findFcmToken(Long userId);
    void setFCMToken(Long userId, String fcmToken);
-   void setLocation(Long userId, Double lat, Double lon);
+   void setLocation(Long userId, double lat, double lon);
 }

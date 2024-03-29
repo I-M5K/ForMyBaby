@@ -39,6 +39,17 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/select")
+    public ResponseEntity<?> changeBaby(@RequestHeader(name = "Authorization") String token, @RequestParam Long babyId) {
+        try {
+            userService.changeBaby(token, babyId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping
     public ResponseEntity<UserProfileResponse> updateUser(@RequestBody UserUpdateRequest userUpdateRequest){
         try {
@@ -58,6 +69,7 @@ public class UserController {
 //            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 //        }
 //    }
+
     @DeleteMapping()
     public ResponseEntity<?> deleteUser(@RequestParam("userId") Long userId){
         try{
@@ -73,7 +85,7 @@ public class UserController {
         // 받은 데이터 처리
         Double lat = (Double) locationData.get("latitude");
         Double lon = (Double) locationData.get("longitude");
-
+        log.info("Token : {}", token);
         userService.setLocation(Long.valueOf(redisService.getUserIdByToken(token)), lat, lon);
 
         // 작업이 완료되면 클라이언트에 성공 상태 응답을 반환
@@ -81,8 +93,9 @@ public class UserController {
     }
     @PatchMapping("/fcm")
     public ResponseEntity<String> updateFCMToken(@RequestHeader(name="Authorization") String token,
-                                                 @RequestBody String fcmToken) {
-        // 작업 결과에 따라 응답을 설정
+                                                 @RequestBody Map<String, Object> data) {
+        String fcmToken = (String)data.get("fcmToken");
+        log.info("FCMToken : {}", fcmToken);
         if (fcmToken != null) {
             userService.setFCMToken(Long.valueOf(redisService.getUserIdByToken(token)), fcmToken);
             return ResponseEntity.ok("FCM token update successful");

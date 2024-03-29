@@ -34,7 +34,7 @@
   
     babyId = data.babyId;
     type = data.type
-    console.log(type);
+    console.log("type : ", type);
     self.registration.showNotification(notificationTitle, notificationOptions);
   });
   

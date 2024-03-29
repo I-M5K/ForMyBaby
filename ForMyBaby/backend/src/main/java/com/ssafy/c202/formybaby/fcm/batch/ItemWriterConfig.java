@@ -36,7 +36,6 @@ public class ItemWriterConfig {
                 try{
                     generalShareBean.putData((family.getFamilyId().toString()), family);
                     log.info("Data Stored : {}", family);
-
                 } catch (Exception e) {
                     log.info("Baby Share Bean error : {}", e.getMessage());
                 }
@@ -49,7 +48,7 @@ public class ItemWriterConfig {
         return lists -> {
             for(List<Notification> list : lists) {
                 notificationRepository.saveAll(list);
-                log.info("AAAAAA : {}", generalShareBean.getSize());
+//                log.info("AAAAAA : {}", generalShareBean.getSize());
             }
         };
     }

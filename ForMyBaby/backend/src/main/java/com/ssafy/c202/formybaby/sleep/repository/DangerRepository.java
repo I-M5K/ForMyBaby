@@ -13,4 +13,6 @@ public interface DangerRepository extends JpaRepository<Danger, Long> {
     List<Danger> findByBaby_BabyIdAndCreatedAt(Long babyId, Timestamp startDate, Timestamp endDate);
     @Query("SELECT d FROM Danger d WHERE d.dangerCnt = ?1 AND d.createdAt BETWEEN ?2 AND ?3")
     List<Danger> findByDangerCntAndCreatedAt(int dangerCnt, Timestamp startDate, Timestamp endDate);
+    List<Danger> findAllByBaby_BabyIdOrderByCreatedAtDesc(Long babyId);
 }
+
