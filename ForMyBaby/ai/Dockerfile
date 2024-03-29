@@ -7,7 +7,7 @@ WORKDIR /AI/workspace/python-logic/common/edge_lp3
 # COPY ./python-logic/common/edge_ino\sensors/edge_lp3/requirements.txt .
 COPY . .
 # RUN yum update && yum install -y python3-pip
-RUN pip3 install -r ./requirements.txt
+RUN pip install -r ./requirements.txt
 CMD ["python3", "main.py"]
 
 WORKDIR /AI/workspace/express-network
