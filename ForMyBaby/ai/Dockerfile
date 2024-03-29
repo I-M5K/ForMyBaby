@@ -24,7 +24,7 @@ CMD ["python3", "main.py"]
 WORKDIR /node
 COPY ./workspace/express-network .
 # RUN npm install
-# CMD ["node", "index.js"]
+CMD ["node", "index.js"]
 
 
 # Docker 컨테이너에서 노출할 포트를 지정합니다.
