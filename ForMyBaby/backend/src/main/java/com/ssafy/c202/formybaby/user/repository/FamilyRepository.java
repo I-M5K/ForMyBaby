@@ -16,6 +16,7 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
     @Query(value = "SELECT DISTINCT f.familyCode FROM Family f WHERE f.user.userId = :userId")
     String findFamilyCodeByUserId(@Param("userId") Long userId);
     Family findFamilyByBabyBabyId(Long babyId);
+    @Query("SELECT f FROM Family f WHERE f.user.userId=:userId")
     List<Family> findFamiliesByUserUserId(Long userId);
     @Query("SELECT f.familyRank FROM Family f WHERE f.user.userId=:userId AND f.baby.babyId=:babyId")
     int findFamilyRankByUserId(Long userId, Long babyId);
