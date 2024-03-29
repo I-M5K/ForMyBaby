@@ -17,6 +17,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -29,8 +33,8 @@ public class AwsS3Service {
 
     private final AmazonS3 amazonS3;
 
-    public String uploadFile(MultipartFile file){
-        String fileName = createFileName(file.getOriginalFilename());
+    public String uploadFile(Long babyId, MultipartFile file, Timestamp time, String type){
+        String fileName = createFileName(babyId,file.getOriginalFilename(),time,type);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
         objectMetadata.setContentType(file.getContentType());
@@ -41,15 +45,15 @@ public class AwsS3Service {
         } catch (IOException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
         }
-
-        return fileName;
+        
+        return getUrl(fileName);
     }
-    public List<String> uploadFile(List<MultipartFile> multipartFiles){
+    public List<String> uploadFile(Long babyId, List<MultipartFile> multipartFiles, Timestamp time, String type){
         List<String> fileNameList = new ArrayList<>();
 
         // forEach 구문을 통해 multipartFiles 리스트로 넘어온 파일들을 순차적으로 fileNameList 에 추가
         multipartFiles.forEach(file -> {
-            String fileName = createFileName(file.getOriginalFilename());
+            String fileName = createFileName(babyId, file.getOriginalFilename(),time,type);
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(file.getSize());
             objectMetadata.setContentType(file.getContentType());
@@ -63,19 +67,26 @@ public class AwsS3Service {
             fileNameList.add(fileName);
 
         });
-
         return fileNameList;
     }
 
-    // 먼저 파일 업로드시, 파일명을 난수화하기 위해 UUID 를 활용하여 난수를 돌린다.
-    public String createFileName(String fileName){
-        return UUID.randomUUID().toString().concat(getFileExtension(fileName));
+    public String createFileName(Long babyId, String fileName, Timestamp time, String type) {
+        // 파일명 생성에 사용될 날짜 포맷 설정
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+
+        // 파일명 생성에 사용될 현재 날짜 문자열 가져오기
+        String currentDate = dateFormat.format(new Date(time.getTime()));
+
+        // 파일명 생성
+        String formattedFileName = String.format("%d_%s_%s.%s", babyId, type, currentDate, getFileExtension(fileName));
+
+        return formattedFileName;
     }
 
     // file 형식이 잘못된 경우를 확인하기 위해 만들어진 로직이며, 파일 타입과 상관없이 업로드할 수 있게 하기위해, "."의 존재 유무만 판단하였습니다.
     private String getFileExtension(String fileName){
         try{
-            return fileName.substring(fileName.lastIndexOf("."));
+            return fileName.substring(fileName.lastIndexOf(".")+1);
         } catch (StringIndexOutOfBoundsException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일" + fileName + ") 입니다.");
         }
@@ -87,14 +98,14 @@ public class AwsS3Service {
         System.out.println(bucket);
     }
 
-    public String getVideoUrl(String fileName) {
-        String fullPath = "video/12345/" + fileName;
+    public String getUrl(String fileName) {
         try {
-            if (!amazonS3.doesObjectExist(bucket, fullPath)) {
+            // 요청한 파일이 존재하는지 확인합니다.
+            if (!amazonS3.doesObjectExist(bucket, fileName)) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청한 파일을 찾을 수 없습니다.");
             }
             // 파일이 존재한다면 URL을 생성하여 반환합니다.
-            URL fileUrl = amazonS3.getUrl(bucket, fullPath);
+            URL fileUrl = amazonS3.getUrl(bucket, fileName);
             return fileUrl.toString();
         } catch (AmazonServiceException e) {
             // AWS S3 서비스 관련 예외 처리

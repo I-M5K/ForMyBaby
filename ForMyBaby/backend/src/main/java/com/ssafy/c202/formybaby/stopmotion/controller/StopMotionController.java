@@ -42,7 +42,7 @@ public class StopMotionController {
     @GetMapping("/videoUrl/{fileName}")
     public ResponseEntity<?> getVideoUrl(@PathVariable String fileName) {
         try {
-            String videoUrl = awsS3Service.getVideoUrl(fileName);
+            String videoUrl = awsS3Service.getUrl(fileName);
             return ResponseEntity.ok(videoUrl);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
