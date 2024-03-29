@@ -71,11 +71,13 @@ const BabyAddPage = () => {
                     const data = await addBabyInfo(formData); // API 호출
                     console.log('Baby information submitted successfully!');
                     console.log(data);
-                    const babyList = data.babyReadResponseList;
+                    const list = data;
+                    console.log(list);
                     if (babySelected == null){
-                        setBabySelected(babyList[0].babyId);
+                        setBabySelected(list[0].babyId);
                     }
-                    setBabyList(babyList);
+
+                    setBabyList(list);
                     //setBabyList(data);
                 } catch (error) {
                     console.error(error);
