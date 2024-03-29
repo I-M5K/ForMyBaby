@@ -111,7 +111,7 @@ public class ItemProcessorConfig {
             LocalDate today = LocalDate.now();
             List<Notification> list = new ArrayList<>();
             generalShareBean.map().forEach((s, family) -> {
-                System.out.println("AAAAAAA " + a.getAndIncrement());
+//                System.out.println("AAAAAAA " + a.getAndIncrement());
                 boolean isDay = false;
                 boolean isWeek = false;
                 String fcmToken = family.getUser().getFcmToken();
