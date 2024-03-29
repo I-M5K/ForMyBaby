@@ -3,6 +3,9 @@ package com.ssafy.c202.formybaby.stamp.service;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
+import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.global.s3.AwsS3Service;
+import com.ssafy.c202.formybaby.stamp.dto.request.StampCreateAIRequest;
 import com.ssafy.c202.formybaby.stamp.dto.request.StampCreateRequest;
 import com.ssafy.c202.formybaby.stamp.dto.request.StampUpdateRequest;
 import com.ssafy.c202.formybaby.stamp.dto.response.StampListResponse;
@@ -24,28 +27,22 @@ public class StampServiceImpl implements StampService{
 
     private final StampRepository stampRepository;
     private final BabyRepository babyRepository;
+    private final RedisService redisService;
+    private final AwsS3Service awsS3Service;
 
     @Override
-    public void createStamp(StampCreateRequest stampCreateRequest) {
+    public void createStamp(String token, StampCreateRequest stampCreateRequest) {
         log.info("stampCreateRequest : " + stampCreateRequest);
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
+        Baby baby = babyRepository.findByBabyId(babyId);
+
         Stamp stamp = new Stamp();
-
-        Baby baby = new Baby();
-
-        // 로그인한 유저의 현재 babyId 가져오는 로직 필요!
-        // 이걸 통해서 베이비 조회 후 그 값을 넣어줘야한다.
-        //Optional<BabyReadResponse> babyReadResponse = babyRepository.findBabyByBabyId(1L);
-        //Long babyId = babyReadResponse.get().babyId();
-
-        Long babyId = babyRepository.findBabyByBabyId(1L).get().babyId();
-        baby.setBabyId(babyId);
-
         stamp.setBaby(baby);
-
         stamp.setStep(stampCreateRequest.step());
-        stamp.setStampImg(stampCreateRequest.stampImg().toString());
+        String imageUrl = awsS3Service.uploadFile(babyId,stampCreateRequest.stampImg(),stampCreateRequest.createdAt(),"stamp");
+        stamp.setStampImg(imageUrl);
         stamp.setMemo(stampCreateRequest.memo());
-        stamp.setCreatedAt((stampCreateRequest.createdAt()));
+        stamp.setCreatedAt(stampCreateRequest.createdAt());
 
         log.info("stamp : " + stamp);
 
@@ -53,7 +50,26 @@ public class StampServiceImpl implements StampService{
     }
 
     @Override
-    public List<StampListResponse> stampListResponse(Long babyId) {
+    public void createStampAI(String token, StampCreateAIRequest stampCreateAIRequest) {
+        log.info("stampCreateAIRequest : " + stampCreateAIRequest);
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
+        Baby baby = babyRepository.findByBabyId(babyId);
+
+        Stamp stamp = new Stamp();
+        stamp.setBaby(baby);
+        stamp.setStep(stampCreateAIRequest.step());
+        stamp.setStampImg(stampCreateAIRequest.stampUrl());
+        stamp.setMemo(stampCreateAIRequest.memo());
+        stamp.setCreatedAt(stampCreateAIRequest.createdAt());
+
+        log.info("stamp : " + stamp);
+
+        stampRepository.save(stamp);
+    }
+
+    @Override
+    public List<StampListResponse> stampListResponse(String token) {
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
         List<Stamp> stampList = stampRepository.findByBaby_BabyId(babyId);
         List<StampListResponse> stampListResponseList = new ArrayList<>();
         for (Stamp stamp : stampList) {
@@ -90,7 +106,9 @@ public class StampServiceImpl implements StampService{
         Stamp stamp = stampRepository.findByStampId(stampId);
         if(stamp != null){
             log.info("stamp update success");
-            stamp.setStampImg(stampUpdateRequest.stampImg().toString());
+            String imageUrl = awsS3Service.uploadFile(stamp.getBaby().getBabyId(), stampUpdateRequest.stampImg(),stamp.getCreatedAt(),"stamp");
+            stamp.setStampImg(imageUrl);
+            stamp.setStep(stampUpdateRequest.step());
             stamp.setMemo(stampUpdateRequest.memo());
             stampRepository.save(stamp);
         }

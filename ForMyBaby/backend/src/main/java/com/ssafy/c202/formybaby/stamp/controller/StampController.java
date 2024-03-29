@@ -1,6 +1,7 @@
 package com.ssafy.c202.formybaby.stamp.controller;
 
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
+import com.ssafy.c202.formybaby.stamp.dto.request.StampCreateAIRequest;
 import com.ssafy.c202.formybaby.stamp.dto.request.StampCreateRequest;
 import com.ssafy.c202.formybaby.stamp.dto.request.StampUpdateRequest;
 import com.ssafy.c202.formybaby.stamp.dto.response.StampListResponse;
@@ -22,14 +23,20 @@ public class StampController {
     private final StampService stampService;
 
     @PostMapping()
-    public ResponseEntity<?> createStamp(@RequestBody StampCreateRequest stampCreateRequest) {
-        stampService.createStamp(stampCreateRequest);
-        //ResponseEntity responseEntity = new ResponseEntity("Stamp update successfully", HttpStatus.OK);
+    public ResponseEntity<?> createStamp(@RequestHeader(name = "Authorization") String token, @RequestBody StampCreateRequest stampCreateRequest) {
+        stampService.createStamp(token, stampCreateRequest);
         return new ResponseEntity<>("Stamp create successfully^^!", HttpStatus.OK);
     }
+
+    @PostMapping()
+    public ResponseEntity<?> createStampAI(@RequestHeader(name = "Authorization") String token, @RequestBody StampCreateAIRequest stampCreateAIRequest){
+        stampService.createStampAI(token, stampCreateAIRequest);
+        return null;
+    }
+
     @GetMapping("/list")
-    public ResponseEntity<List<StampListResponse>> listStamp(@RequestParam Long babyId) {
-        List<StampListResponse> stampListResponseList = stampService.stampListResponse(babyId);
+    public ResponseEntity<List<StampListResponse>> listStamp(@RequestHeader(name = "Authorization") String token) {
+        List<StampListResponse> stampListResponseList = stampService.stampListResponse(token);
         if (stampListResponseList != null && !stampListResponseList.isEmpty()) {
             return ResponseEntity.ok(stampListResponseList);
         } else {
