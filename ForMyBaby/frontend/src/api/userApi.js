@@ -50,12 +50,8 @@ export const addBabyInfo = async (formData) => {
   console.log('아이 추가 등록');
   try {
       const response = await axiosWrapper.post('/v1/users/family/add', formData);
-
-      if (response.status === 200) {
-          return response.data;
-      } else {
-          throw new Error('Failed to submit baby information');
-      }
+      return response.data;
+ 
   } catch (error) {
       throw new Error('Error occurred while submitting baby information:', error);
   }
