@@ -6,7 +6,7 @@ WORKDIR /AI/workspace/python-logic/edge_lp3
 # 필요한 Python 패키지가 있다면 requirements.txt를 이용하여 설치할 수 있습니다.
 # COPY ./python-logic/common/edge_ino\sensors/edge_lp3/requirements.txt .
 COPY . .
-RUN apt-get update && apt-get install -y python3-pip
+RUN apt update && apt install -y python3-pip
 RUN pip install -r ./requirements.txt
 CMD ["python3", "main.py"]
 
