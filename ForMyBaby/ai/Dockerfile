@@ -1,7 +1,7 @@
 FROM python:3.9
-# FROM node:21.7.1-alpine
+FROM node:21.7.1-alpine
 
-WORKDIR /AI/workspace/python-logic/edge_lp3
+WORKDIR /AI/workspace/python-logic/common/edge_lp3
 
 # 필요한 Python 패키지가 있다면 requirements.txt를 이용하여 설치할 수 있습니다.
 # COPY ./python-logic/common/edge_ino\sensors/edge_lp3/requirements.txt .
