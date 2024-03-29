@@ -1,5 +1,5 @@
 # FROM python:3.9
-FROM node:21.7.1-alpine
+# FROM node:21.7.1-alpine
 FROM ubuntu:jammy
 
 # WORKDIR /AI/workspace/python-logic/common/edge_lp3
@@ -23,8 +23,8 @@ CMD ["python3", "main.py"]
 # WORKDIR /AI/workspace/express-network
 WORKDIR /node
 COPY ./workspace/express-network .
-RUN npm install
-CMD ["node", "index.js"]
+# RUN npm install
+# CMD ["node", "index.js"]
 
 
 # Docker 컨테이너에서 노출할 포트를 지정합니다.
