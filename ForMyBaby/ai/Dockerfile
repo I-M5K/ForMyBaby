@@ -9,7 +9,7 @@ COPY . .
 # RUN apk update && apk install -y python3-pip
 RUN apk update && apk add --no-cache \
     python3-dev \
-    python3-pip \
+    py3-pip \
     gcc \
     libc-dev
 RUN pip install -r ./requirements.txt
