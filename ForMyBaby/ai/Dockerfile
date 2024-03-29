@@ -1,18 +1,20 @@
 FROM python:3.9
+FROM node:21.7.1-alpine
 
-WORKDIR /AI/express-network/node_modules/.bin:$PATH
+WORKDIR /AI/workspace/python-logic/edge_lp3
 
 # 필요한 Python 패키지가 있다면 requirements.txt를 이용하여 설치할 수 있습니다.
-# COPY requirements.txt .
-# RUN pip install -r requirements.txt
-
+# COPY ./python-logic/common/edge_ino\sensors/edge_lp3/requirements.txt .
 COPY . .
+RUN pip install -r ./requirements.txt
+CMD ["python3", "main.py"]
 
-# 필요한 Python 패키지를 직접 설치하는 경우에는 아래와 같이 명령어를 사용합니다.
-# RUN pip install 패키지이름
+WORKDIR /AI/workspace/express-network
+COPY . .
+RUN npm install
+CMD ["npm", "start"]
 
-# 필요한 Python 패키지가 설치되었다고 가정하고, 서버를 실행하는 CMD를 지정합니다.
-CMD ["python", "start"]
 
 # Docker 컨테이너에서 노출할 포트를 지정합니다.
+EXPOSE 3001
 EXPOSE 3002
