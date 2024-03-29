@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
+import { useUserStore } from '../stores/UserStore';
 
 const WebSocketComponent = ({ endpoint }) => {
   const [socket, setSocket] = useState(null);
-
+  const { babySelected } = useUserStore();
   useEffect(() => {
     const newSocket = socketIOClient(endpoint, {
       transports: ['websocket'], // WebSocket 프로토콜 강제 사용
@@ -18,9 +19,9 @@ const WebSocketComponent = ({ endpoint }) => {
   useEffect(() => {
     if (socket) {
       // 연결이 설정되면 babyId를 소켓 서버로 보냅니다.
-      const babyId = 1; // 보내고자 하는 babyId 값
-      socket.emit('babyId', babyId);
-      console.log('소켓통신: babyId 송신', babyId);
+      //const babyId = 1; // 보내고자 하는 babyId 값
+      socket.emit('babyId', babySelected);
+      console.log('소켓통신: babyId 송신', babySelected);
     }
     if (socket && socket.on) {
       // 소켓 일반 스탬프용 이벤트 수신

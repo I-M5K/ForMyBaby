@@ -31,8 +31,7 @@ public class NotificationController {
     @GetMapping("/list")
     public ResponseEntity<List<NotificationReadResponse>> getNotificationList (@RequestHeader(name="Authorization") String token) {
         String userId = redisService.getUserIdByToken(token);
-        Long babyId = Long.valueOf(redisService.getBabyIdByToken(userId));
-        return new ResponseEntity<>(notificationService.getList(Long.valueOf(userId), babyId), HttpStatus.OK);
+        return new ResponseEntity<>(notificationService.getList(Long.valueOf(userId)), HttpStatus.OK);
     }
 
     @DeleteMapping("{notificationId}")

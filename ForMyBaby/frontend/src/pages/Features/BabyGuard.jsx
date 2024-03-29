@@ -3,10 +3,11 @@ import socketIOClient from 'socket.io-client';
 import NavBar from '../../components/NavBar';
 import DetailContent from './BabyGuardDetail';
 import ChangeContent from './BabyGuardChange';
-import SleepStatusContent from './SleepStatusContent'; // 수정된 부분
-import { useRecordStore } from '../../stores/RecordStore'; // 상태 관리 파일에서 가져옴
-
+import SleepStatusContent from './SleepStatusContent'; 
+import { useRecordStore } from '../../stores/RecordStore'; 
 import './BabyGuard.css';
+import { getTodayData } from '../../api/sleepApi';
+import { useUserStore } from '../../stores/UserStore';
 
 const ENDPOINT = 'http://localhost:3001';
 
@@ -23,7 +24,7 @@ const Dashboard = () => {
   const [lineData, setLineData] = useState('');
   const [timestamp, setTimestamp] = useState('');
   const [selectedButton, setSelectedButton] = useState('button1');
-  const [babyId, setBabyId] = useState('');
+  const { babySelected } = useUserStore();
 
   const { danger, hours, awake } = useRecordStore(); // 상태 관리 파일에서 상태 가져오기
 
@@ -32,16 +33,31 @@ const Dashboard = () => {
     setSelectedButton(buttonName);
   };
 
-  const handleBabyIdChange = (event) => {
-    setBabyId(event.target.value);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      if (danger === null || awake === null || hours === null) {
+        try {
+          // API 호출하여 데이터 가져오기
+          const response = await getTodayData();
+          // 가져온 데이터를 상태로 업데이트
+          useRecordStore.setState({
+            danger: response.dangerCnt,
+            awake: response.sleepCnt,
+            hours: response.sleepTime
+          });
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+    };
+  
+    fetchData();
+
     const socket = socketIOClient(ENDPOINT, {
       transports: ['websocket'],
     });
 
-    socket.emit('babyId', babyId);
+    socket.emit('babyId', babySelected);
 
     socket.on('image', ({ imageData, lineData, timestamp }) => {
       const base64String = btoa(
@@ -67,7 +83,7 @@ const Dashboard = () => {
     });
 
     return () => {};
-  }, [babyId]);
+  }, []);
 
   return (
     <div className="dashboard">

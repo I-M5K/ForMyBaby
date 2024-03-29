@@ -75,8 +75,8 @@ public class NotificationServiceImpl implements NotificationService{
 
 
     @Override
-    public List<NotificationReadResponse> getList(Long userId, Long babyId) {
-        return notificationRepository.findListByUserId(userId, babyId);
+    public List<NotificationReadResponse> getList(Long userId) {
+        return notificationRepository.findListByUserId(userId);
     }
 
     @Override

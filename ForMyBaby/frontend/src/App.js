@@ -23,6 +23,7 @@ import BabyWelcome from './pages/BabyAdd/BabyWelcome'
 
 // 아이 지킴이
 import BabyGuard from './pages/Features/BabyGuard';
+import BabyGuardDetail from './pages/Features/BabyGuardDetail';
 // 건강/접종 타임라인
 import TimeLine from './pages/Features/timeline/TimeLine';
 // 성장 스탬프
@@ -74,15 +75,15 @@ function App() {
               </div>
             }
           />
-          {/* <Route
-            path="/baby-guard"
+          <Route
+            path="/baby-detail"
             element={
               <div>
                 <WebSocketComponent endpoint={socketUrl} />
-                <BabyGuard />
+                <BabyGuardDetail />
               </div>
             }
-          /> */}
+          />
           <Route
             path="/timeline"
             element={

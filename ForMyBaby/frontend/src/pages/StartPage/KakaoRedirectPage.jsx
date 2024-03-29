@@ -5,7 +5,7 @@ import kakaoApi from '../../api/kakaoApi'; // API 모듈 import
 import { useUserStore } from '../../stores/UserStore'; // Zustand 스토어 import
 
 const KakaoRedirectPage = () => {
-  const { jwt, fcm, family, setId, setEmail, setProfileImg, setName, setJwt, setFamily, setFcm } = useUserStore(); // Zustand 스토어 설정 함수 가져오기
+  const { setBabyList, jwt, fcm, family, setId, setEmail, setProfileImg, setName, setJwt, setFamily, setFcm } = useUserStore(); // Zustand 스토어 설정 함수 가져오기
   const navigate = useNavigate(); // useNavigate 훅 사용
   const location = useLocation();
   const code = new URLSearchParams(location.search).get("code");
@@ -44,6 +44,7 @@ const KakaoRedirectPage = () => {
         localStorage.setItem("accessToken", newToken);
         setFamily(data.familyCode);
         setFcm(data.fcmToken);
+        setBabyList(data.babyList);
 
         console.log('jwt: ', jwt);
         if (newToken != null) { // 로그인 성공

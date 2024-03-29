@@ -11,6 +11,8 @@ export const useUserStore = create(persist((set) => ({
     family: null,
     babySelected: null, 
     babyList: [],
+    uncheckedCnt: 0,
+    setUncheckedCnt: (uncheckedCnt) => set({ uncheckedCnt: uncheckedCnt }),
     setId: (id) => set({ id: id}),
     setName: (name) => set({ name: name}),  
     setEmail: (email) => set({ email: email}),

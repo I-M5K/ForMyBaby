@@ -19,14 +19,16 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     @Query("SELECT NEW com.ssafy.c202.formybaby.notification.dto.response.NotificationReadResponse(" +
             "n.notificationId," +
+            "n.user.userId, " +
+            "n.baby.babyId," +
             "n.notificationType," +
             "n.title," +
             "n.content," +
             "n.isChecked," +
             "n.createdAt" +
             ")" +
-            "FROM Notification n WHERE n.user.userId=:userId AND n.baby.babyId=:babyId")
-    List<NotificationReadResponse> findListByUserId(Long userId, Long babyId);
+            "FROM Notification n WHERE n.user.userId=:userId")
+    List<NotificationReadResponse> findListByUserId(Long userId);
 
     @Query("SELECT n " +
             "FROM Notification n " +
