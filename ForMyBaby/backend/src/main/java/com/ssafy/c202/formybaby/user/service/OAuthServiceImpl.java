@@ -1,5 +1,7 @@
 package com.ssafy.c202.formybaby.user.service;
 
+import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse2;
+import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.baby.service.BabyService;
 import com.ssafy.c202.formybaby.global.jwt.JwtService;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -32,6 +36,9 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Autowired
     private OauthRepository oauthRepository;
+
+    @Autowired
+    private BabyRepository babyRepository;
 
     @Autowired
     private RestTemplate restTemplate; // RestTemplate 의존성 주입

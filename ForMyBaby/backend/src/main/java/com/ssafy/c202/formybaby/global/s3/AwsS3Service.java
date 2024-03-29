@@ -1,5 +1,7 @@
 package com.ssafy.c202.formybaby.global.s3;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
@@ -14,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -82,5 +85,23 @@ public class AwsS3Service {
     public void deleteFile(String fileName){
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
         System.out.println(bucket);
+    }
+
+    public String getVideoUrl(String fileName) {
+        String fullPath = "video/12345/" + fileName;
+        try {
+            if (!amazonS3.doesObjectExist(bucket, fullPath)) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청한 파일을 찾을 수 없습니다.");
+            }
+            // 파일이 존재한다면 URL을 생성하여 반환합니다.
+            URL fileUrl = amazonS3.getUrl(bucket, fullPath);
+            return fileUrl.toString();
+        } catch (AmazonServiceException e) {
+            // AWS S3 서비스 관련 예외 처리
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "S3 서비스 오류가 발생했습니다.");
+        } catch (SdkClientException e) {
+            // AWS SDK 클라이언트 관련 예외 처리
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "S3 연결 오류가 발생했습니다.");
+        }
     }
 }

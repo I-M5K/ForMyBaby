@@ -7,8 +7,8 @@ package com.ssafy.c202.formybaby.stopmotion.dto.response;
 
 import java.sql.Timestamp;
 
-public record StopmotionReadResponse(Long motionId, Long babyId, String motionUrl, Timestamp createdAt) {
-    public StopmotionReadResponse(Long motionId, Long babyId, String motionUrl, Timestamp createdAt) {
+public record StopMotionReadResponse(Long motionId, Long babyId, String motionUrl, Timestamp createdAt) {
+    public StopMotionReadResponse(Long motionId, Long babyId, String motionUrl, Timestamp createdAt) {
         this.motionId = motionId;
         this.babyId = babyId;
         this.motionUrl = motionUrl;

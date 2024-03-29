@@ -72,11 +72,17 @@ const BabyAddPage = () => {
                     console.log('Baby information submitted successfully!');
                     console.log(data);
                     const list = data;
+<<<<<<< HEAD
                     console.log(list);
                     if (babySelected == null){
                         setBabySelected(list[0].babyId);
                     }
 
+=======
+                    if (babySelected == null){
+                        setBabySelected(list[0].babyId);
+                    }
+>>>>>>> f126b1d7681c39b05422d0eb292a38cf2dc76e8d
                     setBabyList(list);
                     //setBabyList(data);
                 } catch (error) {
