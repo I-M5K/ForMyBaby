@@ -68,7 +68,7 @@ const BabyAddPage = () => {
                 }
             } else {
                 try {
-                    const data = await addFirstBabyInfo(formData); // API 호출
+                    const data = await addBabyInfo(formData); // API 호출
                     console.log('Baby information submitted successfully!');
                     console.log(data);
                     const babyList = data.babyReadResponseList;
