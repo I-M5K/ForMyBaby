@@ -44,6 +44,7 @@ const KakaoRedirectPage = () => {
         localStorage.setItem("accessToken", newToken);
         setFamily(data.familyCode);
         setFcm(data.fcmToken);
+        setBabyList(data.babyList);
 
         console.log('jwt: ', jwt);
         if (newToken != null) { // 로그인 성공

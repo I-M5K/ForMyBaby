@@ -49,7 +49,7 @@ export const addBabyInfo = async (formData) => {
   formData.append('role', Role.None);
   console.log('아이 추가 등록');
   try {
-      const response = await axiosWrapper.post('/v1/users/baby', formData);
+      const response = await axiosWrapper.post('/v1/users/family/add', formData);
 
       if (response.status === 200) {
           return response.data;
