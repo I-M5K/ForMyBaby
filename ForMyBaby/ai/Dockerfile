@@ -4,7 +4,7 @@ FROM ubuntu:jammy
 
 # WORKDIR /AI/workspace/python-logic/common/edge_lp3
 WORKDIR /python
-COPY ./AI/workspace/python-logic/common/edge_lp3 .
+COPY ./ForMyBaby/ai/workspace/python-logic/common/edge_lp3 .
 
 # 필요한 Python 패키지가 있다면 requirements.txt를 이용하여 설치할 수 있습니다.
 # COPY ./python-logic/common/edge_ino\sensors/edge_lp3/requirements.txt .
@@ -22,7 +22,7 @@ CMD ["python3", "main.py"]
 
 # WORKDIR /AI/workspace/express-network
 WORKDIR /node
-COPY ./AI/workspace/express-network .
+COPY ./ForMyBaby/ai/workspace/express-network .
 RUN npm install
 CMD ["node", "index.js"]
 
