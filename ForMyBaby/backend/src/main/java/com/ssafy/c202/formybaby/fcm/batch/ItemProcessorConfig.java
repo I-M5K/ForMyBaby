@@ -118,7 +118,7 @@ public class ItemProcessorConfig {
                 String babyId = String.valueOf(family.getBaby().getBabyId());
                 LocalDate birthDate = family.getBaby().getBirthDate();
                 LocalDate target = birthDate.plusMonths(vaccine.getStartAt());
-                System.out.println(target.minusDays(1));
+//                System.out.println(target.minusDays(1));
                 if(today.isEqual(target.minusWeeks(1))) {
                     isWeek = true;
                 } else if(today.isEqual(target.minusDays(1))) {
