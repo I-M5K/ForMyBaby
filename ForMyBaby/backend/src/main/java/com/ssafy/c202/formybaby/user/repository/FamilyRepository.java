@@ -13,17 +13,10 @@ import java.util.List;
 public interface FamilyRepository extends JpaRepository<Family, Long> {
     @Query(value = "SELECT DISTINCT f.familyCode FROM Family f WHERE f.baby.babyId = :babyId")
     String findFamilyCodeByBabyId(@Param("babyId") Long babyId);
-
     @Query(value = "SELECT DISTINCT f.familyCode FROM Family f WHERE f.user.userId = :userId")
     String findFamilyCodeByUserId(@Param("userId") Long userId);
-    List<Family> findByFamilyId(Long familyId);
-    Family findFamilyByUser_UserId(Long userId);
-    Family findFamilyByUserUserIdAndBabyBabyId(Long userId, Long babyId);
     Family findFamilyByBabyBabyId(Long babyId);
-    Family findFamilyByUserUserIdAndBabyIsNull(Long userId);
     List<Family> findFamiliesByUserUserId(Long userId);
-    List<Family> findFamiliesByBabyBabyId(Long babyId);
-    List<Family> findByFamilyCode(String familyCode);
     @Query("SELECT f.familyRank FROM Family f WHERE f.user.userId=:userId AND f.baby.babyId=:babyId")
     int findFamilyRankByUserId(Long userId, Long babyId);
     @Transactional
@@ -31,4 +24,6 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
     @Query("UPDATE Family f SET f.familyRank=:rank WHERE f.user.userId=:userId AND f.baby.babyId=:babyId")
     void updateRankByFamilyCode(Long userId, Long babyId, int rank);
     void deleteFamiliesByBabyBabyId(Long babyId);
+    @Query("SELECT f FROM Family f WHERE f.familyCode=:familyCode")
+    List<Family> findAllByFamilyCode(String familyCode);
 }
