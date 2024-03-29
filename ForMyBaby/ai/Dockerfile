@@ -1,6 +1,6 @@
 FROM python:3.9
 
-WORKDIR /ai
+WORKDIR /AI/express-network/node_modules/.bin:$PATH
 
 # 필요한 Python 패키지가 있다면 requirements.txt를 이용하여 설치할 수 있습니다.
 # COPY requirements.txt .
