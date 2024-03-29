@@ -1,5 +1,5 @@
-import { useUserStore } from '../src/stores/UserStore';
-import { selectBaby } from '../src/api/userApi';
+//import { useUserStore } from '../src/stores/UserStore';
+//import { selectBaby } from '../src/api/userApi';
 
   self.addEventListener("install", function (e) {
     console.log("fcm sw install..");
@@ -10,7 +10,7 @@ import { selectBaby } from '../src/api/userApi';
     console.log("fcm sw activate..");
   });
 
-  const { babySelected, setBabySelected, uncheckedCnt, setUncheckedCnt } = useUserStore();
+//  const { babySelected, setBabySelected, uncheckedCnt, setUncheckedCnt } = useUserStore();
 
   var type = ''
   var babyId = 0
@@ -19,7 +19,7 @@ import { selectBaby } from '../src/api/userApi';
     console.log("push: ", e.data.json());
     if (!e.data.json()) return;
     
-    setUncheckedCnt(uncheckedCnt+1);
+//    setUncheckedCnt(uncheckedCnt+1);
 
     const data = e.data.json().data;
     const resultData = e.data.json().notification;
@@ -40,11 +40,11 @@ import { selectBaby } from '../src/api/userApi';
   
   self.addEventListener("notificationclick", function (event) {
     console.log("notification click");
-    if (babySelected != babyId){
-      setBabySelected(babyId);
-      console.log("선택 아이 정보 바꾸기!");
-      selectBaby(babyId);
-    }
+    // if (babySelected != babyId){
+    //   setBabySelected(babyId);
+    //   console.log("선택 아이 정보 바꾸기!");
+    //   selectBaby(babyId);
+    // }
     var url = "/main";
     console.log('type: ', type);
     if (type === 'danger'){ // 위험 감지
