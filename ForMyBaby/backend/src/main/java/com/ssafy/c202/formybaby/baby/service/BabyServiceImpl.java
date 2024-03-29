@@ -42,13 +42,14 @@ public class BabyServiceImpl implements BabyService{
     private final AwsS3Service awsS3Service;
     private final NotificationRepository notificationRepository;
     @Override
-    public void addBaby(BabyCreateRequest babyCreateRequest) {
+    public List<BabyReadResponse> addBaby(BabyCreateRequest babyCreateRequest) {
         User user = userRepository.findByUserId(babyCreateRequest.userId());
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
         babyRepository.save(baby);
-        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode,1 );
         familyRepository.save(family);
+        return babyRepository.findBabiesByUserId(user.getUserId());
     }
 
     public void createNewBaby(List<BabyCreateRequest> babyCreateRequestList) {
@@ -58,9 +59,7 @@ public class BabyServiceImpl implements BabyService{
             Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
             babyRepository.save(baby);
 
-//        fcmService.sendTest("fGEU-9IwnPvJFXs8VcFrHe:APA91bGmQ0bqr_Hxut3dxXPA3qOkpuS3u0ZNnwAR0Mc6YmDWFMsw4WgN8Ncp1VSpdXHz-OYKijYEUK0MHKTRrr_je5EzL7KKDuBjuoBoclMKsWVoSqmIExHLl1v2VqdG2Fb_dA7f29BG");
-
-            Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+            Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode, 1);
             familyRepository.save(family);
         }
     }
@@ -74,7 +73,7 @@ public class BabyServiceImpl implements BabyService{
         String uploadFileName = awsS3Service.uploadFile(babyCreateRequest.files());
         baby.setProfileImg(uploadFileName);
         babyRepository.save(baby);
-        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode);
+        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode, 1);
         familyRepository.save(family);
 
         List<BabyReadResponse> babyReadResponseList = new ArrayList<>();
@@ -119,7 +118,6 @@ public class BabyServiceImpl implements BabyService{
 
     @Override
     public List<BabyReadResponse> babyList(Long userId) {
-        String familyCode = familyRepository.findFamilyCodeByUserId(userId);
         return babyRepository.findBabiesByUserId(userId);
     }
     @Override
