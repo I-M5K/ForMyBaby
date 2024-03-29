@@ -20,4 +20,4 @@ COPY ./workspace/express-network/index.js /app/express-network/index.js
 RUN npm install
 
 # 실행할 명령을 지정합니다.
-CMD ["node", "express-network/index.js"]
+CMD ["node", "index.js"]
