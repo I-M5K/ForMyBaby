@@ -32,7 +32,7 @@ public class BatchScheduler {
     private Job createVaccine;
     // 매일 3시에 실행
 //    @Scheduled(cron = "0 0 3 * * *")
-    @Scheduled(cron = "0 0/2 * * * *") 
+    @Scheduled(cron = "0 0/2 * * * *")
     public void runJobs() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("JobID", String.valueOf(System.currentTimeMillis()))
