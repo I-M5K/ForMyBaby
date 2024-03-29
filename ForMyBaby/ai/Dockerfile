@@ -15,12 +15,12 @@ RUN apt update && apt install -y python3 python3-pip
 #     py3-pip \*
 #     gcc \*
 #     libc-dev*
-RUN pip install -r .workspace/python-logic/common/edge_lp3/requirements.txt
+RUN pip install -r ./requirements.txt
 RUN ls -al
 Run pwd
 CMD ["python3", "main.py"]
 
-# WORKDIR /AI/workspace/express-network*
+# WORKDIR /AI/workspace/express-network
 WORKDIR /node
 COPY ./workspace/express-network .
 RUN npm install
