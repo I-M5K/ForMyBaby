@@ -118,10 +118,10 @@ const BabyAddPage = () => {
                         className="input-field"
                     />
                 </div>
-                <Link to="/baby-add-more" className='baby-add-more-container'>
+                {/* <Link to="/baby-add-more" className='baby-add-more-container'>
                     <div className='baby-add-more-button' onClick={handleSubmit}>+</div>
                     <p className='baby-add-more-text' onClick={handleSubmit}>추가하기</p>
-                </Link>
+                </Link> */}
                 <Link to='/baby-relation'>
                     <button type="submit" onClick={handleSubmit} className='baby-add-submit' disabled={!isFormValid}>등록하기</button>
                 </Link>
