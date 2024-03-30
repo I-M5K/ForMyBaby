@@ -3,6 +3,7 @@ package com.ssafy.c202.formybaby.user.service;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse2;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
+import com.ssafy.c202.formybaby.baby.mapper.BabyMapper;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.baby.service.BabyService;
 import com.ssafy.c202.formybaby.global.jpaEnum.Role;
@@ -13,6 +14,7 @@ import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
 import com.ssafy.c202.formybaby.user.repository.FamilyRepository;
+import com.ssafy.c202.formybaby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,11 @@ import java.util.List;
 public class FamilyServiceImpl implements FamilyService{
 
     private final FamilyRepository familyRepository;
-
+    private final UserRepository userRepository;
     private final BabyService babyService;
 
     private final RedisService redisService;
+    private final BabyMapper babyMapper;
 
     @Override
     public List<Family> familyList(Long userId) {
@@ -62,21 +65,34 @@ public class FamilyServiceImpl implements FamilyService{
 
     @Override
     public List<BabyReadResponse2> joinFamilyWithShareCode(String token, FamilyCodeCreateRequest familyCodeCreateRequest) {
+        // 아이 리스트
         List<BabyReadResponse2> babyReadResponse2List = babyService.babyList2(familyCodeCreateRequest.familyCode());
+        // Family 레코드들 모두 조회
+        List<Family> familyList = familyRepository.findAllByFamilyCode(familyCodeCreateRequest.familyCode());
+        List<Family> newList = new ArrayList<>();
         // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
         String userId = redisService.getUserIdByToken(token);
         redisService.saveBabyIdsByToken(userId , babyReadResponse2List.get(0).babyId());
-        if(babyReadResponse2List != null){
-            for (BabyReadResponse2 baby : babyReadResponse2List) {
-                Family family = familyRepository.findFamilyByBabyBabyId(baby.babyId());
-                if(family != null){
-                    family.setRole(familyCodeCreateRequest.role());
-                    familyRepository.save(family);
-                }
+        // 내 Family 레코드 조회
+        List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(Long.valueOf(userId));
+        if(!myFamilyList.isEmpty()){
+            for (Family family : myFamilyList) {
+                family.setRole(familyCodeCreateRequest.role());
+                familyRepository.save(family);
             }
-            return babyReadResponse2List;
+            familyRepository.saveAll(newList);
         } else {
-            return null;
+            for(BabyReadResponse2 babyReadResponse2 : babyReadResponse2List){
+            Family family = new Family();
+            family.setFamilyCode(familyCodeCreateRequest.familyCode());
+            family.setFamilyRank(1);
+            family.setBaby(babyMapper.toBabyEntity(babyReadResponse2));
+            family.setRole(familyCodeCreateRequest.role());
+            family.setUser(userRepository.findByUserId(familyCodeCreateRequest.userId()));
+            newList.add(family);
+            }
+
         }
+        return babyReadResponse2List;
     }
 }
