@@ -4,9 +4,11 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const multer = require('multer');
 const fs = require('fs');
-const bodyParser = require('body-parser'); // 설치한 body-parser를 import
+//const bodyParser = require('body-parser'); // 설치한 body-parser를 import
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 
 // 방 정보를 저장할 객체
 const rooms = {};
