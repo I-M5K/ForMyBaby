@@ -19,7 +19,7 @@
     console.log("push: ", e.data.json());
     if (!e.data.json()) return;
     
-    setUncheckedCnt(uncheckedCnt+1);
+//    setUncheckedCnt(uncheckedCnt+1);
 
     const data = e.data.json().data;
     const resultData = e.data.json().notification;
