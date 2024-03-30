@@ -1,4 +1,5 @@
 
+# import mediapipe as mp
 from edge_LP import NetworkManager
 from my_main import EdgeLP
 
@@ -25,4 +26,5 @@ def main():
 
 
 if __name__ == "__main__":
+    
     main()
