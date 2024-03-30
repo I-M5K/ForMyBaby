@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import './MainPage.css';
 import useGeoLocation from "../hooks/useGeolocation";
-import { sendLocation } from '../api/userApi';
+import { sendLocation,selectBaby } from '../api/userApi';
+import { getNotificationList } from '../api/notificationApi';
 import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { useUserStore } from '../stores/UserStore';
 
@@ -14,27 +15,51 @@ import Books from '../assets/books.png';
 import SleepChart from '../assets/sleepChart.png';
 import Syringe from '../assets/syringe.png';
 import PresentBox from '../assets/presentBox.png';
+import { useLocation } from "react-router-dom";
 
 const MainPage = () => {
+  const loc = useLocation();
+  const params = new URLSearchParams(loc.search);
+  const babyId = params.get("babyId");
+
   const location = useGeoLocation();
   const { babyList, fcm, setFcm, uncheckedCnt, setUncheckedCnt, babySelected, setBabySelected } = useUserStore();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (babySelected == null || babySelected == 0){
-  //       setBabySelected(babyList[0].babyId);
-  //     }
-  //     if (fcm == null){
-  //       requestPermission();
-  //       setFcm(localStorage.getItem('fcmToken'));
-  //       //localStorage.removeItem('fcmToken');
-  //     }
-  //     if (location && location.loaded && location.coordinates) {
-  //       await sendLocation(location.coordinates.lat, location.coordinates.lng);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [location]);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (babySelected == null || babySelected == 0){
+        setBabySelected(babyList[0].babyId);
+      }
+
+      if (babyId){
+        console.log(babyId);
+        if (babySelected != babyId){
+          setBabySelected(babyId);
+          console.log("선택 아이 정보 바꾸기!");
+          selectBaby(babyId);
+        }
+      }
+
+      if (fcm == null){
+        requestPermission();
+        setFcm(localStorage.getItem('fcmToken'));
+        //localStorage.removeItem('fcmToken');
+      }
+
+      const fetchedNotifications = await getNotificationList(); // 알림 목록 가져오는 API 호출
+
+      // check 칼럼이 false인 알림의 개수 세기
+      const uncheckedNoti = fetchedNotifications.filter(notification => !notification.isChecked).length;
+
+      // 확인 안한 알림 수 업데이트
+      setUncheckedCnt(uncheckedNoti);
+
+      if (location && location.loaded && location.coordinates) {
+        await sendLocation(location.coordinates.lat, location.coordinates.lng);
+      }
+    };
+    fetchData();
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -56,7 +81,7 @@ const MainPage = () => {
     <div className="main-container">
       <div className="main-header">
         <span className="main-headerText">
-          지금은 땡구가<br />
+          지금은 구가<br />
           낮잠 잘 시간이에요!
         </span>
         <Link to="/notification">

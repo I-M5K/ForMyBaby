@@ -6,7 +6,7 @@ import Login from './pages/StartPage/Login'
 import WebSocketComponent from './Socket/WebSocketComponent'; 
 import { BrowserRouter, Navigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
-
+import "./FCM/firebase-messaging-sw.js";
 import FamilyCode from './pages/StartPage/FamilyCode'
 import KakaoRedirectPage from './pages/StartPage/KakaoRedirectPage';
 import AgreePage from './pages/StartPage/AgreePage';
