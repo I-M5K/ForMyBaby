@@ -12,12 +12,11 @@
 
 // //  const { babySelected, setBabySelected, uncheckedCnt, setUncheckedCnt } = useUserStore();
 
-//   var type = ''
-//   var babyId = 0
-
-//   self.addEventListener("push", function (e) {
-//     console.log("push: ", e.data.json());
-//     if (!e.data.json()) return;
+  var type = ''
+  
+  self.addEventListener("push", function (e) {
+    console.log("push: ", e.data.json());
+    if (!e.data.json()) return;
     
 // //    setUncheckedCnt(uncheckedCnt+1);
 
@@ -32,11 +31,10 @@
 //     };
 //     console.log("push: ", { resultData, notificationTitle, notificationOptions });
   
-//     babyId = data.babyId;
-//     type = data.type
-//     console.log("type : ", type);
-//     self.registration.showNotification(notificationTitle, notificationOptions);
-//   });
+    type = data.type
+    console.log("type : ", type);
+    self.registration.showNotification(notificationTitle, notificationOptions);
+  });
   
 //   self.addEventListener("notificationclick", function (event) {
 //     console.log("notification click");

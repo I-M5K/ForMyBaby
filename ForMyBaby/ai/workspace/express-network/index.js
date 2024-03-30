@@ -4,6 +4,9 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const multer = require('multer');
 const fs = require('fs');
+const bodyParser = require('body-parser'); // 설치한 body-parser를 import
+
+app.use(bodyParser.urlencoded({extended: false}));
 
 // 방 정보를 저장할 객체
 const rooms = {};
@@ -87,27 +90,27 @@ const storage = multer.diskStorage({
 
 // 이미지, 시간, 온습도를 받을 라우트 설정
 const upload = multer({ storage: storage });
-app.post('/data/:babyId', upload.single('image'), (req, res) => {
+app.post('/data', upload.single('image'), (req, res) => {
   try {
-    const babyId = req.params.babyId;
-    // console.log('Received image for babyId:', babyId);
+    // const babyId = req.params.babyId;
+    //console.log('Received image for babyId:', babyId);
 
     const line = req.body.line; // line 데이터 수신
-    // console.log('Received line:', line);
+    console.log('Received line:', line);
 
     const timestamp = req.body.timestamp; // timestamp 데이터 수신
     const datetime = req.body.datetime; // timestamp 데이터 수신
-    // console.log('Received timestamp:', timestamp);
+    console.log('Received timestamp:', timestamp);
 
 
-    console.log(datetime, babyId, line); // Combine into one line
+    console.log(datetime, line); // Combine into one line
 
     // 이미지 파일을 읽어서 데이터를 클라이언트로 전송
     fs.readFile(req.file.path, (err, data) => {
       if (err) throw err;
 
       // 이미지와 데이터를 방에 소속된 모든 소켓에게 전송
-      io.to(rooms[babyId]).emit('image', { imageData: data, lineData: line, timestamp: datetime });
+      io.emit('image', { imageData: data, lineData: line, timestamp: datetime });
 
     });
     res.status(200).send('Image received');
@@ -120,17 +123,23 @@ app.post('/data/:babyId', upload.single('image'), (req, res) => {
 // 이벤트 (일반 - 스탬프용)
 // timestamp; event_type; device_model; device_ID; baby_id
 // '/event/:babyId'
-app.post('/event/:babyId', (req, res) => {
+app.post('/event', (req, res) => {
   try {
-    const babyId = req.params.babyId;
-    const { timestamp, event_type, device_model, device_ID } = req.body;
+    // const babyId = req.params.babyId;
+    console.log(req.body);
+    const data = req.body;
+    const timestamp = data.timestamp;
+    const event_type = data.event_type;
+    const device_model = data.device_model;
+    const device_ID = data.device_ID;
+
 
     // 받은 데이터 로깅
-    console.log(`Received sleep event for babyId: ${babyId}`);
+    //console.log(`Received sleep event for babyId: ${babyId}`);
     console.log(`Timestamp: ${timestamp}, Event type: ${event_type}, Device model: ${device_model}, Device ID: ${device_ID}`);
 
     // 해당 방에 속한 클라이언트들에게 데이터 전송
-    io.to(babyId).emit('commonEvent', { timestamp, event_type, device_model, device_ID });
+    io.emit('commonEvent', { timestamp, event_type, device_model, device_ID });
 
     res.status(200).send('일반 스탬프용 데이터 전송 완료!');
   } catch (error) {
@@ -143,17 +152,25 @@ app.post('/event/:babyId', (req, res) => {
 // 이벤트 (위험 - 알림용)
 // timestamp; event_type; device_model; device_ID; baby_id
 // '/danger/:babyId'
-app.post('/danger/:babyId', (req, res) => {
+app.post('/danger', (req, res) => {
   try {
-    const babyId = req.params.babyId;
+    console.log(req.body.data)
+    if (!req.body) {
+      throw new Error('Request body is undefined or empty');
+    }
+
     const { timestamp, event_type, device_model, device_ID } = req.body;
 
+    if (!timestamp || !event_type || !device_model || !device_ID) {
+      throw new Error('One or more required fields are missing in the request body');
+    }
+
     // 받은 데이터 로깅
-    console.log(`Received sleep event for babyId: ${babyId}`);
+    console.log('Received data:');
     console.log(`Timestamp: ${timestamp}, Event type: ${event_type}, Device model: ${device_model}, Device ID: ${device_ID}`);
 
     // 해당 방에 속한 클라이언트들에게 데이터 전송
-    io.to(babyId).emit('dangerEvent', { timestamp, event_type, device_model, device_ID });
+    io.emit('dangerEvent', { timestamp, event_type, device_model, device_ID });
 
     res.status(200).send('위험 알림용 데이터 전송 완료!');
   } catch (error) {
@@ -166,17 +183,17 @@ app.post('/danger/:babyId', (req, res) => {
 // 이벤트 (수면 - 분석용)
 // timestamp; event_type; device_model; device_ID; baby_id
 // '/sleep/:babyId'
-app.post('/sleep/:babyId', (req, res) => {
+app.post('/sleep', (req, res) => {
   try {
-    const babyId = req.params.babyId;
+    //const babyId = req.params.babyId;
     const { timestamp, event_type, device_model, device_ID } = req.body;
 
     // 받은 데이터 로깅
-    console.log(`Received sleep event for babyId: ${babyId}`);
+    //console.log(`Received sleep event for babyId: ${babyId}`);
     console.log(`Timestamp: ${timestamp}, Event type: ${event_type}, Device model: ${device_model}, Device ID: ${device_ID}`);
 
     // 해당 방에 속한 클라이언트들에게 데이터 전송
-    io.to(babyId).emit('sleepEvent', { timestamp, event_type, device_model, device_ID });
+    io.emit('sleepEvent', { timestamp, event_type, device_model, device_ID });
 
     res.status(200).send('수면 분석용 데이터 전송 완료!');
   } catch (error) {
