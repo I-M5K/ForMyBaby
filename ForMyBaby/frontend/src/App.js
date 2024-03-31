@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css'
 import Tutorial from './components/tutorial/Tutorial'
 import Login from './pages/StartPage/Login'
+import Loading from './pages/StartPage/LoadingPage'
 import WebSocketComponent from './Socket/WebSocketComponent'; 
 import { BrowserRouter, Navigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
@@ -66,6 +67,7 @@ function App() {
           <Route path="/baby-welcome" element={<BabyWelcome />} />
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/baby-guard" element={<BabyGuard />} />
+          <Route path="/loading" element={<Loading />} />
           <Route
             path="/main"
             element={

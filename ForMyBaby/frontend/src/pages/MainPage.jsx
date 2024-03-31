@@ -127,6 +127,9 @@ const MainPage = () => {
           지금은 {selectedBabyName}<br />
           낮잠 잘 시간이에요!
         </span>
+        <Link to="/">
+        <button onClick={() => handleLogout()} className='logout-btn'>로그아웃</button>
+        </Link>
         <Link to="/notification">
           <div className="main-notificationIcon" onClick={handleNotificationClick}>
             <img src={require('../assets/mdi_bell.png')} alt="Notification Bell"/>
@@ -202,10 +205,6 @@ const MainPage = () => {
       </div>
 
       <div className={`overlay ${showOverlay ? 'showOverlay' : ''}`} onClick={toggleBottomSheet}></div>
-
-      <Link to="/">
-        <button onClick={() => handleLogout()} className='logout-btn'>로그아웃</button>
-      </Link>
       <NavBar />
     </div>
   );
