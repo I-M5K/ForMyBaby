@@ -24,4 +24,6 @@ public class StopMotion {
     // 생성 날짜
     @Column(nullable = false)
     private Timestamp createdAt;
+
+    private int count;
 }
