@@ -30,8 +30,10 @@ public class UserController {
     private RedisService redisService;
     @GetMapping()
     public ResponseEntity<UserReadResponse> findUser(@RequestParam("userId") Long userId){
+        log.info("test findUser");
         try {
             UserReadResponse userReadResponse = userService.findUser(userId);
+            log.info("userReadResponse : " + userReadResponse);
             return new ResponseEntity<>(userReadResponse, HttpStatus.OK);
         }catch (NotFoundException e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

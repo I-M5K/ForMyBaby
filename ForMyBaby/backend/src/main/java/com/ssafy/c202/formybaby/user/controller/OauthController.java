@@ -71,7 +71,7 @@ public class OauthController {
         params.add("client_secret", clientSecret); // 클라이언트 시크릿 추가, 필요한 경우만
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, requestHeaders);
-        String tokenRequestUri = "https://kauth.kakao.com/oauth/token"; // 토큰 요청을 위한 카카오 URL
+        String tokenRequestUri = "https://auth.kakao.com/oauth/token"; // 토큰 요청을 위한 카카오 URL
 
         // 카카오 토큰 요청
         ResponseEntity<Map> response = restTemplate.postForEntity(tokenRequestUri, request, Map.class);
