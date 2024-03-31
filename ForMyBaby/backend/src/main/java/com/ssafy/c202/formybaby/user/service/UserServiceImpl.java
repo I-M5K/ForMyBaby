@@ -219,7 +219,10 @@ public class UserServiceImpl implements UserService{
         String familyCode = familyRepository.findFamilyCodeByUserId(userId);
         Map<String, LatLon> map = redisService.setLocation(familyCode, userId, lat, lon);
         String babyId = redisService.getBabyIdByToken(String.valueOf(userId));
+
+        // 애기 정보 등록
 //        LatLon baby = map.remove(babyId);
+        // 예시 애기 위치 정보
         LatLon baby = new LatLon(35.1483188, 126.9291854);
         for (String id : map.keySet()) {
             LatLon loc = map.get(id);
