@@ -11,16 +11,17 @@ export const getTodayData = async () => {
     }
 };
 
-export const getWeekData = async (timeData) => {
+export const getWeekData = async (endAt) => {
     console.log('1주일 데이터 가져오기!');
     try {
-        const response = await axiosWrapper.delete(`/v1/sleep/week/${timeData}`);
+        const response = await axiosWrapper.get('/v1/sleep/week', { params: { endAt: endAt } });
         console.log('1주일 데이터 가져오기 완료!', response.data);
         return response.data;
     } catch(error) {
         console.log('1주일 데이터 가져오기 에러 발생!');
     }
 };
+
 
 export const sendSleep = async (data) => {
     try {

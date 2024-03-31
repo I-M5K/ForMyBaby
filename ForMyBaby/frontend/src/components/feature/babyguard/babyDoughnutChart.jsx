@@ -2,13 +2,13 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import './babyDoughnutChart.css';
 
-const DoughnutChartComponent = () => {
+const DoughnutChartComponent = ({danger, hours, awake }) => {
 
   const data1 = {
     datasets: [
       {
         label: '# of Votes',
-        data: [12, 8], // 첫 번째 차트 데이터
+        data: [hours, 24-hours], // 첫 번째 차트 데이터
         backgroundColor: [
           'rgba(255, 206, 86, 0.2)',
           'rgba(200, 200, 200, 0.2)',
@@ -26,7 +26,7 @@ const DoughnutChartComponent = () => {
     datasets: [
       {
         label: '# of Votes',
-        data: [19, 15], // 두 번째 차트 데이터
+        data: [awake, 10-awake], // 두 번째 차트 데이터
         backgroundColor: [
           'rgba(255, 206, 86, 0.2)',
           'rgba(200, 200, 200, 0.2)',
@@ -44,7 +44,7 @@ const DoughnutChartComponent = () => {
     datasets: [
       {
         label: '# of Votes',
-        data: [8, 12], // 세 번째 차트 데이터
+        data: [danger, 20-danger], // 세 번째 차트 데이터
         backgroundColor: [
           'rgba(255, 206, 86, 0.2)',
           'rgba(200, 200, 200, 0.2)',

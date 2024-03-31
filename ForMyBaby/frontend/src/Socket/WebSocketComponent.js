@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
 import { useUserStore } from '../stores/UserStore';
+import { getMotionCnt } from '../api/stopmotionApi';
+import { createStampByAI } from '../api/stampApi';
+import { sendDanger, sendAwake, sendSleep } from '../api/sleepApi';
+import { useRecordStore } from '../stores/RecordStore';
 
 const WebSocketComponent = ({ endpoint }) => {
   const [socket, setSocket] = useState(null);
   const { babySelected } = useUserStore();
+  const { danger, hours, awake, setDanger, setHours, setAwake, sleep, setSleep } = useRecordStore();
+
+  const status = false;
   useEffect(() => {
     const newSocket = socketIOClient(endpoint, {
       transports: ['websocket'], // WebSocket 프로토콜 강제 사용
@@ -21,25 +28,59 @@ const WebSocketComponent = ({ endpoint }) => {
       // 연결이 설정되면 babyId를 소켓 서버로 보냅니다.
       //const babyId = 1; // 보내고자 하는 babyId 값
       socket.emit('babyId', babySelected);
+      socket.emit('status', status);
       console.log('소켓통신: babyId 송신', babySelected);
+      console.log('소켓통신: status 송신', status);
     }
     if (socket && socket.on) {
       // 소켓 일반 스탬프용 이벤트 수신
       socket.on('commonEvent', (data) => {
         // commonEvent 이벤트를 수신했을 때 할 작업을 여기에 작성합니다.
         console.log('Received commonEvent:', data);
+        const detail = data.detail;
+        if (detail == '0'){ // 스톱모션
+          const response = getMotionCnt();
+          // 스톱모션 사진 수 저장하기
+
+        } else { // 성장 스탬프 - 만세 or 다리 꼬기
+          createStampByAI({ babyId: data.babyId, step: detail, stamp_img: data.s3_url })
+        } 
       });
 
       // 소켓 위험 알림용 이벤트 수신
       socket.on('dangerEvent', (data) => {
-        // commonEvent 이벤트를 수신했을 때 할 작업을 여기에 작성합니다.
-        console.log('Received commonEvent:', data);
+        console.log('Received dangerEvent:', data);
+        sendDanger({ babyId: data.babyId, type: data.detail });
+        if (danger == null){
+          setDanger(1);
+        } else {
+          setDanger(danger+1);
+        }
       });
 
       // 소켓 수면 분석용 이벤트 수신
       socket.on('sleepEvent', (data) => {
-        // commonEvent 이벤트를 수신했을 때 할 작업을 여기에 작성합니다.
-        console.log('Received commonEvent:', data);
+        console.log('Received sleepEvent:', data);
+        if (data.detail == '0'){ // 잠에서 깸
+          sendAwake({ babyId: data.babyId, type: data.detail })
+          if (awake == null){
+            setAwake(1);
+          } else {
+            setAwake(awake+1);
+          }
+          // *************** 시간 설정 (어제, 오늘) 필요 *************************
+          // 잠든 시간을 가져옵니다.
+          const sleepTime = new Date(sleep).getTime();
+          // 수신한 timestamp를 밀리초로 변환합니다.
+          const awakeTime = new Date(data.timestamp).getTime();
+          // 두 timestamp 사이의 차이를 분으로 계산합니다.
+          const timeDifference = (awakeTime - sleepTime) / (1000 * 60);
+          console.log('Time difference (minutes):', timeDifference);
+          setHours(hours+timeDifference);
+        } else if (data.detail == '1') { // 잠 듦
+          sendSleep({ babyId: data.babyId, type: data.detail })
+          setSleep(data.timestamp);
+        }
       });
     }
 

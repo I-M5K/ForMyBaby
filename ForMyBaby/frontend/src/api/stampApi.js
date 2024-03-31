@@ -11,10 +11,10 @@ export const createStampByUser = async () => {
   }
 };
 
-export const createStampByAI = async () => {
+export const createStampByAI = async (data) => {
   console.log('AI 스탬프 등록!');
   try {
-    const response = await axiosWrapper.post('/v1/stamp/ai');
+    const response = await axiosWrapper.post('/v1/stamp/ai', data);
     console.log(response);
   } catch (error) {
     console.error('스탬프 목록을 가져오는 중 에러 발생:', error);
