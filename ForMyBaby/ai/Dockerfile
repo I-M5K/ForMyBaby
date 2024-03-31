@@ -1,19 +1,18 @@
-
-FROM node:lts-alpine as builder
-# FROM python:3.9
+FROM python:3.9
 
 WORKDIR /ai
 
-# ENV PATH /ai/node_modules/.bin:$PATH
+# 필요한 Python 패키지가 있다면 requirements.txt를 이용하여 설치할 수 있습니다.
+# COPY requirements.txt .
+# RUN pip install -r requirements.txt
 
-# COPY package.json /ai-edu/package.json
 COPY . .
 
-RUN npm install
-# RUN pip install
+# 필요한 Python 패키지를 직접 설치하는 경우에는 아래와 같이 명령어를 사용합니다.
+# RUN pip install 패키지이름
 
-# RUN npm install typescript @types/node @types/react @types/react-dom @types/jest react-router-dom redux react-redux
-CMD ["npm", "start"]
-# CMD ["python", "start"]
+# 필요한 Python 패키지가 설치되었다고 가정하고, 서버를 실행하는 CMD를 지정합니다.
+CMD ["python", "start"]
 
+# Docker 컨테이너에서 노출할 포트를 지정합니다.
 EXPOSE 3002

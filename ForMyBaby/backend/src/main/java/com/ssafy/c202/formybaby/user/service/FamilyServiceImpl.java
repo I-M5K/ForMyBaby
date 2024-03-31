@@ -73,6 +73,33 @@ public class FamilyServiceImpl implements FamilyService{
     }
 
     @Override
+    public List<BabyReadResponse2> checkFamily2(@RequestHeader(name = "Authorization") String token, FamilyCodeUpdateRequest familyCodeUpdateRequest) {
+        System.out.println("id확인전");
+        Long firstId = familyRepository.findFirstUserIdByFamilyCode(familyCodeUpdateRequest.familyCode()).get(0);
+        log.info("firstId: " + firstId);
+        Long userId = Long.parseLong(redisService.getUserIdByToken(token));
+        log.info("userId: " + userId);
+        System.out.println("firstId: " + firstId);
+        log.info("firstId: " + firstId);
+        if (firstId == null){
+            return null;
+        } else {
+            List<Family> familyList = familyRepository.findAllByUserId(firstId);
+            //List<Family> newList = new ArrayList<>();
+            for (Family family: familyList){
+                Family dto = new Family();
+                dto.setFamilyRank(family.getFamilyRank());
+                dto.setBaby(family.getBaby());
+                dto.setRole(Role.None);
+                dto.setFamilyCode(family.getFamilyCode());
+                dto.setUser(userRepository.findByUserId(userId));
+                familyRepository.save(dto);
+            }
+        }
+        return babyService.babyList3(userId);
+    }
+
+    @Override
     public List<BabyReadResponse2> joinFamilyWithShareCode(String token, FamilyCodeCreateRequest familyCodeCreateRequest) {
         // 아이 리스트
         List<BabyReadResponse2> babyReadResponse2List = babyService.babyList2(familyCodeCreateRequest.familyCode());
@@ -100,5 +127,29 @@ public class FamilyServiceImpl implements FamilyService{
             return null;
         }
         return babyReadResponse2List;
+    }
+
+    @Override
+    public List<BabyReadResponse2> joinFamilyWithShareCode2(String token, Long userId, String role, String familyCode) {
+        // 아이 리스트
+        //List<BabyReadResponse2> babyReadResponse2List = babyService.babyList2(familyCodeCreateRequest.familyCode());
+        // Family 레코드들 모두 조회
+        List<Family> familyList = familyRepository.findAllByUserId(userId);
+        List<Family> newList = new ArrayList<>();
+//        // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
+//        String userId = redisService.getUserIdByToken(token);
+//        redisService.saveBabyIdsByToken(userId , babyReadResponse2List.get(0).babyId());
+        // 내 Family 레코드 조회
+        //List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(Long.valueOf(userId));
+        if (!familyList.isEmpty()) {
+            for (Family family : familyList) {
+                if (family.getRole() == Role.None) {
+                    family.setRole(Role.valueOf(role));
+                }
+
+            }
+        }
+        return babyService.babyList3(userId);
+
     }
 }
