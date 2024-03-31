@@ -151,7 +151,7 @@ const MainPage = () => {
 
       <div className="main-content">
         <div className="boxContainerLeft">
-          <Link to="/baby-age">
+          <Link to="/baby-profile">
             <div className="smallBox">
               <span className="boxText">
                 <span className="textLarge">{selectedBabyName} 태어난지</span><br />
