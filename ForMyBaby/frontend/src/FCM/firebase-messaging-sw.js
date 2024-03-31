@@ -32,19 +32,29 @@ export async function requestPermission() {
 
   console.log("알림 권한이 허용됨");
 
-  const token = await getToken(messaging, {
-    vapidKey: process.env.REACT_APP_VAPID_KEY,
-  });
+  // 서비스 워커가 활성화된 후에 푸시 알림 구독을 시도
+  navigator.serviceWorker.ready.then(async (registration) => {
+    const token = await getToken(messaging, {
+      vapidKey: process.env.REACT_APP_VAPID_KEY,
+    });
 
-  if (token) {
-    console.log('token: ', token);
-    localStorage.setItem('fcmToken', token);
-    sendDeviceToken(token); // 토큰 서버로 보내기
-  } else console.log("Can not get Token");
+    if (token) {
+      console.log('푸시 알림을 위한 토큰: ', token);
+      localStorage.setItem('fcmToken', token);
+      sendDeviceToken(token); // 토큰 서버로 보내기
+      window.location.reload();
+    } else {
+      console.log("푸시 알림 토큰을 가져올 수 없습니다.");
+    }
 
-  onMessage(messaging, (payload) => {
-    console.log("메시지가 도착했습니다.", payload);
-    // ...
+    onMessage(messaging, (payload) => {
+      console.log("메시지가 도착했습니다.", payload);
+      // 푸시 알림을 수신한 후의 로직을 추가할 수 있습니다.
+    });
+  }).catch((error) => {
+    console.error('서비스 워커가 아직 활성화되지 않았습니다.', error);
+    // 에러가 발생했을 때 페이지를 새로고침
+    window.location.reload();
   });
 }
 
