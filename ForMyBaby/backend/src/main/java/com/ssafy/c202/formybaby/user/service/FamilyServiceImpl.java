@@ -13,6 +13,7 @@ import com.ssafy.c202.formybaby.user.dto.request.FamilyCodeUpdateRequest;
 import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
+import com.ssafy.c202.formybaby.user.mapper.FamilyMapper;
 import com.ssafy.c202.formybaby.user.repository.FamilyRepository;
 import com.ssafy.c202.formybaby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,8 @@ public class FamilyServiceImpl implements FamilyService{
 
     private final FamilyRepository familyRepository;
     private final UserRepository userRepository;
-    private final BabyService babyService;
     private final BabyRepository babyRepository;
-
+    private final BabyService babyService;
     private final RedisService redisService;
     private final BabyMapper babyMapper;
 
@@ -49,15 +49,22 @@ public class FamilyServiceImpl implements FamilyService{
     @Override
     public List<BabyReadResponse2> checkFamily(@RequestHeader(name = "Authorization") String token, FamilyCodeUpdateRequest familyCodeUpdateRequest) {
         List<BabyReadResponse2> babyReadResponse2List = babyService.babyList2(familyCodeUpdateRequest.familyCode());
+        List<Family> list = new ArrayList<>();
         if(babyReadResponse2List != null){
             // 모든 BabyReadResponse2 객체의 role을 None으로 설정하고 데이터베이스에 저장
             for (BabyReadResponse2 baby : babyReadResponse2List) {
-                Family family = familyRepository.findFamilyByBabyBabyId(baby.babyId());
-                if(family != null){
-                    family.setRole(Role.None);
-                    familyRepository.save(family);
-                }
+                Family newFamily = new Family();
+                newFamily.setUser(userRepository.findByUserId(Long.valueOf(redisService.getUserIdByToken(token))));
+                newFamily.setBaby(babyMapper.toBabyEntity(baby));
+                newFamily.setFamilyCode(familyCodeUpdateRequest.familyCode());
+                newFamily.setRole(Role.None);
+                newFamily.setFamilyRank(1);
+                list.add(newFamily);
+                log.info("-------------------------");
+                log.info("CHECK FAMILY : {}", newFamily);
+                log.info("-------------------------");
             }
+            familyRepository.saveAll(list);
             return babyReadResponse2List;
         } else {
             return null;
@@ -98,28 +105,25 @@ public class FamilyServiceImpl implements FamilyService{
         // Family 레코드들 모두 조회
         List<Family> familyList = familyRepository.findAllByFamilyCode(familyCodeCreateRequest.familyCode());
         List<Family> newList = new ArrayList<>();
+        List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(familyCodeCreateRequest.userId());
+        log.info("----------------------------");
+        log.info("My Family List: {}", myFamilyList);
+        log.info("----------------------------");
         // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
         String userId = redisService.getUserIdByToken(token);
         redisService.saveBabyIdsByToken(userId , babyReadResponse2List.get(0).babyId());
         // 내 Family 레코드 조회
-        List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(Long.valueOf(userId));
         if(!myFamilyList.isEmpty()){
-            for (Family family : myFamilyList) {
+            for(Family family : myFamilyList){
                 family.setRole(familyCodeCreateRequest.role());
+                log.info("-------------------------------------");
+                log.info("FAMILY : {}", family);
+                log.info("--------------------------------------");
+                newList.add(family);
                 familyRepository.save(family);
             }
-            familyRepository.saveAll(newList);
         } else {
-            for(BabyReadResponse2 babyReadResponse2 : babyReadResponse2List){
-            Family family = new Family();
-            family.setFamilyCode(familyCodeCreateRequest.familyCode());
-            family.setFamilyRank(1);
-            family.setBaby(babyMapper.toBabyEntity(babyReadResponse2));
-            family.setRole(familyCodeCreateRequest.role());
-            family.setUser(userRepository.findByUserId(familyCodeCreateRequest.userId()));
-            newList.add(family);
-            }
-
+            return null;
         }
         return babyReadResponse2List;
     }

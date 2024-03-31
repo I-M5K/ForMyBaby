@@ -1,0 +1,35 @@
+.chart-detail-header {
+    font-size: 30px;
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    height: 170px;
+    border-radius: 30px;
+    background-color: #f9f9f9;
+  }
+  
+  .chart-item {
+    text-align: center;
+    width: 100px; /* 또는 원하는 크기 */
+    height: 100px;
+  }
+  
+  .chart-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .chart-footer {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+  }
+  
