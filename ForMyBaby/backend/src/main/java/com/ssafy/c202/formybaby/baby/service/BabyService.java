@@ -20,5 +20,6 @@ public interface BabyService {
     List<BabyReadResponse> babyList(Long userId);
     List<BabyReadResponse> babyList(String familyCode);
     List<BabyReadResponse2> babyList2(String familyCode);
+    List<BabyReadResponse2> babyList3(Long userId);
     void deleteBaby(Long babyId);
 }

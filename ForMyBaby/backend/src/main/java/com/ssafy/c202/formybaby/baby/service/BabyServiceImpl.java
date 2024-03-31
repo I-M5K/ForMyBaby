@@ -141,6 +141,11 @@ public class BabyServiceImpl implements BabyService{
     }
 
     @Override
+    public List<BabyReadResponse2> babyList3(Long userId) {
+        return babyRepository.findBabiesByUserId2(userId);
+    }
+
+    @Override
     public void deleteBaby(Long babyId) {
         notificationRepository.deleteAllByBabyId(babyId);
         familyRepository.deleteFamiliesByBabyBabyId(babyId);
