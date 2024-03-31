@@ -135,3 +135,12 @@
     font-weight: bold;
     margin-left: 10px;
 }
+
+.back-btn {
+    position: absolute;
+    top: 10px; /* 상단 여백 조정 */
+    right: 10px; /* 우측 여백 조정 */
+    width: 50px; /* 적절한 크기 지정 */
+    height: 50px; /* 적절한 크기 지정 */
+    cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
+}

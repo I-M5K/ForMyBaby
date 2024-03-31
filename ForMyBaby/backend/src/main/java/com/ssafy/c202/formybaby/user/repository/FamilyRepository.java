@@ -27,4 +27,11 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
     void deleteFamiliesByBabyBabyId(Long babyId);
     @Query("SELECT f FROM Family f WHERE f.familyCode=:familyCode")
     List<Family> findAllByFamilyCode(String familyCode);
+
+    @Query("SELECT f FROM Family f WHERE f.user.userId=:userId")
+    List<Family> findAllByUserId(Long userId);
+
+    @Query("SELECT DISTINCT f.user.userId FROM Family f WHERE f.familyCode = :familyCode")
+    List<Long> findFirstUserIdByFamilyCode(@Param("familyCode") String familyCode);
+
 }

@@ -13,5 +13,8 @@ import java.util.List;
 public interface FamilyService {
     List<Family> familyList(Long userId);
     List<BabyReadResponse2> checkFamily(String token, FamilyCodeUpdateRequest familyCodeUpdateRequest);
+    List<BabyReadResponse2> checkFamily2(String token, FamilyCodeUpdateRequest familyCodeUpdateRequest);
     List<BabyReadResponse2> joinFamilyWithShareCode(String token, FamilyCodeCreateRequest familyCodeCreateRequest);
+
+    List<BabyReadResponse2> joinFamilyWithShareCode2(String token, Long userId, String role, String familyCode);
 }

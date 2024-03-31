@@ -53,6 +53,20 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             "WHERE f.familyCode = :familyCode")
     List<BabyReadResponse2> findBabiesByFamilyCode2(String familyCode);
 
+    @Query("SELECT NEW com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse2(" +
+            "b.babyId, " +
+            "b.babyName, " +
+            "b.birthDate, " +
+            "b.babyGender, " +
+            "b.profileImg, " +
+            "f.familyCode, " +
+            "f.role" +
+            ")" +
+            "FROM Baby b " +
+            "left JOIN Family f ON b.babyId = f.baby.babyId " +
+            "WHERE f.user.userId = :userId")
+    List<BabyReadResponse2> findBabiesByUserId2(Long userId);
+
 
     @Query("SELECT NEW com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse(" +
             "b.babyId," +
