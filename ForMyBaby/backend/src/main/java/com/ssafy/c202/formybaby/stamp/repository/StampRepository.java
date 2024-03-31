@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface StampRepository extends JpaRepository<Stamp,Long>{
     List<Stamp> findByBaby_BabyId(Long babyId);
-
     Stamp findByStampId(Long stampId);
 }
