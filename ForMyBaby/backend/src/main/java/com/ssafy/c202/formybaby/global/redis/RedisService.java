@@ -56,8 +56,9 @@ public class RedisService {
             map.put(String.valueOf(id), obj);
             locationRedisTemplate.opsForValue().set("location::"+familyCode, map);
         } else {
-            locationRedisTemplate.opsForValue().get("location::"+familyCode)
-                    .put(String.valueOf(id), new LatLon(lat, lon));
+            Map<String, LatLon> map = locationRedisTemplate.opsForValue().get("location::"+familyCode);
+            map.put(String.valueOf(id), new LatLon(lat, lon));
+            locationRedisTemplate.opsForValue().set("location::"+familyCode, map);
         }
         return locationRedisTemplate.opsForValue().get("location::"+familyCode);
     }
