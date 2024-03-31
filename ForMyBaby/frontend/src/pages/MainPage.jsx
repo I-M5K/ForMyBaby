@@ -25,6 +25,9 @@ const MainPage = () => {
   const location = useGeoLocation();
   const { babyList, fcm, setFcm, uncheckedCnt, setUncheckedCnt, babySelected, setBabySelected } = useUserStore();
 
+  const [selectedBabyName, setSelectedBabyName] = useState("");
+  const [selectedBabyDay, setSelectedBabyDay] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       if (babySelected == null || babySelected == 0){
@@ -61,6 +64,27 @@ const MainPage = () => {
     fetchData();
   }, [location]);
 
+  useEffect(() => {
+    // 선택된 아이의 이름과 생일 업데이트
+    const selectedBaby = babyList.find(baby => baby.babyId === babySelected);
+    if (selectedBaby) {
+      const givenDateStr = selectedBaby.birthDate; // 주어진 날짜 문자열
+      // 주어진 날짜 문자열을 연도, 월, 일로 분리
+      const [year, month, day] = givenDateStr.split('-');
+      // 분리된 연도, 월, 일을 이용하여 Date 객체 생성
+      const givenDate = new Date(year, month - 1, day); // month는 0부터 시작하므로 1을 빼줌
+      const today = new Date(); // 오늘 날짜 객체
+      // 두 날짜 간의 차이를 밀리초로 계산
+      const timeDiff = today.getTime() - givenDate.getTime();
+      // 밀리초를 일로 변환하여 일수 차이 계산
+      const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      console.log('오늘과 주어진 날짜의 일수 차이:', daysDiff);
+
+      setSelectedBabyName(selectedBaby.babyName.slice(1));
+      setSelectedBabyDay(daysDiff);
+    }
+  }, [babyList, babySelected]);
+
   const handleLogout = () => {
     localStorage.clear();
   };
@@ -81,7 +105,7 @@ const MainPage = () => {
     <div className="main-container">
       <div className="main-header">
         <span className="main-headerText">
-          지금은 구가<br />
+          지금은 {selectedBabyName}이가<br />
           낮잠 잘 시간이에요!
         </span>
         <Link to="/notification">
@@ -108,9 +132,9 @@ const MainPage = () => {
           <Link to="/baby-age">
             <div className="smallBox">
               <span className="boxText">
-                <span className="textLarge">땡구가 태어난지</span><br />
+                <span className="textLarge">{selectedBabyName}이가 태어난지</span><br />
                 <span className="textExSmall">
-                  '72'
+                  '{selectedBabyDay}'
                   일 되었어요
                 </span>
               </span>
@@ -140,7 +164,7 @@ const MainPage = () => {
           <div className="smallmiddleBox" onClick={toggleBottomSheet}>
             <img src={BabyPhoto} className='babyphoto' />
           </div>
-          <Link to="/sleep-pattern">
+          <Link to="/baby-guard?selectedButton=button2">
             <div className="smallBox">
               <span className="boxText">
                 <span className="textSmall">우리아이</span><br />
