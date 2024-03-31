@@ -14,13 +14,13 @@
 }
   
 .tutorial-swiper img {
-  width: 300px;
-  height: 300px;
+  width: 350px;
+  height: 350px;
   object-fit: cover;
 }
 
-.slide-title {
-  margin-top: 70px;
+.tutorial-slide-title {
+  margin-top: 20px;
 }
 
 .swiper-pagination-bullet {

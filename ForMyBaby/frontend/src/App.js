@@ -8,6 +8,7 @@ import WebSocketComponent from './Socket/WebSocketComponent';
 import { BrowserRouter, Navigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import "./FCM/firebase-messaging-sw.js";
+
 import FamilyCode from './pages/StartPage/FamilyCode'
 import KakaoRedirectPage from './pages/StartPage/KakaoRedirectPage';
 import AgreePage from './pages/StartPage/AgreePage';
@@ -33,6 +34,7 @@ import ParentingStamp from './pages/ParentingStamp/ParentingStamp';
 import Present from './pages/Features/Present';
 // 마이 페이지
 import MyPage from './pages/MyPage/MyPage';
+import BabyProfileEdit from './pages/MyPage/BabyProfileEdit';
 
 import TutorialAndLogin from './components/TutorialAndLogin'
 
@@ -68,6 +70,7 @@ function App() {
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/baby-guard" element={<BabyGuard />} />
           <Route path="/loading" element={<Loading />} />
+          <Route path="/baby-profile" element={<BabyProfileEdit />} />
           <Route
             path="/main"
             element={
