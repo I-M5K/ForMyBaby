@@ -2,6 +2,7 @@ package com.ssafy.c202.formybaby.stamp.service;
 
 import com.ssafy.c202.formybaby.stamp.dto.request.StampCreateAIRequest;
 import com.ssafy.c202.formybaby.stamp.dto.request.StampCreateRequest;
+import com.ssafy.c202.formybaby.stamp.dto.request.StampUpdateAIRequest;
 import com.ssafy.c202.formybaby.stamp.dto.request.StampUpdateRequest;
 import com.ssafy.c202.formybaby.stamp.dto.response.StampListResponse;
 
@@ -17,6 +18,8 @@ public interface StampService {
         StampListResponse detailStamp(Long stampId);
 
         void updateStamp(Long stampId,StampUpdateRequest stampUpdateRequest);
+
+        void updateAIStamp(Long stampId, StampUpdateAIRequest stampUpdateAIRequest);
 
         void deleteStamp(Long stampId);
 

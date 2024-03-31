@@ -8,7 +8,6 @@ import java.util.List;
 public record StampCreateRequest(
         Long step,
         MultipartFile stampImg,
-        String memo,
-        Timestamp createdAt
+        String memo
 ){}
 

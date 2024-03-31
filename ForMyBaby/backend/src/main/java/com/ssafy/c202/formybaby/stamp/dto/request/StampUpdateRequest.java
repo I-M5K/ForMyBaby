@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public record StampUpdateRequest(
-        Long step,
         MultipartFile stampImg,
         String memo
 ) {}
