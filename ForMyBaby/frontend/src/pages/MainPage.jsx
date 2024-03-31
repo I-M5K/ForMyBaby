@@ -7,7 +7,7 @@ import { sendLocation,selectBaby } from '../api/userApi';
 import { getNotificationList } from '../api/notificationApi';
 import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { useUserStore } from '../stores/UserStore';
-
+import { getPostWord } from '../components/postWords.js';
 import ChildSelect from '../components/babyselect/babyselect.jsx';
 
 import BabyPhoto from '../assets/child_sleep.jpg';
@@ -79,8 +79,27 @@ const MainPage = () => {
       // 밀리초를 일로 변환하여 일수 차이 계산
       const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
       console.log('오늘과 주어진 날짜의 일수 차이:', daysDiff);
-
-      setSelectedBabyName(selectedBaby.babyName.slice(1));
+      
+      // const particle = (() => {
+      //   if (babyName && babyName.length > 0) {
+      //     const lastChar = babyName[babyName.length - 1];
+      //     if (lastChar) {
+      //       return lastChar.match(/[가-힣]/) ? (lastChar.charCodeAt(0) - 0xac00) % 28 > 0 ? '이는' : '는' : '';
+      //     }
+      //   }
+      //   return '';
+      // })();
+      if (selectedBaby.babyName && selectedBaby.babyName.length > 0) {
+        const lastChar = selectedBaby.babyName[selectedBaby.babyName.length - 1];
+        if (lastChar) {
+          if (lastChar.match(/[가-힣]/) && (lastChar.charCodeAt(0) - 0xac00) % 28 > 0){
+            setSelectedBabyName(selectedBaby.babyName.slice(1)+'이가');
+          } else{
+            setSelectedBabyName(selectedBaby.babyName.slice(1)+'가');
+          }
+        }
+      }
+      //setSelectedBabyName(getPostWord(selectedBaby.babyName, '이', ''));
       setSelectedBabyDay(daysDiff);
     }
   }, [babyList, babySelected]);
@@ -105,7 +124,7 @@ const MainPage = () => {
     <div className="main-container">
       <div className="main-header">
         <span className="main-headerText">
-          지금은 {selectedBabyName}이가<br />
+          지금은 {selectedBabyName}<br />
           낮잠 잘 시간이에요!
         </span>
         <Link to="/notification">
@@ -132,7 +151,7 @@ const MainPage = () => {
           <Link to="/baby-age">
             <div className="smallBox">
               <span className="boxText">
-                <span className="textLarge">{selectedBabyName}이가 태어난지</span><br />
+                <span className="textLarge">{selectedBabyName} 태어난지</span><br />
                 <span className="textExSmall">
                   '{selectedBabyDay}'
                   일 되었어요
