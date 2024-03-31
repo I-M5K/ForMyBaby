@@ -3,11 +3,13 @@ import './BabyRelation.css'
 import { Link } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore';
 import { updateBabyRole } from '../../api/userApi'; // Assume there is an API function for updating baby roles
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BabyRelationPage = () => {
     const { babyList, setBabyList, id, family } = useUserStore();
     const [relationship, setRelationship] = useState('');
     const [isFormValid, setIsFormValid] = useState(false);
+    const navigate = useNavigate(); // useNavigate 훅 사용
 
     // // Sample babyList data
     // const sampleBabyList = [
@@ -25,42 +27,26 @@ const BabyRelationPage = () => {
         event.preventDefault();
         // Check if the form is valid before submitting
         if (isFormValid) {
-            try {
-                // Array to store promises for updating roles
-                const roleUpdatePromises = [];
-                // Iterate over babyList to find babies with role "none" and update their roles
-                babyList.forEach(baby => {
-                    if (baby.role === "None") {
-                        const data = {
-                            'familyCode': family,
-                            'babyId': baby.babyId,
-                            'userId': id,
-                            'role': relationship
-                        }
-                        // Push the promise to the array
-                        console.log(data);
-                        roleUpdatePromises.push(updateBabyRole(data));
-                    }
-                });
-        
-                // Wait for all role update requests to complete
-                await Promise.all(roleUpdatePromises);
-        
-                console.log('Relationship updated successfully:', relationship);
-                // Update baby roles in local state (zustand-persist) for babies with role "none"
-                const updatedBabyList = babyList.map(baby => {
-                    if (baby.role === "None") {
-                        return {
-                            ...baby,
-                            role: relationship
-                        };
-                    }
-                    return baby;
-                });
-                console.log('Updated babyList:', updatedBabyList);
-            } catch (error) {
-                console.error('Error occurred while updating relationship:', error);
+            const data = {
+                'familyCode': family,
+                'userId': id,
+                'role': relationship
             }
+            try {
+                // API 호출하여 아기의 역할 업데이트
+                const response = await updateBabyRole(data);
+                console.log('update 후 모든 아이리스트', response.data);
+                
+                // 서버 응답에 따라 필요한 작업을 수행할 수 있습니다.
+                setBabyList(response.data);
+                navigate("/main");
+            } catch (error) {
+                console.error('Failed to update role:', error);
+                // 오류 처리를 할 수 있습니다.
+                navigate("/baby-relation");
+            }
+        
+
         }
     };
     

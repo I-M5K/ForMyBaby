@@ -3,7 +3,7 @@ import { sendLocation } from '../../api/userApi';
 import React, { useState, useEffect } from 'react';
 import { requestPermission } from "../../FCM/firebase-messaging-sw";
 import { useUserStore, useLocationStore } from '../../stores/UserStore'; // Zustand 스토어 import
-
+import { Link } from 'react-router-dom';
 
 const AgreePage = () => {
     //const location = useGeoLocation();
@@ -30,6 +30,9 @@ const AgreePage = () => {
     return (
         <div>
             <h1>동의 페이지</h1>
+            <Link to='/family'>
+            <button>동의</button>
+            </Link>
         </div>
     );
 }
