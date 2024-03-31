@@ -4,6 +4,7 @@ export const getNotificationList = async () => {
     console.log('알림 목록 가져오기!');
     try {
       const response = await axiosWrapper.get('/v1/notification/list');
+      console.log(response.data);
       return response.data; // 알림 목록 데이터를 반환
     } catch (error) {
       console.error('알림 목록을 가져오는 중 에러 발생:', error);

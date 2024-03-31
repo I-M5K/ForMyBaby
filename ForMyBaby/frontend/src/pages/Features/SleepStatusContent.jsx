@@ -9,7 +9,7 @@ Chart.register(ChartDataLabels);
 
 const SleepStatusContent = () => {
     const temperature = 25;
-    const humidity = 70;
+    const humidity = 100;
     const danger = 31;
     const hours = 8;
     const awake = 42;
@@ -66,10 +66,10 @@ const SleepStatusContent = () => {
         },
         layout: {
             padding: {
-                left: 10,
-                right: 10,
-                top: 20,
-                bottom: 20
+                left: 0,
+                right: 35,
+                top: 0,
+                bottom: 0
             }
         },
         animation: {

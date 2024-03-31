@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore';
 import { addBabyInfo, addFirstBabyInfo } from '../../api/userApi';
 import BabyGender from '../../api/BabyGender';
+import { useNavigate } from 'react-router-dom';
 
 const BabyAddPage = () => {
     const { family, setFamily, id, babyList, setBabyList, babySelected, setBabySelected } = useUserStore();
@@ -14,7 +15,7 @@ const BabyAddPage = () => {
     const [babyPhoto, setBabyPhoto] = useState(null);
     const [babyPhotoPreview, setBabyPhotoPreview] = useState(null); // 미리보기 URL 상태 추가
     // const [userBabyList, setUserBabyList] = useState([]);
-
+    const navigate = useNavigate();
     const isFormValid = babyName && babyGender && babyBirthDate && babyPhoto;
 
     const handlePhotoChange = (event) => {
@@ -81,7 +82,7 @@ const BabyAddPage = () => {
                     console.error(error);
                 }
             }
-            
+            navigate("/baby-relation");
         }
     };
 
@@ -117,10 +118,10 @@ const BabyAddPage = () => {
                         className="input-field"
                     />
                 </div>
-                <Link to="/baby-add-more" className='baby-add-more-container'>
+                {/* <Link to="/baby-add-more" className='baby-add-more-container'>
                     <div className='baby-add-more-button' onClick={handleSubmit}>+</div>
                     <p className='baby-add-more-text' onClick={handleSubmit}>추가하기</p>
-                </Link>
+                </Link> */}
                 <Link to='/baby-relation'>
                     <button type="submit" onClick={handleSubmit} className='baby-add-submit' disabled={!isFormValid}>등록하기</button>
                 </Link>

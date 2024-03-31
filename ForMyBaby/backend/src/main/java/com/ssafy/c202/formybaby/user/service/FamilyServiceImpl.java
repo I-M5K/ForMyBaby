@@ -33,7 +33,6 @@ public class FamilyServiceImpl implements FamilyService{
     private final UserRepository userRepository;
     private final BabyRepository babyRepository;
     private final BabyService babyService;
-    private final FamilyMapper familyMapper;
     private final RedisService redisService;
     private final BabyMapper babyMapper;
 
@@ -88,7 +87,7 @@ public class FamilyServiceImpl implements FamilyService{
             //List<Family> newList = new ArrayList<>();
             for (Family family: familyList){
                 Family dto = new Family();
-                dto.setFamilyRank(family.getFamilyRank());
+                dto.setFamilyRank(1);
                 dto.setBaby(family.getBaby());
                 dto.setRole(Role.None);
                 dto.setFamilyCode(family.getFamilyCode());
@@ -135,10 +134,9 @@ public class FamilyServiceImpl implements FamilyService{
         //List<BabyReadResponse2> babyReadResponse2List = babyService.babyList2(familyCodeCreateRequest.familyCode());
         // Family 레코드들 모두 조회
         List<Family> familyList = familyRepository.findAllByUserId(userId);
-        List<Family> newList = new ArrayList<>();
-//        // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
-//        String userId = redisService.getUserIdByToken(token);
-//        redisService.saveBabyIdsByToken(userId , babyReadResponse2List.get(0).babyId());
+        // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
+        List<BabyReadResponse2> babyList = babyRepository.findBabiesByUserId2(userId);
+        redisService.saveBabyIdsByToken(String.valueOf(userId), babyList.get(0).babyId());
         // 내 Family 레코드 조회
         //List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(Long.valueOf(userId));
         if (!familyList.isEmpty()) {
