@@ -13,6 +13,7 @@ class DetectorAI:
         self.mp_pose = mp.solutions.pose
         self.mp_face_mesh = mp.solutions.face_mesh
 
+    # 사용자가 잠들었는지 여부를 판단 : 눈의 EAR(Eye Aspect Ratio) 값이 임계값과 가까우면 사용자가 잠들었다고 판단하고, 그렇지 않으면 사용자가 깨어 있다고 판단
     def is_sleep(self, image_data):
         with self.mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, min_detection_confidence=0.5) as face_mesh:
             results = face_mesh.process(cv2.cvtColor(image_data, cv2.COLOR_BGR2RGB))
@@ -22,7 +23,7 @@ class DetectorAI:
                 left_eye = [face_landmarks.landmark[i] for i in self.threshold['EYE_INDICES']['LEFT']]
                 right_eye = [face_landmarks.landmark[i] for i in self.threshold['EYE_INDICES']['RIGHT']]
                 ear = (calculate_ear(left_eye) + calculate_ear(right_eye)) / 2.0
-                if math.isclose(ear, self.threshold['SLEEP_EAR_THRESHOLD'], abs_tol=0.1):
+                if math.isclose(ear, self.threshold['IS_EYE_CLOSED_THRESHOLD'], abs_tol=0.1):
                     if self.sleep_start is None:
                         self.sleep_start = time.time()
                         return True, 0
@@ -32,6 +33,7 @@ class DetectorAI:
                     self.sleep_start = None
                     return False, None
 
+    # 사용자의 행동을 판단 : 사용자의 자세가 특정 조건을 만족하면 해당 행동을 출력 (옆으로 누움, 만세, 다리 꼬기)
     def is_event(self, image_data):
         with self.mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5) as pose:
             results = pose.process(cv2.cvtColor(image_data, cv2.COLOR_BGR2RGB))
@@ -54,6 +56,20 @@ class DetectorAI:
                 print("The child has crossed legs")
             return True, self.flag
 
+    # 머리 위치가 목표 위치와 일정 허용 오차 내에 있는지를 판단
+    def is_located(self, image_data):
+        with self.mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5) as pose:
+            results = pose.process(cv2.cvtColor(image_data, cv2.COLOR_BGR2RGB))
+            if not results.pose_landmarks:
+                return False, 0
+            pose_landmarks = results.pose_landmarks
+            body_indices = self.threshold['BODY_INDICES']
+            nose = pose_landmarks.landmark[body_indices['NOSE']]
+            if abs(nose.x - self.threshold['IS_LOCATED_FLAG'][0]) < self.threshold['NON_LOCATED_TOLERANCE'] and abs(nose.y - self.threshold['IS_LOCATED_FLAG'][1]) < self.threshold['NON_LOCATED_TOLERANCE']:
+                return True, 1
+            return False, 0
+
+    # 사용자가 사고를 당했는지 여부를 판단
     def is_accident(self, feature):
         pass
 

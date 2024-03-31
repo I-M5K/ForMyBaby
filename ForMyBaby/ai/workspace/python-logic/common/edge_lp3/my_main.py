@@ -15,8 +15,12 @@ class EdgeLP:
     def collect_data(self):
         self.my_edge['sensor_data'].get()
         # print("self.my_edge['sensor_data']",self.my_edge['sensor_data'].data['ser_data'])
-        self.my_edge['detector'].detect_start(self.my_edge['sensor_data'].data['ser_data'], self.my_edge['sensor_data'].data['frame'])
+        self.event_rst, self.sleep_rst, self.rst_data = self.my_edge['detector'].detect_start(self.my_edge['sensor_data'].data['ser_data'], self.my_edge['sensor_data'].data['frame'])
 
+        # if self.event_rst:
+        
+        if self.sleep_rst:
+            self.my_edge['network_manager'].send_event_to_server(self.rst_data)
         # 만약 데이터 요청 시
         if self.my_edge['network_manager'].request_data:
             self.my_edge['network_manager'].send_data_to_server(self.my_edge['sensor_data'].data) 

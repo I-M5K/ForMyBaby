@@ -1,6 +1,3 @@
-# cam
-# audio
-#
 import cv2
 import sys
 import re
@@ -43,11 +40,14 @@ class MySensor:
         self.data['form_data']['line'] = self.prev_data
         self.data['frame'] = self.frame
 
+        # print(self.data['image_data'][1])
+        # print(self.data['form_data'])
         # print(self.data['ser_data'])
 
     def data_get(self):
         if self.ser.in_waiting > 0:
             self.line = self.ser.readline().decode('utf-8').rstrip()
+            # print(self.line)
             if self.line:
                 try:
                     match = re.match(r'(.*),(.*),(.*),(.*),(.*),(.*),(.*),(.*),(.*)', self.line)
@@ -61,6 +61,7 @@ class MySensor:
 
     def webcam_open(self):
         try:
+            print("Opening webcam...")
             return cv2.VideoCapture(0)
         except Exception as e:
             print(f'Cannot open the webcam: {e}')
@@ -68,6 +69,7 @@ class MySensor:
 
     def frame_capture(self):
         self.ret, self.frame = self.cam.read()
+        # print("ddddd",self.frame)
         self.data['time_data']['datetime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         self.data['time_data']['timestamp'] = time.time()
 
