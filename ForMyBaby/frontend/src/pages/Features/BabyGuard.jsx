@@ -8,6 +8,7 @@ import { useRecordStore } from '../../stores/RecordStore';
 import './BabyGuard.css';
 import { getTodayData } from '../../api/sleepApi';
 import { useUserStore } from '../../stores/UserStore';
+import { useLocation } from 'react-router-dom';
 
 const ENDPOINT = 'http://localhost:3001';
 
@@ -28,6 +29,11 @@ const Dashboard = () => {
 
   const { danger, hours, awake } = useRecordStore(); // 상태 관리 파일에서 상태 가져오기
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  // 선택된 버튼 상태를 확인합니다.
+  const getButton = queryParams.get('selectedButton');
 
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
@@ -35,6 +41,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (getButton != null){
+        handleButtonClick('button2');
+      }
       if (danger === null || awake === null || hours === null) {
         try {
           // API 호출하여 데이터 가져오기
