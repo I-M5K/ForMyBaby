@@ -7,12 +7,12 @@ import './SleepStatusContent.css';
 
 Chart.register(ChartDataLabels);
 
-const SleepStatusContent = () => {
-    const temperature = 25;
-    const humidity = 100;
-    const danger = 31;
-    const hours = 8;
-    const awake = 42;
+const SleepStatusContent = ({danger, hours, awake, temp, humid}) => {
+    // const temperature = 25;
+    // const humidity = 100;
+    // const danger = 31;
+    // const hours = 8;
+    // const awake = 42;
 
     const data = {
         labels: ['온도', '습도', '위험 감지', '수면 총 시간', '기상 횟수'],
@@ -20,7 +20,7 @@ const SleepStatusContent = () => {
             {
                 label: 'Value',
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#000000', '#9966FF'],
-                data: [temperature, humidity, danger, hours, awake],
+                data: [temp, humid, danger, hours, awake],
                 barThickness: 20,
                 borderRadius: 10,
             },
