@@ -27,7 +27,6 @@ import java.util.List;
 @Transactional
 public class NotificationServiceImpl implements NotificationService{
 
-    private final NotificationMapper notificationMapper;
     private final NotificationRepository notificationRepository;
 
     @Override
@@ -103,12 +102,12 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void deleteAll(Long userId, Long babyId) {
-        notificationRepository.deleteAllByUserId(userId, babyId);
+    public void deleteAll(Long userId) {
+        notificationRepository.deleteAllByUserId(userId);
     }
 
     @Override
     public void checkAll(Long userId, Long babyId) {
-        notificationRepository.checkAll(userId, babyId);
+        notificationRepository.checkAll(userId);
     }
 }

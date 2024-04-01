@@ -44,18 +44,22 @@ public class BabyServiceImpl implements BabyService{
     private final NotificationRepository notificationRepository;
     @Override
     public List<BabyReadResponse> addBaby(BabyCreateRequest babyCreateRequest) {
-        User user = userRepository.findByUserId(babyCreateRequest.userId());
+        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
+        List<Long> userIdList = familyRepository.findFirstUserIdByFamilyCode(familyCode);
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         Timestamp timestamp = getCurrentTimestamp();
         babyRepository.save(baby);
         String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp,"pro");
         baby.setProfileImg(uploadFileName);
         babyRepository.save(baby);
-        String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
-        Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode,1 );
-        familyRepository.save(family);
-        log.info("{}", babyRepository.findBabiesByUserId(user.getUserId()));
-        return babyRepository.findBabiesByUserId(user.getUserId());
+        log.info("FAMILY USER : {}", userIdList);
+        for(Long userId : userIdList){
+            User user = userRepository.findByUserId(userId);
+            Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode,1 );
+            familyRepository.save(family);
+        }
+        List<BabyReadResponse> babyList = babyRepository.findBabiesByFamilyCode(familyCode);
+        return babyList.stream().distinct().toList();
     }
 
     public void createNewBaby(List<BabyCreateRequest> babyCreateRequestList) {
@@ -128,21 +132,25 @@ public class BabyServiceImpl implements BabyService{
 
     @Override
     public List<BabyReadResponse> babyList(Long userId) {
-        return babyRepository.findBabiesByUserId(userId);
+        List<BabyReadResponse> list = babyRepository.findBabiesByUserId(userId);
+        return list.stream().distinct().toList();
     }
     @Override
     public List<BabyReadResponse> babyList(String familyCode) {
-        return babyRepository.findBabiesByFamilyCode(familyCode);
+        List<BabyReadResponse> list = babyRepository.findBabiesByFamilyCode(familyCode);
+        return list.stream().distinct().toList();
     }
 
     @Override
     public List<BabyReadResponse2> babyList2(String familyCode) {
-        return babyRepository.findBabiesByFamilyCode2(familyCode);
+        List<BabyReadResponse2> list = babyRepository.findBabiesByFamilyCode2(familyCode);
+        return list.stream().distinct().toList();
     }
 
     @Override
     public List<BabyReadResponse2> babyList3(Long userId) {
-        return babyRepository.findBabiesByUserId2(userId);
+        List<BabyReadResponse2> list = babyRepository.findBabiesByUserId2(userId);
+        return list.stream().distinct().toList();
     }
 
     @Override
