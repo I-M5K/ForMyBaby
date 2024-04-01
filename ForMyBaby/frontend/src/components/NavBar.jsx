@@ -68,7 +68,7 @@ function Footer() {
   return (
     <footer style={styles.footer}>
       <nav>
-        <ul style={styles.navList}>
+        <div style={styles.navList} className='footerBtn'>
           <li className={active === "home" ? "animated-button" : ""} style={{...styles.navItem, color: active === "home" ? '#F7C515' : '#000'}} onClick={() => handleClick("home")}>
             <NavLink to="/main" activeClassName="active-link">
               <img src={getIconPath("home")} alt="Home" style={styles.icon} /><br />
@@ -93,7 +93,7 @@ function Footer() {
               프로필
             </NavLink>
           </li>
-        </ul>
+        </div>
       </nav>
     </footer>
   );
@@ -107,6 +107,13 @@ const styles = {
     left: 0,
     bottom: 0,
     width: '100%',
+    paddingTop: '10px',
+    paddingBottom: '10px'
+  },
+  footerBtn: { 
+    width: '10px',
+    height: '10px'
+
   },
   navList: {
     listStyleType: 'none',

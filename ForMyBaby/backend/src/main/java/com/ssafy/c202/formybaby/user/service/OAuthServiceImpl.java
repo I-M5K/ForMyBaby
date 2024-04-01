@@ -115,7 +115,7 @@ public class OAuthServiceImpl implements OAuthService {
 
             Oauth oauth = new Oauth();
             oauth.setOauthId((Long) kakaoUserInfo.get("id"));
-            oauth.setName((String) kakaoAccount.get("name")); // 카카오 계정으로부터 이름 추출
+            oauth.setName((String) profile.get("profile_nickname")); // 카카오 닉네임으로 이름 설정
             oauth.setProfileImg((String) profile.get("thumbnail_image_url"));// 프로필 이미지 URL 추출
             oauth.setAccountEmail((String) kakaoAccount.get("email")); // 카카오 계정 이메일 추출
 
