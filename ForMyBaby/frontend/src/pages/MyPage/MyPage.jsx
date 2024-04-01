@@ -8,7 +8,13 @@ import './MyPage.css'
 
 import NavBar from '../../components/NavBar';
 
+import { Link } from 'react-router-dom';
+
 const MyPage = () => {
+
+    const handleLogout = () => {
+        localStorage.clear();
+      };
 
     return (
         <div className='mypage'>
@@ -21,6 +27,9 @@ const MyPage = () => {
             <hr />
             <SettingsTab />
             <NavBar />
+            <Link to="/">
+                <button onClick={() => handleLogout()} className='logout-btn'>로그아웃</button>
+            </Link>
         </div>
     );
 }

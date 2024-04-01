@@ -204,7 +204,7 @@ SELECT '홍역/유행성이하선염/풍진', 'MMR 1차', 12, 16 FROM dual
 WHERE NOT EXISTS (SELECT * FROM vaccine WHERE target = '홍역/유행성이하선염/풍진' AND type = 'MMR 1차');
 
 INSERT INTO vaccine (target, type, start_at, end_at)
-SELECT '홍역/유행성이하선염/풍진', 'MMR 2차', 48, 73 FROM dual
+SELECT '홍역/유행성이하선염/풍진', 'MMR 2차', 48, 84 FROM dual
 WHERE NOT EXISTS (SELECT * FROM vaccine WHERE target = '홍역/유행성이하선염/풍진' AND type = 'MMR 2차');
 
 -- 수두
