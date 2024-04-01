@@ -179,7 +179,7 @@ const VaccineContent = () => {
       <table style={{ borderCollapse: "collapse", width: "100%", marginBottom: 90 }}>
         {vaccines.map((vaccine) => {
           const today = new Date();
-          const birth = new Date(); // birth 변수는 어디서 오는 것인지 확인 필요
+          const birth = new Date();
 
           // birth가 start와 end 사이에 있는지 확인하는 부분
           let start = new Date(birth.getFullYear(), birth.getMonth() + vaccine.start_at, birth.getDate());
@@ -197,7 +197,7 @@ const VaccineContent = () => {
                     width: "35%",
                     fontWeight: "bold",
                     fontSize: 20,
-                    backgroundColor: today >= start && today <= end ? "#DDF7F7" : "inherit",
+                    backgroundColor: today >= start && today <= end ? "#FFE6F2" : "inherit",
                   }}
                 >
                   {vaccine.category}
@@ -212,7 +212,7 @@ const VaccineContent = () => {
                     color: "#CCCCCC",
                     fontWeight: "bold",
                     fontSize: 16,
-                    backgroundColor: today >= start && today <= end ? "#DDF7F7" : "inherit",
+                    backgroundColor: today >= start && today <= end ? "#FFE6F2" : "inherit",
                   }}
                 >
                   {start.getFullYear()}-{String(start.getMonth() + 1).padStart(2, "0")}-{String(start.getDate()).padStart(2, "0")} ~{" "}
@@ -233,7 +233,7 @@ const VaccineContent = () => {
                         fontWeight: "bold",
                         fontSize: 18,
                         verticalAlign: "bottom",
-                        backgroundColor: today >= start && today <= end ? "#DDF7F7" : "inherit",
+                        backgroundColor: today >= start && today <= end ? "#FFE6F2" : "inherit",
                       }}
                     >
                       {v.target + "(" + v.vaccine + ")"}
@@ -251,7 +251,7 @@ const VaccineContent = () => {
                           fontSize: 15,
                           verticalAlign: "top",
                           color: "#CCCCCC",
-                          backgroundColor: today >= start && today <= end ? "#DDF7F7" : "inherit",
+                          backgroundColor: today >= start && today <= end ? "#FFE6F2" : "inherit",
                         }}
                       >
                         {v.comment}
