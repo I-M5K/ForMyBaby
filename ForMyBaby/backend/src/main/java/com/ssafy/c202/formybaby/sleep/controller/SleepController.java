@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/v1/sleep")
+@CrossOrigin(origins = "https://j10c202.p.ssafy.io")
 public class SleepController {
 
     private final SleepService sleepService;
