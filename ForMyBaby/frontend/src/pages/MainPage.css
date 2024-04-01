@@ -186,10 +186,11 @@
   height: 20px;
   margin-top: 12px;
   margin-right: 30px;
-  border: 0.8px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
   margin-left: auto;
+  color: #ffffff;
+  background-color: #ffffff;
 }
 
 .gauge-bar {
