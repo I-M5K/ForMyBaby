@@ -26,19 +26,22 @@ class EdgeLP:
             sensor_data['image_data'], 
             sensor_data['frame']
         )
+        # print("self.rst: ", self.rst)
         self.sleep_rst = self.rst['sleep_data']
         self.event_rst = self.rst['event_data']
 
 
         if self.event_rst['index'] is not None and self.event_rst['index'] != 0 :
+            # print(self.event_rst)
             self.my_edge['network_manager'].send_event_to_server(self.event_rst)
             
         if self.sleep_rst['detail'] is not None and self.sleep_rst['detail'] != self.prev_data['detail']:
+            # print(self.sleep_rst)
             self.my_edge['network_manager'].send_event_to_server(self.sleep_rst)
         
         
         # 만약 데이터 요청 시
-        if self.my_edge['network_manager'].is_requested:
+        if self.my_edge['network_manager'].is_requested():
             self.my_edge['sensor_data'].data['index'] = 1
             self.my_edge['sensor_data'].data['event_type'] = None
             self.my_edge['sensor_data'].data['detail'] = None

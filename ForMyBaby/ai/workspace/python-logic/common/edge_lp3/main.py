@@ -6,9 +6,11 @@ from my_main import EdgeLP
 def main():
 
     edge_lp_config = {
-        "ip": "192.168.100.58", # kky
+        # "ip": "192.168.100.58", # kky
         # "ip": "192.168.100.130", # icj
         # "ip": "172.30.1.57", # icj
+        
+        "ip": "192.168.0.3", # icj
         "port": 8083,
         "baby_id": 1
     }

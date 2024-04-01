@@ -53,13 +53,13 @@ class NetworkManager:
                 data = response.json()
 
                 # Get the currentStatus value
-                currentStatus = data.get('currentStatus')
+                currentStatus = data
 
                 if currentStatus:
-                    print("Server is running and currentStatus is True.")
+                    # print("Server is running and currentStatus is True.")
                     return True
                 else:
-                    print("Server is running but currentStatus is False.")
+                    # print("Server is running but currentStatus is False.")
                     return False
             else:
                 print("Server is not running.")
@@ -81,24 +81,33 @@ class NetworkManager:
         })
         self.send_post_request(self.url_event)
 
+    def send_post_without_request(self, url):
+        """Send a POST request to the given URL."""
+        try:
+            print("Body before sending request: ", self.body)
+            response = self.session.post(url, data=self.body)
+        except requests.exceptions.RequestException as e:
+            print(e)
+
+
     def send_post_request(self, url):
         """Send a POST request to the given URL."""
         try:
-            # print(self.body)
+            print("Body before sending request: ", self.body)
             response = self.session.post(url, files=self.file, data=self.body)
         except requests.exceptions.RequestException as e:
             print(e)
 
+
     def send_event_to_server(self, data):
         """Send an event to the server."""
-        # print(data)
-        print("Sending event to server...")
         self.update_body_and_file(data)
-        self.send_post_request(self.url_event)
-
+        print("Body after updating: ", self.body)
+        self.send_post_without_request(self.url_event)
+        
     def send_data_to_server(self, data):
         """Send data to the server."""
-        print("Sending data to server...")
+        # print("Sending data to server...")
         self.update_body_and_file(data)
         self.send_post_request(self.url_data)
 
