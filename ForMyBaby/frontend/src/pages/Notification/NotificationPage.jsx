@@ -4,7 +4,7 @@ import { useNotificationStore } from '../../stores/NotificationStore'; // Zustan
 import { useUserStore } from '../../stores/UserStore';
 import { Link } from 'react-router-dom'; // Link 컴포넌트 import
 import arrowLeft from '../../assets/arrow_left.png'
-
+import { checkNotificationAll } from '../../api/notificationApi';
 import './NotificationPage.css'
 
 const NotificationPage = () => {
@@ -12,6 +12,8 @@ const NotificationPage = () => {
  const { uncheckdCnt, setUncheckedCnt } = useUserStore();
  //const {  deleteNotificationById, deleteAllNotifications } = useNotificationStore();
   useEffect(() => {
+    setUncheckedCnt(0);
+    checkNotificationAll();
     fetchNotificationList(); // 페이지가 처음 렌더링될 때 알림 데이터를 가져옴
   }, []); // 빈 배열을 전달하여 이펙트가 한 번만 실행되도록 함
   // const [notifications, setNotifications] = useState([
