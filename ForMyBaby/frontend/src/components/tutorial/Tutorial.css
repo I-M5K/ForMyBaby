@@ -6,11 +6,16 @@
   
 .tutorial-swiper {
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.tutorial-slide-content {
+  font-size: 17px;
+  line-height: 1.2;
 }
   
 .tutorial-swiper img {
