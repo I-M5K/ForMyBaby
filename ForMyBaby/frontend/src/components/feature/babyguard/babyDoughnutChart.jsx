@@ -1,23 +1,19 @@
-import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
-import './babyDoughnutChart.css';
+import React from "react";
+import { Doughnut } from "react-chartjs-2";
+import "./babyDoughnutChart.css";
 
-const DoughnutChartComponent = ({danger, hours, awake }) => {
-
+const DoughnutChartComponent = ({ danger, hours, awake }) => {
   const data1 = {
     datasets: [
       {
-        label: '# of Votes',
-        data: [hours, 24-hours], // 첫 번째 차트 데이터
+        label: "# of Votes",
+        data: [hours, 24 - hours], // 첫 번째 차트 데이터
         backgroundColor: [
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(200, 200, 200, 0.2)',
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(200, 200, 200, 0.2)",
         ],
-        borderColor: [
-          'rgba(255, 206, 86, 1)',
-
-        ],
-        borderWidth: [2, 0]
+        borderColor: ["rgba(255, 206, 86, 1)"],
+        borderWidth: [2, 0],
       },
     ],
   };
@@ -25,17 +21,14 @@ const DoughnutChartComponent = ({danger, hours, awake }) => {
   const data2 = {
     datasets: [
       {
-        label: '# of Votes',
-        data: [awake, 10-awake], // 두 번째 차트 데이터
+        label: "# of Votes",
+        data: [awake, 10 - awake], // 두 번째 차트 데이터
         backgroundColor: [
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(200, 200, 200, 0.2)',
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(200, 200, 200, 0.2)",
         ],
-        borderColor: [
-          'rgba(255, 206, 86, 1)',
-
-        ],
-        borderWidth: [2, 0]
+        borderColor: ["rgba(255, 206, 86, 1)"],
+        borderWidth: [2, 0],
       },
     ],
   };
@@ -43,17 +36,14 @@ const DoughnutChartComponent = ({danger, hours, awake }) => {
   const data3 = {
     datasets: [
       {
-        label: '# of Votes',
-        data: [danger, 20-danger], // 세 번째 차트 데이터
+        label: "# of Votes",
+        data: [danger, 20 - danger], // 세 번째 차트 데이터
         backgroundColor: [
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(200, 200, 200, 0.2)',
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(200, 200, 200, 0.2)",
         ],
-        borderColor: [
-          'rgba(255, 206, 86, 1)',
-
-        ],
-        borderWidth: [2, 0]
+        borderColor: ["rgba(255, 206, 86, 1)"],
+        borderWidth: [2, 0],
       },
     ],
   };
@@ -77,9 +67,9 @@ const DoughnutChartComponent = ({danger, hours, awake }) => {
     },
     elements: {
       center: {
-        text: '65%',
-        color: '#FF6384',
-        fontStyle: 'Arial',
+        text: "65%",
+        color: "#FF6384",
+        fontStyle: "Arial",
         sidePadding: 10,
       },
     },
@@ -122,29 +112,31 @@ const DoughnutChartComponent = ({danger, hours, awake }) => {
 
   return (
     <div>
-        <div className='chart-detail-header'>
-            135일된 우리 땡구의<br />
-            수면현황입니다
-        </div>
-        <div className="chart-container">
+      <div className="chart-detail-header">
+      <span className="bold-text">135일 된 우리 땡구 </span>의
+        <br />
+        <span className="bold-text">수면현황 </span>입니다
+      </div>
+
+      <div className="chart-container">
         <div className="chart-item">
-            <div className="chart-title">수면 시간</div>
-            <Doughnut data={data1} options={options} />
-            <div className="chart-footer">부족</div>
+          <div className="chart-title">수면 시간</div>
+          <Doughnut data={data1} options={options} />
+          <div className="chart-footer">부족</div>
         </div>
 
         <div className="chart-item">
-            <div className="chart-title">깨어남</div>
-            <Doughnut data={data2} options={options} />
-            <div className="chart-footer">적합</div>
+          <div className="chart-title">기상 횟수</div>
+          <Doughnut data={data2} options={options} />
+          <div className="chart-footer">적합</div>
         </div>
 
         <div className="chart-item">
-            <div className="chart-title">위험 행동</div>
-            <Doughnut data={data3} options={options} />
-            <div className="chart-footer">위험</div>
+          <div className="chart-title">위험 감지</div>
+          <Doughnut data={data3} options={options} />
+          <div className="chart-footer">위험</div>
         </div>
-        </div>
+      </div>
     </div>
   );
 };

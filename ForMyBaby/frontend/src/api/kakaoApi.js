@@ -5,8 +5,13 @@ const kakaoApi = async (code) => {
             "Content-Type": "application/x-www-form-urlencoded",
         };
 
+<<<<<<< HEAD
+        const response = await fetch(`http://localhost:8080/v1/oauth/kakao/login?code=${code}`, {
+        // const response = await fetch(`http://j10c202.p.ssafy.io:8082/v1/oauth/kakao/login?code=${code}`, {
+=======
         //const response = await fetch(`http://localhost:8080/v1/oauth/kakao/login?code=${code}`, {
         const response = await fetch(`https://j10c202.p.ssafy.io/v1/oauth/kakao/login?code=${code}`, {
+>>>>>>> 0f1c4fe4e1c75714b97a739d4ecfc59dab3c8bb5
             method: "POST",
             headers: headers,
         });

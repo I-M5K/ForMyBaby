@@ -61,8 +61,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     void deleteNotificationByNotificationId(Long notificationId);
     @Modifying
     @Transactional
-    @Query("DELETE FROM Notification n WHERE n.user.userId = :userId AND n.baby.babyId = :babyId")
-    void deleteAllByUserId(Long userId, Long babyId);
+    @Query("DELETE FROM Notification n WHERE n.user.userId = :userId")
+    void deleteAllByUserId(Long userId);
 
     @Modifying
     @Transactional
@@ -71,6 +71,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     @Modifying
     @Transactional
-    @Query("UPDATE Notification n SET n.isChecked=true WHERE n.user.userId=:userId AND n.baby.babyId=:babyId")
-    void checkAll(Long userId, Long babyId);
+    @Query("UPDATE Notification n SET n.isChecked=true WHERE n.user.userId=:userId")
+    void checkAll(Long userId);
 }
