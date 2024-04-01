@@ -11,23 +11,23 @@
   }
   
   .main-headerText {
-    font-size: 25px;
+    font-size: 23px;
     font-weight: bold;
     text-align: left;
-    margin-left: 20px;
+    margin-left: 30px;
     line-height: 1.5; 
   }
   
   .main-notificationIcon {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end; /* 아래쪽 정렬로 변경 */
-    flex-direction: column; /* 수직 방향으로 요소 배치 */
+    margin-bottom: 30px;
   }
   
   .gombaImage {
-    width: 167px;
-    height: 149px;
+    /* width: 167px;
+    height: 169px; */
+    width: 35%;
+    height: 35%;
+
     padding: 30px;
   }
   

@@ -138,9 +138,9 @@ const MainPage = () => {
     <div className="main-container">
       <div className="main-header">
         <span className="main-headerText">
-          지금은 {selectedBabyName}
+          찬바람, 찬음식은 {selectedBabyName}
           <br />
-          낮잠 잘 시간이에요!
+          피해주는 게 좋아요!
         </span>
         <Link to="/">
           <button onClick={() => handleLogout()} className="logout-btn">
@@ -163,7 +163,7 @@ const MainPage = () => {
         </Link>
       </div>
       <img
-        src={require("../assets/babybear.png")}
+        src={require("../assets/yap.png")}
         className="gombaImage"
         alt="Baby Bear"
       />
