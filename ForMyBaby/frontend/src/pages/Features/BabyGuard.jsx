@@ -163,7 +163,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <MdArrowBackIos className="arrow-back-icon" />
       <div className="sleep-title">우리 아이 지킴이</div>
       <div className="button-container">
         <button

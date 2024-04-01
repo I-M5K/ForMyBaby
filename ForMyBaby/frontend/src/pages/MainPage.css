@@ -30,6 +30,11 @@
 
     padding: 30px;
   }
+
+  .babyday{
+    font-size: 25px;
+    color: #F7C515;
+  }
   
   .rectangleBox {
     width: 380px;
@@ -40,9 +45,8 @@
 
   .rectangleBoxText {
     padding-top: 20px;
-    margin-left: 50px;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .main-content{
@@ -68,6 +72,23 @@
     width: 180px;
     height: 87px;
     background: #f9f9f9;
+    border-radius: 30px;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  .goBell{
+    font-size: 25px;
+    color: rgb(106, 105, 105);
+    margin-right: 15px;
+      }
+
+  .yellowBox {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    width: 180px;
+    height: 87px;
+    background: rgba(247, 197, 21, 0.1);
     border-radius: 30px;
     margin-bottom: 10px;
     text-align: left;
