@@ -14,7 +14,7 @@ spring:
   #jpa
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -29,7 +29,7 @@ spring:
       client_id: ${KAKAO_ID} # REST API ?
       redirect_uri: ${KAKAO_REDIRECT_URI}
       client_secret: ${KAKAO_PW}
-      scope: name, account_email, profile_image
+      scope: profile_nickname, account_email, profile_image
   #redis
   data:
     redis:
