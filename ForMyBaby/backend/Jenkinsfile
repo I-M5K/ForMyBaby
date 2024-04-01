@@ -26,8 +26,14 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/ForMyBaby/backend"){
                     script {
+                        sh "ls -al"
+                        sh "echo 'SUBMODULE CHECK'"
+                        sh "ls ./src/main/resources"
                         sh "chmod +x ./gradlew"
                         sh "cat ./src/main/resources/application.yml"
+//                         sh "cp ./src/main/resources/application.yml"
+//                         sh "chmod +x ./gradlew"
+//                         sh "cat ./src/main/resources/application.yml"
                     }
                 }
             }

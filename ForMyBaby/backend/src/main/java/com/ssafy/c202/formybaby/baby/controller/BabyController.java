@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/baby")
-@CrossOrigin(origins = "http://j10c202.p.ssafy.io:8082")
+@CrossOrigin(origins = "https://j10c202.p.ssafy.io")
 public class BabyController {
 
     private final BabyService babyService;
