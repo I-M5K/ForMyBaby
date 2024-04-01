@@ -27,7 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("v1/oauth")
+@RequestMapping("/v1/oauth")
+@CrossOrigin(origins = "https://j10c202.p.ssafy.io")
 @Slf4j
 public class OauthController {
 
