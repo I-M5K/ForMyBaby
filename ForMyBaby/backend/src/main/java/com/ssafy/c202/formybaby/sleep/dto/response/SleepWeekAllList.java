@@ -6,7 +6,9 @@ import com.ssafy.c202.formybaby.sleep.entity.Sleep;
 import java.util.List;
 
 public record SleepWeekAllList(
-        List<Sleep> sleepList,
-        List<Danger> dangerList
+        int[] sleepList,
+        int[] dangerList,
+
+        int[] hoursList
 ) {
 }

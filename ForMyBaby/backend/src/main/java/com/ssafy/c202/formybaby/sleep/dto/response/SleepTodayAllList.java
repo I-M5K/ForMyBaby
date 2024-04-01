@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 public record SleepTodayAllList(
         int sleepTime,
         int sleepCnt,
-        int dangerCnt,
-        Timestamp sleepCreatedAt,
-        Timestamp dangerCreatedAt
+        int dangerCnt
 ) {
 }
