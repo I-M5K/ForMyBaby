@@ -23,9 +23,9 @@ public class SleepController {
     private final SleepService sleepService;
 
     @GetMapping()
-    public ResponseEntity<Void> getSleepOnTime(@RequestHeader(name = "Authorization") String token, @RequestBody SleepOnCreateRequest sleepOnCreateRequest) {
-        log.info("createdAt : " + sleepOnCreateRequest.createdAt());
-        sleepService.getSleepOnTime(token, Timestamp.valueOf(sleepOnCreateRequest.createdAt()));
+    public ResponseEntity<Void> getSleepOnTime(@RequestHeader(name = "Authorization") String token) {
+        log.info("getSleepOnTime");
+        sleepService.getSleepOnTime(token);
         return ResponseEntity.ok().build();
     }
 
@@ -40,16 +40,16 @@ public class SleepController {
     }
 
     @GetMapping("/awake")
-    public ResponseEntity<?> getAwakeTimeList(@RequestHeader(name = "Authorization") String token, @RequestBody AwakeCreateRequest awakeCreateRequest){
-        log.info("endAt : " + awakeCreateRequest.endAt());
-        sleepService.getAwakeTimeList(token, Timestamp.valueOf(awakeCreateRequest.endAt()));
+    public ResponseEntity<?> getAwakeTimeList(@RequestHeader(name = "Authorization") String token){
+        log.info("getAwakeTimeList");
+        sleepService.getAwakeTimeList(token);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/week")
-    public ResponseEntity<SleepWeekAllList> getWeekAllList(@RequestHeader(name = "Authorization") String token, @RequestParam Timestamp endAt){
+    public ResponseEntity<SleepWeekAllList> getWeekAllList(@RequestHeader(name = "Authorization") String token){
         try{
-            return new ResponseEntity<>(sleepService.getWeekAllList(token,endAt),HttpStatus.OK);
+            return new ResponseEntity<>(sleepService.getWeekAllList(token),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
