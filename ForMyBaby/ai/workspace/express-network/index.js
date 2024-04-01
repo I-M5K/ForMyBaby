@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended: true}));
 // 방 정보를 저장할 객체
 const rooms = {};
 
-let currentStatus = false; // 초기 상태 설정
+let currentStatus = true; // 초기 상태 설정
 
 // WebSocket 연결
 io.on('connection', (socket) => {
@@ -114,7 +114,7 @@ app.post('/check', (req, res) => {
 
 // 이미지, 시간, 온습도를 받을 라우트 설정
 const upload = multer({ storage: storage });
-app.post('/event', upload.single('frame'), (req, res) => {
+app.post('/data', upload.single('frame'), (req, res) => {
   try {
     // const babyId = req.params.babyId;
     //console.log('Received image for babyId:', babyId);
@@ -156,12 +156,12 @@ app.post('/event', upload.single('frame'), (req, res) => {
 });
 
 // 이벤트 
-app.post('/data', (req, res) => {
+app.post('/event', (req, res) => {
   try {
     const babyId = req.params.baby_id;
     console.log("event함수 실행!*************************")
     //const imageFile = req.file;
-    //const body = req.body; // line 데이터 수신
+    const body = req.body; // line 데이터 수신
     console.log('받은 데이터', req.body);
     //console.log('받은 파일', req.file);
     console.log('***********************');
@@ -185,11 +185,11 @@ app.post('/data', (req, res) => {
       res.status(200).send('위험 행동 데이터 전송 완료!');
     } else { // 스톱모션(0), 만세(1), 다리꼬기(2) 
       if (detail == '0'){ // 스톱모션
-        io.emit('commonEvent', { timestamp, detail, babyId, s3_url });
+        io.emit('commonEvent', { timestamp, detail, babyId, url_s3 });
       } else if (detail == '1'){ // 만세
-        io.emit('commonEvent', { timestamp, detail, babyId, s3_url });
+        io.emit('commonEvent', { timestamp, detail, babyId, url_s3 });
       } else if (detail == '2'){ // 다리꼬기
-        io.emit('commonEvenet', { timestamp, detail, babyId, s3_url });
+        io.emit('commonEvenet', { timestamp, detail, babyId, url_s3 });
       }
       res.status(200).send('이벤트 행동 데이터 전송 완료!');
     }       
