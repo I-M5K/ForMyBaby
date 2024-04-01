@@ -6,9 +6,9 @@ import arrowLeft from '../../assets/arrow_left.png'
 
 const NotificationSettings = () => {
   const [notificationStates, setNotificationStates] = useState({
-    sound: false,
-    health: false,
-    danger: false
+    isSound: false,
+    isGeneral: false,
+    isDanger: false
   });
   const navigate = useNavigate(); 
 
@@ -30,6 +30,7 @@ const NotificationSettings = () => {
       ...notificationStates,
       [type]: !notificationStates[type]
     };
+    console.log('updated states', updatedStates);
     setNotificationStates(updatedStates);
   };
 
@@ -37,7 +38,7 @@ const NotificationSettings = () => {
     try {
       await sendNotificationSetting(notificationStates);
       console.log('알림 설정이 성공적으로 변경되었습니다.');
-      navigate(-2);
+      //navigate(-1);
     } catch (error) {
       console.error('알림 설정 전송 에러!', error);
     }
@@ -46,7 +47,7 @@ const NotificationSettings = () => {
   return (
     <div className='notification-setting-container'>
       <div className='notification-setting-header'>
-        <Link to="/main">
+        <Link to="/notification">
           <button className="settings-button" onClick={handleSave}>
             <img src={arrowLeft} alt="Settings" />
           </button>
@@ -58,8 +59,8 @@ const NotificationSettings = () => {
         <div className='noti-box'>
           <div>알림 소리</div>
           <label className="switch">
-            {/* <input type="checkbox" checked={notificationStates.sound} onChange={() => toggleNotification('sound')} /> */}
-            <input type="checkbox" />
+            <input type="checkbox" checked={notificationStates.isSound} onChange={() => toggleNotification('isSound')} />
+            {/* <input type="checkbox" /> */}
             <span className="slider round"></span>
           </label>
         </div>
@@ -67,8 +68,8 @@ const NotificationSettings = () => {
         <div className='noti-box'>
           <div>건강/접종 알림</div>
           <label className="switch">
-            {/* <input type="checkbox" checked={notificationStates.health} onChange={() => toggleNotification('health')} /> */}
-            <input type="checkbox" />
+            <input type="checkbox" checked={notificationStates.isGeneral} onChange={() => toggleNotification('isGeneral')} />
+            {/* <input type="checkbox" /> */}
             <span className="slider round"></span>
           </label>
         </div>
@@ -76,8 +77,8 @@ const NotificationSettings = () => {
         <div className='noti-box'>
           <div>위험 예방 알림</div>
           <label className="switch">
-            {/* <input type="checkbox" checked={notificationStates.danger} onChange={() => toggleNotification('danger')} /> */}
-            <input type="checkbox" />
+            <input type="checkbox" checked={notificationStates.isDanger} onChange={() => toggleNotification('isDanger')} />
+            {/* <input type="checkbox" /> */}
             <span className="slider round"></span>
           </label>
         </div>
