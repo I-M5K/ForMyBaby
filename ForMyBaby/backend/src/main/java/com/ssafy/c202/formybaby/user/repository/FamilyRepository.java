@@ -16,6 +16,7 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
     @Query(value = "SELECT DISTINCT f.familyCode FROM Family f WHERE f.user.userId = :userId")
     String findFamilyCodeByUserId(@Param("userId") Long userId);
     Family findFamilyByBabyBabyId(Long babyId);
+    @Query("SELECT f FROM Family f WHERE f.user.userId=:userId")
     List<Family> findFamiliesByUserUserId(Long userId);
     @Query("SELECT f.familyRank FROM Family f WHERE f.user.userId=:userId AND f.baby.babyId=:babyId")
     int findFamilyRankByUserId(Long userId, Long babyId);
@@ -26,4 +27,11 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
     void deleteFamiliesByBabyBabyId(Long babyId);
     @Query("SELECT f FROM Family f WHERE f.familyCode=:familyCode")
     List<Family> findAllByFamilyCode(String familyCode);
+
+    @Query("SELECT f FROM Family f WHERE f.user.userId=:userId")
+    List<Family> findAllByUserId(Long userId);
+
+    @Query("SELECT DISTINCT f.user.userId FROM Family f WHERE f.familyCode = :familyCode")
+    List<Long> findFirstUserIdByFamilyCode(@Param("familyCode") String familyCode);
+
 }

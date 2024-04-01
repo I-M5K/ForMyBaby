@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import './App.css'
 import Tutorial from './components/tutorial/Tutorial'
 import Login from './pages/StartPage/Login'
+import Loading from './pages/StartPage/LoadingPage'
 import WebSocketComponent from './Socket/WebSocketComponent'; 
 import { BrowserRouter, Navigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import "./FCM/firebase-messaging-sw.js";
+
 import FamilyCode from './pages/StartPage/FamilyCode'
 import KakaoRedirectPage from './pages/StartPage/KakaoRedirectPage';
 import AgreePage from './pages/StartPage/AgreePage';
@@ -32,13 +34,15 @@ import ParentingStamp from './pages/ParentingStamp/ParentingStamp';
 import Present from './pages/Features/Present';
 // 마이 페이지
 import MyPage from './pages/MyPage/MyPage';
+import BabyProfileEdit from './pages/MyPage/BabyProfileEdit';
 
 import TutorialAndLogin from './components/TutorialAndLogin'
 
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const socketUrl = 'http://localhost:3001';
+  const socketUrl = 'http://j10c202.p.ssafy.io:8083';
+  //const socketUrl = 'http://localhost:3001';
   useEffect(() => {
     // 여기서 유저 정보를 확인하고 로그인 상태를 변경합니다.
     // 예를 들어, 로컬 스토리지에서 유저 정보를 가져온다고 가정합니다.
@@ -66,6 +70,8 @@ function App() {
           <Route path="/baby-welcome" element={<BabyWelcome />} />
           <Route path="/family" element={<FamilyCode />} />
           <Route path="/baby-guard" element={<BabyGuard />} />
+          <Route path="/loading" element={<Loading />} />
+          <Route path="/baby-profile" element={<BabyProfileEdit />} />
           <Route
             path="/main"
             element={

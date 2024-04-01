@@ -20,7 +20,6 @@
 .child-item {
     flex: 0 0 auto;
     position: relative;
-    margin: 5px;
     padding: 10px;
 }
 
