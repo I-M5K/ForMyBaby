@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/notification")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://j10c202.p.ssafy.io")
 public class NotificationController {
 
     private final NotificationService notificationService;
