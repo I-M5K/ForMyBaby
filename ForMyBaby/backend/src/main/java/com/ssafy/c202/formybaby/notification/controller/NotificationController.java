@@ -44,7 +44,7 @@ public class NotificationController {
     public ResponseEntity<?> deleteAllNotification (@RequestHeader(name="Authorization") String token) {
         String userId = redisService.getUserIdByToken(token);
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(userId));
-        notificationService.deleteAll(Long.valueOf(userId), babyId);
+        notificationService.deleteAll(Long.valueOf(userId));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
