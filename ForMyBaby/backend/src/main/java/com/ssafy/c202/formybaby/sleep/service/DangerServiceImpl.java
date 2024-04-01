@@ -4,7 +4,7 @@ import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerCntResponse;
-import com.ssafy.c202.formybaby.sleep.dto.response.DangerCreateRequest;
+import com.ssafy.c202.formybaby.sleep.dto.request.DangerCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerReadResponse;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
 import com.ssafy.c202.formybaby.sleep.repository.DangerRepository;
@@ -136,7 +136,7 @@ public class DangerServiceImpl implements DangerService {
             Danger danger = new Danger();
             // Danger 엔티티를 수정하여 저장
             danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
-            danger.setCreatedAt(dangerCreateRequest.createdAt());
+            danger.setCreatedAt(Timestamp.valueOf(dangerCreateRequest.createdAt()));
             danger.setDangerType(dangerCreateRequest.dangerType());
             danger.setBaby(baby);
             dangerRepository.save(danger);
@@ -144,7 +144,7 @@ public class DangerServiceImpl implements DangerService {
             // dangerList가 비어있는 경우 새로운 Danger 엔티티를 생성하여 저장
             Danger newDanger = new Danger();
             newDanger.setDangerCnt(1);
-            newDanger.setCreatedAt(dangerCreateRequest.createdAt());
+            newDanger.setCreatedAt(Timestamp.valueOf(dangerCreateRequest.createdAt()));
             newDanger.setDangerType(dangerCreateRequest.dangerType());
             newDanger.setBaby(baby);
             dangerRepository.save(newDanger);

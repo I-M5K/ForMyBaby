@@ -2,7 +2,7 @@ package com.ssafy.c202.formybaby.sleep.service;
 
 
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerCntResponse;
-import com.ssafy.c202.formybaby.sleep.dto.response.DangerCreateRequest;
+import com.ssafy.c202.formybaby.sleep.dto.request.DangerCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerReadResponse;
 
 import java.util.List;

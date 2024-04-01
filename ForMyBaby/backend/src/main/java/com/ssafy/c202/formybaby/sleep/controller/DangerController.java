@@ -1,7 +1,7 @@
 package com.ssafy.c202.formybaby.sleep.controller;
 
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerCntResponse;
-import com.ssafy.c202.formybaby.sleep.dto.response.DangerCreateRequest;
+import com.ssafy.c202.formybaby.sleep.dto.request.DangerCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerReadResponse;
 import com.ssafy.c202.formybaby.sleep.service.DangerService;
 import lombok.RequiredArgsConstructor;
