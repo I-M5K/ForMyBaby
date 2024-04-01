@@ -18,14 +18,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/v1/sleep")
+@CrossOrigin(origins = "https://j10c202.p.ssafy.io")
 public class SleepController {
 
     private final SleepService sleepService;
 
     @GetMapping()
-    public ResponseEntity<Void> getSleepOnTime(@RequestHeader(name = "Authorization") String token, @RequestBody SleepOnCreateRequest sleepOnCreateRequest) {
-        log.info("createdAt : " + sleepOnCreateRequest.createdAt());
-        sleepService.getSleepOnTime(token, sleepOnCreateRequest.createdAt());
+    public ResponseEntity<Void> getSleepOnTime(@RequestHeader(name = "Authorization") String token, @RequestParam Long babyId) {
+        log.info("getSleepOnTime");
+        sleepService.getSleepOnTime(token,babyId);
         return ResponseEntity.ok().build();
     }
 
@@ -40,16 +41,16 @@ public class SleepController {
     }
 
     @GetMapping("/awake")
-    public ResponseEntity<?> getAwakeTimeList(@RequestHeader(name = "Authorization") String token, @RequestBody AwakeCreateRequest awakeCreateRequest){
-        log.info("endAt : " + awakeCreateRequest.endAt());
-        sleepService.getAwakeTimeList(token, awakeCreateRequest.endAt());
+    public ResponseEntity<?> getAwakeTimeList(@RequestHeader(name = "Authorization") String token, @RequestParam Long babyId){
+        log.info("getAwakeTimeList");
+        sleepService.getAwakeTimeList(token,babyId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/week")
-    public ResponseEntity<SleepWeekAllList> getWeekAllList(@RequestHeader(name = "Authorization") String token, @RequestParam Timestamp endAt){
+    public ResponseEntity<SleepWeekAllList> getWeekAllList(@RequestHeader(name = "Authorization") String token){
         try{
-            return new ResponseEntity<>(sleepService.getWeekAllList(token,endAt),HttpStatus.OK);
+            return new ResponseEntity<>(sleepService.getWeekAllList(token),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }

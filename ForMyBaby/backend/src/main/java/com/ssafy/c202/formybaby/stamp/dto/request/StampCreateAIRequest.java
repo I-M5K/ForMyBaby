@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 public record StampCreateAIRequest(
         Long step,
         String stampUrl,
-        String memo
+        String memo,
+
+        Long babyId
 ){}
 

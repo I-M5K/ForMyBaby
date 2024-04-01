@@ -7,9 +7,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface SleepService {
-    SleepWeekAllList getWeekAllList(String token, Timestamp createdAt);
+    SleepWeekAllList getWeekAllList(String token);
     SleepTodayAllList getTodayAllList(String token);
-    void getSleepOnTime(String token,Timestamp createdAt);
-    void getAwakeTimeList(String token, Timestamp endAt);
-
+    void getSleepOnTime(String token, Long babyId);
+    void getAwakeTimeList(String token, Long babyId);
 }

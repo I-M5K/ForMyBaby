@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,7 +25,8 @@ public class StampController {
     private final StampService stampService;
 
     @PostMapping()
-    public ResponseEntity<?> createStamp(@RequestHeader(name = "Authorization") String token, @RequestBody StampCreateRequest stampCreateRequest) {
+    public ResponseEntity<?> createStamp(@RequestHeader(name = "Authorization") String token, @RequestParam(value = "memo")String memo, @RequestParam(value = "step")Long step, @RequestParam(value = "stampImg")MultipartFile stampImg) {
+        StampCreateRequest stampCreateRequest = new StampCreateRequest(step, stampImg, memo);
         stampService.createStamp(token, stampCreateRequest);
         return new ResponseEntity<>("Stamp create successfully^^!", HttpStatus.OK);
     }

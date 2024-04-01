@@ -2,9 +2,10 @@ package com.ssafy.c202.formybaby.sleep.service;
 
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
+import com.ssafy.c202.formybaby.global.jpaEnum.DangerType;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerCntResponse;
-import com.ssafy.c202.formybaby.sleep.dto.response.DangerCreateRequest;
+import com.ssafy.c202.formybaby.sleep.dto.request.DangerCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerReadResponse;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
 import com.ssafy.c202.formybaby.sleep.repository.DangerRepository;
@@ -30,7 +31,8 @@ public class DangerServiceImpl implements DangerService {
     private final BabyRepository babyRepository;
 
     @Override
-    public List<DangerReadResponse> selectWeekDangerList(Long babyId, String endDate) {
+    public List<DangerReadResponse> selectWeekDangerList(Long babyId) {
+        String endDate = String.valueOf(getCurrentTimestamp());
         // endDate 문자열에서 연, 월, 일 추출
         int year = Integer.parseInt(endDate.substring(0, 4));
         int month = Integer.parseInt(endDate.substring(5, 7));
@@ -77,7 +79,8 @@ public class DangerServiceImpl implements DangerService {
     }
 
     @Override
-    public List<DangerCntResponse> selectWeekDangerCntList(int dangerCnt, String endDate) {
+    public List<DangerCntResponse> selectWeekDangerCntList(int dangerCnt) {
+        String endDate = String.valueOf(getCurrentTimestamp());
         // endDate 문자열에서 연, 월, 일 추출
         int year = Integer.parseInt(endDate.substring(0, 4));
         int month = Integer.parseInt(endDate.substring(5, 7));
@@ -121,14 +124,13 @@ public class DangerServiceImpl implements DangerService {
     }
 
     @Override
-    public void createDanger(String code, DangerCreateRequest dangerCreateRequest) {
-        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(code)));
+    public void createDanger(String code, DangerType dangerType, Long babyId) {
+        //Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(code)));
         Baby baby = babyRepository.findByBabyId(babyId);
-
-        log.info("dangerCreateRequest {} : " +dangerCreateRequest);
 
         // Danger 엔티티를 조회
         List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(baby.getBabyId());
+        Timestamp createdAt = getCurrentTimestamp();
 
         if (!dangerList.isEmpty()) {
             // dangerList가 비어있지 않은 경우에만 첫 번째 Danger 엔티티를 가져옴
@@ -136,18 +138,24 @@ public class DangerServiceImpl implements DangerService {
             Danger danger = new Danger();
             // Danger 엔티티를 수정하여 저장
             danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
-            danger.setCreatedAt(dangerCreateRequest.createdAt());
-            danger.setDangerType(dangerCreateRequest.dangerType());
+            danger.setCreatedAt(createdAt);
+            danger.setDangerType(dangerType);
             danger.setBaby(baby);
             dangerRepository.save(danger);
         } else {
             // dangerList가 비어있는 경우 새로운 Danger 엔티티를 생성하여 저장
             Danger newDanger = new Danger();
             newDanger.setDangerCnt(1);
-            newDanger.setCreatedAt(dangerCreateRequest.createdAt());
-            newDanger.setDangerType(dangerCreateRequest.dangerType());
+            newDanger.setCreatedAt(createdAt);
+            newDanger.setDangerType(dangerType);
             newDanger.setBaby(baby);
             dangerRepository.save(newDanger);
         }
+    }
+    public Timestamp getCurrentTimestamp() {
+        // 현재 시간을 밀리초로 가져옴
+        long currentTimeMillis = System.currentTimeMillis();
+        // 밀리초를 Timestamp 객체로 변환하여 반환
+        return new Timestamp(currentTimeMillis);
     }
 }

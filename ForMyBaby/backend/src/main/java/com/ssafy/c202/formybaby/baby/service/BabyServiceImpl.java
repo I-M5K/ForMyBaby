@@ -11,6 +11,8 @@ import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
 import com.ssafy.c202.formybaby.global.s3.AwsS3Service;
 import com.ssafy.c202.formybaby.notification.repository.NotificationRepository;
+import com.ssafy.c202.formybaby.stamp.entity.Stamp;
+import com.ssafy.c202.formybaby.stamp.repository.StampRepository;
 import com.ssafy.c202.formybaby.user.dto.response.FamilyReadResponse;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
@@ -42,6 +44,7 @@ public class BabyServiceImpl implements BabyService{
     private final RedisService redisService;
     private final AwsS3Service awsS3Service;
     private final NotificationRepository notificationRepository;
+    private final StampRepository stampRepository;
     @Override
     public List<BabyReadResponse> addBaby(BabyCreateRequest babyCreateRequest) {
         String familyCode = familyRepository.findFamilyCodeByUserId(babyCreateRequest.userId());
@@ -59,6 +62,15 @@ public class BabyServiceImpl implements BabyService{
             familyRepository.save(family);
         }
         List<BabyReadResponse> babyList = babyRepository.findBabiesByFamilyCode(familyCode);
+        for (int i = 0; i < 20; i++){
+            Stamp stamp = new Stamp();
+            stamp.setBaby(baby);
+            stamp.setStampImg(null);
+            stamp.setMemo(null);
+            stamp.setStep(i+1);
+
+            stampRepository.save(stamp);
+        }
         return babyList.stream().distinct().toList();
     }
 
