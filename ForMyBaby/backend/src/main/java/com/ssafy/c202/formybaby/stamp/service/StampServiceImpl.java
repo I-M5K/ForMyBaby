@@ -3,7 +3,11 @@ package com.ssafy.c202.formybaby.stamp.service;
 import com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse;
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
+import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.global.s3.AwsS3Service;
+import com.ssafy.c202.formybaby.stamp.dto.request.StampCreateAIRequest;
 import com.ssafy.c202.formybaby.stamp.dto.request.StampCreateRequest;
+import com.ssafy.c202.formybaby.stamp.dto.request.StampUpdateAIRequest;
 import com.ssafy.c202.formybaby.stamp.dto.request.StampUpdateRequest;
 import com.ssafy.c202.formybaby.stamp.dto.response.StampListResponse;
 import com.ssafy.c202.formybaby.stamp.entity.Stamp;
@@ -24,28 +28,24 @@ public class StampServiceImpl implements StampService{
 
     private final StampRepository stampRepository;
     private final BabyRepository babyRepository;
+    private final RedisService redisService;
+    private final AwsS3Service awsS3Service;
 
     @Override
-    public void createStamp(StampCreateRequest stampCreateRequest) {
+    public void createStamp(String token, StampCreateRequest stampCreateRequest) {
         log.info("stampCreateRequest : " + stampCreateRequest);
+        Timestamp timestamp = getCurrentTimestamp();
+
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
+        Baby baby = babyRepository.findByBabyId(babyId);
+
         Stamp stamp = new Stamp();
-
-        Baby baby = new Baby();
-
-        // 로그인한 유저의 현재 babyId 가져오는 로직 필요!
-        // 이걸 통해서 베이비 조회 후 그 값을 넣어줘야한다.
-        //Optional<BabyReadResponse> babyReadResponse = babyRepository.findBabyByBabyId(1L);
-        //Long babyId = babyReadResponse.get().babyId();
-
-        Long babyId = babyRepository.findBabyByBabyId(1L).get().babyId();
-        baby.setBabyId(babyId);
-
         stamp.setBaby(baby);
-
         stamp.setStep(stampCreateRequest.step());
-        stamp.setStampImg(stampCreateRequest.stampImg().toString());
+        String imageUrl = awsS3Service.uploadFile(babyId,stampCreateRequest.stampImg(),timestamp,"stamp");
+        stamp.setStampImg(imageUrl);
         stamp.setMemo(stampCreateRequest.memo());
-        stamp.setCreatedAt((stampCreateRequest.createdAt()));
+        stamp.setCreatedAt(timestamp);
 
         log.info("stamp : " + stamp);
 
@@ -53,7 +53,23 @@ public class StampServiceImpl implements StampService{
     }
 
     @Override
-    public List<StampListResponse> stampListResponse(Long babyId) {
+    public void createStampAI(String token, StampCreateAIRequest stampCreateAIRequest) {
+        log.info("stampCreateAIRequest : " + stampCreateAIRequest);
+        //Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
+        Baby baby = babyRepository.findByBabyId(stampCreateAIRequest.babyId());
+        Timestamp timestamp = getCurrentTimestamp();
+        Stamp stamp = stampRepository.findByStepAndBabyId(stampCreateAIRequest.step(), stampCreateAIRequest.babyId());
+        stamp.setBaby(baby);
+        stamp.setStampImg(stampCreateAIRequest.stampUrl());
+        stamp.setMemo(stampCreateAIRequest.memo());
+        stamp.setCreatedAt(timestamp);
+
+        log.info("stamp : " + stamp);
+    }
+
+    @Override
+    public List<StampListResponse> stampListResponse(String token) {
+        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
         List<Stamp> stampList = stampRepository.findByBaby_BabyId(babyId);
         List<StampListResponse> stampListResponseList = new ArrayList<>();
         for (Stamp stamp : stampList) {
@@ -85,13 +101,30 @@ public class StampServiceImpl implements StampService{
         return stampListResponse;
     }
 
+    // 유저가 스탬프를 수정하는 경우
     @Override
     public void updateStamp(Long stampId, StampUpdateRequest stampUpdateRequest) {
+        // 기존에 있는 스탬프 조회
         Stamp stamp = stampRepository.findByStampId(stampId);
         if(stamp != null){
             log.info("stamp update success");
-            stamp.setStampImg(stampUpdateRequest.stampImg().toString());
+            String imageUrl = awsS3Service.uploadFile(stamp.getBaby().getBabyId(), stampUpdateRequest.stampImg(),stamp.getCreatedAt(),"stamp");
+            stamp.setStampImg(imageUrl);
             stamp.setMemo(stampUpdateRequest.memo());
+            stampRepository.save(stamp);
+        }
+        else{
+            log.info("stamp update fail");
+        }
+    }
+
+    @Override
+    public void updateAIStamp(Long stampId, StampUpdateAIRequest stampUpdateAIRequest) {
+        Stamp stamp = stampRepository.findByStampId(stampId);
+        if(stamp != null){
+            log.info("stamp update success");
+            stamp.setStampImg(stampUpdateAIRequest.stampUrl());
+            stamp.setMemo(stampUpdateAIRequest.memo());
             stampRepository.save(stamp);
         }
         else{
@@ -102,5 +135,13 @@ public class StampServiceImpl implements StampService{
     @Override
     public void deleteStamp(Long stampId) {
         stampRepository.deleteById(stampId);
+    }
+
+    // 현재 시간을 Timestamp 객체로 가져오는 메서드
+    public Timestamp getCurrentTimestamp() {
+        // 현재 시간을 밀리초로 가져옴
+        long currentTimeMillis = System.currentTimeMillis();
+        // 밀리초를 Timestamp 객체로 변환하여 반환
+        return new Timestamp(currentTimeMillis);
     }
 }

@@ -6,6 +6,7 @@ import com.ssafy.c202.formybaby.baby.service.BabyService;
 import com.ssafy.c202.formybaby.global.jpaEnum.BabyGender;
 import com.ssafy.c202.formybaby.global.jwt.JwtProperties;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.stamp.entity.Stamp;
 import com.ssafy.c202.formybaby.user.dto.response.UserReadResponse;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.Oauth;
@@ -27,7 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("v1/oauth")
+@RequestMapping("/v1/oauth")
+@CrossOrigin(origins = "https://j10c202.p.ssafy.io")
 @Slf4j
 public class OauthController {
 
@@ -127,6 +129,7 @@ public class OauthController {
             String getUserId = redisService.getUserIdByToken(jwtToken);
 
             userInfo.put("userId",getUserId);
+
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
