@@ -134,19 +134,41 @@ const MainPage = () => {
     setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
   };
 
+  const GaugeBar = ({ value, maxValue }) => {
+    const [barWidth, setBarWidth] = useState(0);
+  
+    // Calculate the width of the gauge bar
+    const calculateWidth = () => {
+      const width = (value / maxValue) * 100;
+      return width > 100 ? 100 : width; // Cap width at 100%
+    };
+  
+    // Update the width when the component mounts or when the value changes
+    React.useEffect(() => {
+      setBarWidth(calculateWidth());
+    }, [value]);
+  
+    return (
+      <div className="gauge-bar-container">
+        <div
+          className="gauge-bar"
+          style={{ width: `${barWidth}%`, backgroundColor:'#F7C515' }}
+        >
+          {`${value}%`}
+        </div>
+      </div>
+    );
+  };
+
+
   return (
     <div className="main-container">
       <div className="main-header">
         <span className="main-headerText">
-          지금은 {selectedBabyName}
+          찬바람, 찬음식은 {selectedBabyName}
           <br />
-          낮잠 잘 시간이에요!
+          피해주는 게 좋아요!
         </span>
-        <Link to="/">
-          <button onClick={() => handleLogout()} className="logout-btn">
-            로그아웃
-          </button>
-        </Link>
         <Link to="/notification">
           <div
             className="main-notificationIcon"
@@ -163,21 +185,23 @@ const MainPage = () => {
         </Link>
       </div>
       <img
-        src={require("../assets/babybear.png")}
+        src={require("../assets/yap.png")}
         className="gombaImage"
         alt="Baby Bear"
       />
       <Link to="/present">
         <div className="rectangleBox">
-          <img src={PresentBox} className="presentbox" />
-          <div className="rectangleBoxText">100% 채우면 과연 어떤 선물이?</div>
+          <img src={PresentBox} className='presentbox' />
+          <div className="rectangleBoxText">
+            100% 채우면 과연 어떤 선물이?
+          </div>
+          <GaugeBar value={70} maxValue={100} />
         </div>
       </Link>
 
       <div className="main-content">
         <div className="boxContainerLeft">
-          <Link to="/baby-profile">
-            <div className="smallBox">
+            <div className="smallBox" onClick={toggleBottomSheet}>
               <span className="boxText">
                 <span className="textMiddle">{selectedBabyName} 태어난지</span>
                 <br />
@@ -186,7 +210,7 @@ const MainPage = () => {
                 </span>
               </span>
             </div>
-          </Link>
+
           <Link to="/timeline">
             <div className="smallBox">
               <span className="boxText">
@@ -210,9 +234,12 @@ const MainPage = () => {
         </div>
 
         <div className="boxContainerRight">
-          <div className="smallmiddleBox" onClick={toggleBottomSheet}>
-            <img src={BabyPhoto} className="babyphoto" />
-          </div>
+          <Link to="/baby-profile">
+            <div className="smallmiddleBox">
+              <img src={BabyPhoto} className='babyphoto' />
+            </div>
+          </Link>
+
           <Link to="/baby-guard?selectedButton=button2">
             <div className="smallBox">
               <span className="boxText">
