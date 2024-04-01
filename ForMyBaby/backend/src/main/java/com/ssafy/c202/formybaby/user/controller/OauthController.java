@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("v1/oauth")
+@RequestMapping("/v1/oauth")
 @Slf4j
 public class OauthController {
 
