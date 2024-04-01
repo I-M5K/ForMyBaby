@@ -232,7 +232,7 @@ public class SleepServiceImpl implements SleepService {
 
 
     @Override
-    public void getAwakeTimeList(String token, Long babyId) {
+    public void getAwakeOnTime(String token, Long babyId) {
         Timestamp endAt = getCurrentTimestamp();
         log.info("endAt : " + endAt);
 //        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));

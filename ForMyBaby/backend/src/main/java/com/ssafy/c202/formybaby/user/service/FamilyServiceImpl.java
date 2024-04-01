@@ -148,6 +148,5 @@ public class FamilyServiceImpl implements FamilyService{
             }
         }
         return babyService.babyList2(familyCode);
-
     }
 }
