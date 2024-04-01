@@ -5,7 +5,6 @@ import com.ssafy.c202.formybaby.global.jpaEnum.DangerType;
 import java.sql.Timestamp;
 
 public record DangerCreateRequest(
-        String createdAt,
         DangerType dangerType
 ) {
 }

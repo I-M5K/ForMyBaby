@@ -1,5 +1,6 @@
 package com.ssafy.c202.formybaby.sleep.controller;
 
+import com.ssafy.c202.formybaby.global.jpaEnum.DangerType;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerCntResponse;
 import com.ssafy.c202.formybaby.sleep.dto.request.DangerCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerReadResponse;
@@ -21,9 +22,9 @@ public class DangerController {
     private final DangerService dangerService;
 
     @GetMapping("/")
-    public ResponseEntity<List<DangerReadResponse>> selectWeekDangerList(@RequestParam Long babyId, @RequestParam String endDate) {
+    public ResponseEntity<List<DangerReadResponse>> selectWeekDangerList(@RequestParam Long babyId) {
         try {
-            List<DangerReadResponse> dangerReadResponseList = dangerService.selectWeekDangerList(babyId, endDate);
+            List<DangerReadResponse> dangerReadResponseList = dangerService.selectWeekDangerList(babyId);
             return new ResponseEntity<>(dangerReadResponseList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -31,19 +32,18 @@ public class DangerController {
     }
 
     @GetMapping("/cnt")
-    public ResponseEntity<List<DangerCntResponse>> selectWeekDangerCntList(@RequestParam int dangerCnt, @RequestParam String endDate){
+    public ResponseEntity<List<DangerCntResponse>> selectWeekDangerCntList(@RequestParam int dangerCnt){
         try {
-            List<DangerCntResponse> dangerCntResponseList = dangerService.selectWeekDangerCntList(dangerCnt, endDate);
+            List<DangerCntResponse> dangerCntResponseList = dangerService.selectWeekDangerCntList(dangerCnt);
             return new ResponseEntity<>(dangerCntResponseList, HttpStatus.OK);
         } catch (Exception e) {
             return  new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-
-    @PostMapping
-    public ResponseEntity<?> createDanger(@RequestHeader("Authorization") String code, @RequestBody DangerCreateRequest dangerCreateRequest) {
-        log.info("dangerCreateRequest : "+ dangerCreateRequest);
-        dangerService.createDanger(code, dangerCreateRequest);
+    @GetMapping
+    public ResponseEntity<?> createDanger(@RequestHeader("Authorization") String code, @RequestParam DangerType dangerType, @RequestParam Long babyId) {
+        log.info("createDanger");
+        dangerService.createDanger(code, dangerType, babyId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
