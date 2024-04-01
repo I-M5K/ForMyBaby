@@ -10,21 +10,41 @@ class EdgeLP:
             "sensor_data":MySensor(),
             "detector":MyDetector(),
         }
+        self.prev_data = {
+            'detail': False,
+        }
 
 
     def collect_data(self):
         self.my_edge['sensor_data'].get()
         # print("self.my_edge['sensor_data']",self.my_edge['sensor_data'].data['ser_data'])
-        self.event_rst, self.sleep_rst, self.rst_data = self.my_edge['detector'].detect_start(self.my_edge['sensor_data'].data['ser_data'], self.my_edge['sensor_data'].data['frame'])
+        sensor_data = self.my_edge['sensor_data'].data
+        self.rst = self.my_edge['detector'].detect_start(
+            sensor_data['timestamp'], 
+            sensor_data['th'], 
+            sensor_data['ser_data'], 
+            sensor_data['image_data'], 
+            sensor_data['frame']
+        )
+        self.sleep_rst = self.rst['sleep_data']
+        self.event_rst = self.rst['event_data']
 
-        # if self.event_rst:
+
+        if self.event_rst['index'] is not None and self.event_rst['index'] != 0 :
+            self.my_edge['network_manager'].send_event_to_server(self.event_rst)
+            
+        if self.sleep_rst['detail'] is not None and self.sleep_rst['detail'] != self.prev_data['detail']:
+            self.my_edge['network_manager'].send_event_to_server(self.sleep_rst)
         
-        if self.sleep_rst:
-            self.my_edge['network_manager'].send_event_to_server(self.rst_data)
+        
         # 만약 데이터 요청 시
-        if self.my_edge['network_manager'].request_data:
+        if self.my_edge['network_manager'].is_requested:
+            self.my_edge['sensor_data'].data['index'] = 1
+            self.my_edge['sensor_data'].data['event_type'] = None
+            self.my_edge['sensor_data'].data['detail'] = None
             self.my_edge['network_manager'].send_data_to_server(self.my_edge['sensor_data'].data) 
-
+        
+        self.prev_data['detail'] = self.sleep_rst['detail']
 
 
 

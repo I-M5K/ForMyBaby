@@ -3,38 +3,36 @@ from scipy.spatial.transform import Rotation as R
 from .algo_th import DetectorTH
 from .algo_ai import DetectorAI
 import time
-import datetime
 
 class MyDetector:
     def __init__(self):
+        self.initialize_thresholds()
+        self.th = DetectorTH(self.threshold['TH'])
+        self.ai = DetectorAI(self.threshold['AI'])
+        self.prev_sleep_state = 0
+        self.prev_event_state = 0
 
-        self.treshold = {
+        self.initialize_data()
+
+    def initialize_thresholds(self):
+        self.threshold = {
             'AI': {
-                'NON_SLEEP_TIME_TOLERANCE': 10, #  비수면 시간 허용 오차
-                'NON_EVENT_TIME_TOLERANCE': 5, #  동작 감지 시간 허용 오차
-                'NON_LOCATED_TOLERANCE': 3, #  적정 위치 좌표 허용 오차
-                'IS_EYE_CLOSED_THRESHOLD': 0.3, # 눈 감김 여부
-                'IS_EVENT_FLAG': 0, # 동작의 종류
-                'IS_LOCATED_FLAG': [5, 5], # 위치
-                'EYE_INDICES': {
-                    'LEFT': [33, 160, 158, 133, 153, 144],
-                    'RIGHT': [362, 385, 387, 263, 390, 374]
-                },
+                'NON_SLEEP_TIME_TOLERANCE': 10,
+                'NON_EVENT_TIME_TOLERANCE': 1,
+                'NON_LOCATED_TOLERANCE': 3,
+                'IS_EYE_CLOSED_THRESHOLD': 0.3,
+                'IS_EVENT_FLAG': 0,
+                'IS_LOCATED_FLAG': [5, 5],
+                'EYE_INDICES': {'LEFT': [33, 160, 158, 133, 153, 144], 'RIGHT': [362, 385, 387, 263, 390, 374]},
                 'BODY_INDICES' : {
                     'NOSE': 0,
-                    'EYE' : {
-                        'LEFT': [1, 2, 3],
-                        'RIGHT' : [4, 5, 6]
-                    },
+                    'EYE' : {'LEFT': [1, 2, 3], 'RIGHT' : [4, 5, 6]},
                     'EAR': [7, 8],
                     'MOUTH': [9, 10],
                     'SHOULDER': [11, 12],
                     'ELBOW': [13, 14],
                     'WRIST': [15, 16],
-                    'HANDS': {
-                        'LEFT': [17, 19, 21],
-                        'RIGHT' : [18, 20, 22]
-                    },
+                    'HANDS': {'LEFT': [17, 19, 21], 'RIGHT' : [18, 20, 22]},
                     'HIP': [23, 24],
                     'KNEE': [25, 26],
                     'ANKLE': [27, 28],
@@ -47,60 +45,129 @@ class MyDetector:
                 'ALERT_FLIP': 1000,
             }
         }
-        
-        self.th = DetectorTH(self.treshold['TH'])
-        self.ai = DetectorAI(self.treshold['AI'])
-        self.prev_state = "awake"
+
+    def initialize_data(self):
         self.data = {
-            'ser_data': None,
-            'frame': None,
-            'time_data': None,
+            'index': None, 
+            'event_type': None, 
+            'detail': None, 
+            'ser_data': None, 
+            'frame': None, 
+            'th': None, 
             'timestamp': None,
-            'is_eye_closed_ai': None,
-            'sleep_time_ai': None,
-            'is_event_flag_ai': None,
-            'event_flag_ai': None,
-            'is_located_flag_ai': None,
-            'located_flag_ai': None,
-            'th': None,
+            'sleep_info': {'flag': 0, 'time': 0}, 
+            'event_info': {'flag': 0, 'index': 0}, 
+            'located_info': {'flag': 0, 'time': 0},
+            'sleep_data': {'index': None, 'event_type': None, 'detail': None, 'time_data': None, 'timestamp': None, 'ser_data': None, 'frame': None, 'th': None},
+            'event_data': {'index': None, 'event_type': None, 'detail': None, 'time_data': None, 'timestamp': None, 'ser_data': None, 'frame': None, 'th': None},
+            'located_data': {'index': None, 'event_type': None, 'detail': None, 'time_data': None, 'timestamp': None, 'ser_data': None, 'frame': None, 'th': None},
         }
 
-    def send_notification(self):
-        self.my_edge['network_manager'].send_event_to_server(self.data)
+    def update_sleep_data(self, index, event_type, detail, timestamp):
+        self.data['sleep_data'].update({
+                'index': index,
+                'event_type': event_type,
+                'detail': detail,
+                'timestamp': timestamp,
+                'ser_data': self.data['ser_data'],
+                'frame': self.data['frame'],
+                'th': self.data['th']
+            })
+    def update_event_data(self, index, event_type, detail, timestamp):
+        self.data['event_data'].update({
+                'index': index,
+                'event_type': event_type,
+                'detail': detail,
+                'timestamp': timestamp,
+                'ser_data': self.data['ser_data'],
+                'frame': self.data['frame'],
+                'th': self.data['th']
+            })
 
-    def send_event_notification(self):
-        if self.data['is_event_flag_ai'] != 0:
-            return True
-            if self.data['is_located_flag_ai']:
-                return True
-        # print("no event detected")
-        return False
+    def update_data(self, index, event_type, detail, timestamp):
 
+        print("event_type: ", event_type)
+        print("self.data: ", self.data)
+        print("Type of self.data['event_data']: ", type(self.data['event_data']))
+        print("Type of self.data['sleep_data']: ", type(self.data['sleep_data']))
+        if event_type == 0 or event_type == 1:
+            self.data['event_data'].update({
+                'index': index,
+                'event_type': event_type,
+                'detail': detail,
+                'timestamp': timestamp,
+                'ser_data': self.data['ser_data'],
+                'frame': self.data['frame'],
+                'th': self.data['th']
+            })
+        if event_type == 2:
+            self.data['sleep_data'].update({
+                'index': index,
+                'event_type': event_type,
+                'detail': detail,
+                'timestamp': timestamp,
+                'ser_data': self.data['ser_data'],
+                'frame': self.data['frame'],
+                'th': self.data['th']
+            })
 
-    def send_sleep_status_notification(self):
-        current_time = datetime.datetime.now()
-        is_sleeping = self.data['is_eye_closed_ai'] and self.data['sleep_time_ai'] > self.treshold['AI']['NON_SLEEP_TIME_TOLERANCE']
+    def detect_start(self, timestamp, th_data, ser_data, image_data, frame_data):
+        self.data.update({
+            'ser_data': ser_data,
+            'image_data': image_data,
+            'frame': frame_data,
+            'th': th_data,
+            'timestamp': timestamp
+        })
 
-        if is_sleeping:
-            if self.prev_state == "awake":
-                status_message = "just sleep!"
-            else:
-                status_message = "sleeping..."
-            self.prev_state = "sleep"
-        else:
-            if self.prev_state == "sleep":
-                status_message = "just awake!"
-            else:
-                status_message = "awaking..."
-            self.prev_state = "awake"
+        # print(self.data)
 
-        print(f"{current_time}: {status_message}")
-        return is_sleeping
-    
-    def detect_start(self, ser_data, image_data):
-        self.data['is_eye_closed_ai'], self.data['sleep_time_ai'] = self.ai.is_sleep(image_data)
-        self.data['is_event_flag_ai'], self.data['event_flag_ai'] = self.ai.is_event(image_data)
-        self.data['is_located_flag_ai'], self.data['located_flag_ai'] = self.ai.is_located(image_data)
+        self.update_info_flags_and_times()
+        self.handle_sleep_statuses()
+        self.handle_event_statuses()
+
         time.sleep(0.1)
 
-        return self.send_event_notification(), self.send_sleep_status_notification(), self.data
+        return self.data
+
+    def update_info_flags_and_times(self):
+        info_types = ['sleep_info', 'event_info', 'located_info']
+        methods = [self.ai.is_sleep, self.ai.is_event, self.ai.is_located]
+        for info_type, method in zip(info_types, methods):
+            self.data[info_type][0], self.data[info_type][1] = method(self.data['image_data'])
+
+    def handle_sleep_statuses(self):
+        status = self.get_sleep_status()
+        self.handle_status_update(status, 'sleep')
+
+    def handle_event_statuses(self):
+        status = self.get_event_status()
+        self.handle_status_update(status, 'event')
+
+    def get_sleep_status(self):
+        if self.data['sleep_info']['flag'] and self.data['sleep_info']['time'] > self.threshold['AI']['NON_SLEEP_TIME_TOLERANCE']:
+            return {'index': 2, 'event_type': 2, 'detail': 1, 'just_message': 'just sleep!', 'ongoing_message': 'sleeping...'}
+        else:
+            return {'index': 2, 'event_type': 2, 'detail': 0, 'just_message': 'just awake!', 'ongoing_message': 'awaking...'}
+
+    def get_event_status(self):
+        if self.data['event_info'][0] :
+            if self.data['event_info'][1] == 1: # 사고
+                return {'index': 2, 'event_type': 1, 'detail': 0, 'just_message': 'just fell!', 'ongoing_message': 'dangerous!!'}
+            else: # 행동
+                return {'index': 2, 'event_type': 0, 'detail': self.data['event_info'][1], 'just_message': 'just event!', 'ongoing_message': 'evented!!'}
+        else: 
+            return {'index': 0, 'event_type': 0, 'detail': 0, 'just_message': 'just doing nothing!', 'ongoing_message': 'doing nothing...'}
+
+    def handle_status_update(self, status, status_type):
+        prev_state = self.prev_sleep_state if status_type == 'sleep' else self.prev_event_state
+        if status['detail'] != prev_state:
+            self.update_data(status['index'], status['event_type'], status['detail'], self.data['timestamp'])
+            print(status['just_message'])
+        else:
+            print(status['ongoing_message'])
+
+        if status_type == 'sleep':
+            self.prev_sleep_state = status['detail']
+        else:
+            self.prev_event_state = status['detail']
