@@ -32,7 +32,8 @@ public class SleepServiceImpl implements SleepService {
     private final DangerRepository dangerRepository;
 
     @Override
-    public SleepWeekAllList getWeekAllList(String token, Timestamp endAt) {
+    public SleepWeekAllList getWeekAllList(String token) {
+        Timestamp endAt = getCurrentTimestamp();
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
 
         // Calendar 객체를 이용하여 endAt을 처리
@@ -104,11 +105,12 @@ public class SleepServiceImpl implements SleepService {
     }
 
     @Override
-    public void getSleepOnTime(String token, Timestamp createdAt) {
+    public void getSleepOnTime(String token,Long babyId) {
+        Timestamp createdAt = getCurrentTimestamp();
         log.info("createdAt : " + createdAt);
 
         // 유저 정보를 가져온다.
-        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
+//        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(babyId);
 
         // 주어진 시간의 년, 월, 일을 추출하여 날짜를 동일하게 만듭니다.
@@ -171,9 +173,10 @@ public class SleepServiceImpl implements SleepService {
 
 
     @Override
-    public void getAwakeTimeList(String token, Timestamp endAt) {
+    public void getAwakeTimeList(String token, Long babyId) {
+        Timestamp endAt = getCurrentTimestamp();
         log.info("endAt : " + endAt);
-        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
+//        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(babyId);
 
         // 베이비 아이디로 수면 목록을 가져옵니다.
@@ -241,5 +244,11 @@ public class SleepServiceImpl implements SleepService {
             }
 
         }
+    }
+    public Timestamp getCurrentTimestamp() {
+        // 현재 시간을 밀리초로 가져옴
+        long currentTimeMillis = System.currentTimeMillis();
+        // 밀리초를 Timestamp 객체로 변환하여 반환
+        return new Timestamp(currentTimeMillis);
     }
 }
