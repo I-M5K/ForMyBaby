@@ -6,7 +6,7 @@ const Login = () => {
     const redirect_uri = 'https://j10c202.p.ssafy.io/oauth/redirected/kakao' //Redirect URI
     //const redirect_uri = 'http://localhost:3000/oauth/redirected/kakao' //Redirect URI
     // oauth 요청 URL
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=f9d3aa3c4d425c0ad175a6b95e366769&redirect_uri=${redirect_uri}&response_type=code`
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=40f7b007044cb4e88f5190467ce35a58&redirect_uri=${redirect_uri}&response_type=code`
     const handleLogin = ()=>{
         window.location.href = kakaoURL
     }
