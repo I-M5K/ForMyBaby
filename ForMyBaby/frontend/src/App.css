@@ -5,8 +5,8 @@
 .login-container {
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* 화면 아래쪽에 정렬합니다. */
-  margin-top: 90px;
+  /* align-items: flex-end; 화면 아래쪽에 정렬합니다. */
+  margin-top: 60px;
 }
 
 .login-content {
