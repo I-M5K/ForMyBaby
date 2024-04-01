@@ -14,8 +14,14 @@ import { createStampByAI } from "../../api/stampApi";
 import { sendDanger, sendAwake, sendSleep } from "../../api/sleepApi";
 import { MdArrowBackIos } from "react-icons/md";
 
+<<<<<<< HEAD
 const ENDPOINT = "http://localhost:3001";
 //const ENDPOINT = 'http://j10c202.p.ssafy.io:8083';
+=======
+
+//const ENDPOINT = 'http://localhost:3001';
+const ENDPOINT = 'https://j10c202.p.ssafy.io/ai';
+>>>>>>> ec7019e408c933038e2cbbbf042974c24b377503
 
 // const ImageContent = ({ imageData, lineData }) => (
 //   <div className="image-content">
@@ -122,10 +128,17 @@ const Dashboard = () => {
     });
 
     // 소켓 위험 알림용 이벤트 수신
+<<<<<<< HEAD
     socket.on("dangerEvent", (data) => {
       console.log("Received dangerEvent:", data);
       sendDanger({ babyId: data.babyId, type: data.detail });
       if (danger == null) {
+=======
+    socket.on('dangerEvent', (data) => {
+      console.log('Received dangerEvent:', data);
+      sendDanger({ babyId: data.babyId, dangerType: data.detail });
+      if (danger == null){
+>>>>>>> ec7019e408c933038e2cbbbf042974c24b377503
         setDanger(1);
       } else {
         setDanger(danger + 1);
@@ -133,12 +146,20 @@ const Dashboard = () => {
     });
 
     // 소켓 수면 분석용 이벤트 수신
+<<<<<<< HEAD
     socket.on("sleepEvent", (data) => {
       console.log("Received sleepEvent:", data);
       if (data.detail == "0") {
         // 잠에서 깸
         sendAwake({ babyId: data.babyId, type: data.detail });
         if (awake == null) {
+=======
+    socket.on('sleepEvent', (data) => {
+      console.log('Received sleepEvent:', data);
+      if (data.detail == '0'){ // 잠에서 깸
+        sendAwake(data.babyId)
+        if (awake == null){
+>>>>>>> ec7019e408c933038e2cbbbf042974c24b377503
           setAwake(1);
         } else {
           setAwake(awake + 1);
@@ -150,11 +171,18 @@ const Dashboard = () => {
         const awakeTime = new Date(data.timestamp).getTime();
         // 두 timestamp 사이의 차이를 분으로 계산합니다.
         const timeDifference = (awakeTime - sleepTime) / (1000 * 60);
+<<<<<<< HEAD
         console.log("Time difference (minutes):", timeDifference);
         setHours(hours + timeDifference);
       } else if (data.detail == "1") {
         // 잠 듦
         sendSleep({ babyId: data.babyId, type: data.detail });
+=======
+        console.log('Time difference (minutes):', timeDifference);
+        setHours(hours+timeDifference);
+      } else if (data.detail == '1') { // 잠 듦
+        sendSleep(data.babyId)
+>>>>>>> ec7019e408c933038e2cbbbf042974c24b377503
         setSleep(data.timestamp);
       }
     });

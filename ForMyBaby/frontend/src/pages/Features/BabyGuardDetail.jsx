@@ -24,6 +24,7 @@ const BabyGuardChange = ({ danger, hours, awake }) => {
           //setEndTime(yesterday.getTime()); // setEndTime 함수를 사용하여 endTime 상태를 설정
         }
         const data = await getWeekData(yesterday.getTime()); // 서버로부터 일주일치 데이터 가져오기
+        console.log(data);
         setDangerList(data.dangerList);
         setHoursList(data.hoursList);
         setAwakeList(data.awakeList);
