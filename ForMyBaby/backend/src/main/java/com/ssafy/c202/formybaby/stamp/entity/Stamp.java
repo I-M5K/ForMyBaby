@@ -32,5 +32,5 @@ public class Stamp {
 
     @CreationTimestamp
     @Column(nullable = false)
-    private String createdAt;
+    private Timestamp createdAt;
 }
