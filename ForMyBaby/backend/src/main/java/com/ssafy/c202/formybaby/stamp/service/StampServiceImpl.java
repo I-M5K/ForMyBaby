@@ -55,20 +55,16 @@ public class StampServiceImpl implements StampService{
     @Override
     public void createStampAI(String token, StampCreateAIRequest stampCreateAIRequest) {
         log.info("stampCreateAIRequest : " + stampCreateAIRequest);
-        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
-        Baby baby = babyRepository.findByBabyId(babyId);
+        //Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
+        Baby baby = babyRepository.findByBabyId(stampCreateAIRequest.babyId());
         Timestamp timestamp = getCurrentTimestamp();
-
-        Stamp stamp = new Stamp();
+        Stamp stamp = stampRepository.findByStepAndBabyId(stampCreateAIRequest.step(), stampCreateAIRequest.babyId());
         stamp.setBaby(baby);
-        stamp.setStep(stampCreateAIRequest.step());
         stamp.setStampImg(stampCreateAIRequest.stampUrl());
         stamp.setMemo(stampCreateAIRequest.memo());
         stamp.setCreatedAt(timestamp);
 
         log.info("stamp : " + stamp);
-
-        stampRepository.save(stamp);
     }
 
     @Override
