@@ -48,10 +48,10 @@ function ParentingStamp() {
       <div className='parenstamp-title'>성장 스탬프</div>
       <hr />
       <div className='parenstamp-header'>
-        <button onClick={() => handlePageSelection(<StampPage1 stampList={stampList} />)}>0~3개월</button>
-        <button onClick={() => handlePageSelection(<StampPage2 stampList={stampList} />)}>4~6개월</button>
-        <button onClick={() => handlePageSelection(<StampPage3 stampList={stampList} />)}>7~9개월</button>
-        <button onClick={() => handlePageSelection(<StampPage4 stampList={stampList} />)}>10~12개월</button>
+        <button onClick={() => handlePageSelection(<StampPage1 stampList={stampList.slice(0, 5)} />)}>0~3개월</button>
+        <button onClick={() => handlePageSelection(<StampPage2 stampList={stampList.slice(5, 10)} />)}>4~6개월</button>
+        <button onClick={() => handlePageSelection(<StampPage3 stampList={stampList.slice(10, 15)} />)}>7~9개월</button>
+        <button onClick={() => handlePageSelection(<StampPage4 stampList={stampList.slice(15, 20)} />)}>10~12개월</button>
       </div>
       <hr />
       <div className={`parenstamp-contents ${animationClass}`}>

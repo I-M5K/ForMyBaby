@@ -1,6 +1,6 @@
 // import { useUserStore } from '../src/stores/UserStore';
 // import { selectBaby } from '../src/api/userApi';
-window.onload = function(){
+// window.onload = function(){
   self.addEventListener("install", function (e) {
     console.log("fcm sw install..");
     self.skipWaiting();
@@ -100,4 +100,3 @@ window.onload = function(){
 
 // 	// self.registration.showNotification(notificationTitle, notificationOptions);
 // });
-}
