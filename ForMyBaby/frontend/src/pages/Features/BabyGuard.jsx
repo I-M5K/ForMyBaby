@@ -15,7 +15,7 @@ import { sendDanger, sendAwake, sendSleep } from '../../api/sleepApi';
 
 
 //const ENDPOINT = 'http://localhost:3001';
-const ENDPOINT = 'http://j10c202.p.ssafy.io:8083';
+const ENDPOINT = 'https://j10c202.p.ssafy.io/ai';
 
 // const ImageContent = ({ imageData, lineData }) => (
 //   <div className="image-content">

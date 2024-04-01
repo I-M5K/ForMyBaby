@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const AxiosWrapper = () => {
     const axiosInstance = axios.create({
-        baseURL: 'http://j10c202.p.ssafy.io:8082', // 백엔드 API의 기본 URL
+        baseURL: 'https://j10c202.p.ssafy.io', // 백엔드 API의 기본 URL
         //baseURL: 'http://localhost:8080', // 백엔드 API의 기본 URL
     });
 
