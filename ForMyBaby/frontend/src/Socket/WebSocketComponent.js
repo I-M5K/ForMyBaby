@@ -50,7 +50,7 @@ const WebSocketComponent = ({ endpoint }) => {
       // 소켓 위험 알림용 이벤트 수신
       socket.on('dangerEvent', (data) => {
         console.log('Received dangerEvent:', data);
-        sendDanger({ babyId: data.babyId, type: data.detail });
+        sendDanger({ babyId: data.babyId, dangerType: data.detail });
         if (danger == null){
           setDanger(1);
         } else {
@@ -62,7 +62,7 @@ const WebSocketComponent = ({ endpoint }) => {
       socket.on('sleepEvent', (data) => {
         console.log('Received sleepEvent:', data);
         if (data.detail == '0'){ // 잠에서 깸
-          sendAwake({ babyId: data.babyId, type: data.detail })
+          sendAwake(data.babyId)
           if (awake == null){
             setAwake(1);
           } else {
@@ -78,7 +78,7 @@ const WebSocketComponent = ({ endpoint }) => {
           console.log('Time difference (minutes):', timeDifference);
           setHours(hours+timeDifference);
         } else if (data.detail == '1') { // 잠 듦
-          sendSleep({ babyId: data.babyId, type: data.detail })
+          sendSleep(data.babyId)
           setSleep(data.timestamp);
         }
       });
