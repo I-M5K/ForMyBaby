@@ -25,7 +25,8 @@ export const createStampByAI = async (data) => {
 export const getStampList = async () => {
     console.log('스탬프 목록 가져오기!');
     try {
-      const response = await axiosWrapper.get('/v1/stamp');
+      const response = await axiosWrapper.get('/v1/stamp/list');
+      console.log(response.data);
       return response.data; // 스탬프 목록 데이터를 반환
     } catch (error) {
       console.error('스탬프 목록을 가져오는 중 에러 발생:', error);
@@ -36,7 +37,7 @@ export const getStampList = async () => {
 export const getStampDetail = async (stampId) => {
     console.log('스탬프 상세보기 가져오기!');
     try {
-      const response = await axiosWrapper.get(`/v1/stamp/detail/${stampId}`);
+      const response = await axiosWrapper.get(`/v1/stamp/detail`, { params: { stampId: stampId } });
       return response.data; // 스탬프 상세보기 데이터를 반환
     } catch (error) {
       console.error('스탬프 상세보기를 가져오는 중 에러 발생:', error);
@@ -44,7 +45,7 @@ export const getStampDetail = async (stampId) => {
     }
 };
 
-export const modifyUserStamp = async (stampId, data) => {
+export const modifyUserStamp = async (stampId, data) => { // img와 메모
     console.log('유저 스탬프 수정하기!');
     try {
       const response = await axiosWrapper.put(`/v1/stamp/${stampId}`, data);
@@ -55,7 +56,7 @@ export const modifyUserStamp = async (stampId, data) => {
     }
 };
 
-export const modifyAIStamp = async (stampId, data) => {
+export const modifyAIStamp = async (stampId, data) => { // url과 메모
   console.log('AI 스탬프 수정하기!');
   try {
     const response = await axiosWrapper.patch(`/v1/stamp/ai/${stampId}`, data);
