@@ -13,7 +13,7 @@ public interface SleepRepository extends JpaRepository<Sleep, Long> {
     List<Sleep> findByWeekSleep(Long babyId, Timestamp startDate, Timestamp endDate);
     List<Sleep> findAllByBaby_BabyIdOrderBySleepIdDesc(Long babyId);
 
-    @Query("SELECT count(s) FROM Sleep s WHERE FUNCTION('DATE', s.createdAt) = :createdDate AND s.baby.babyId = :babyId")
+    @Query("SELECT s FROM Sleep s WHERE FUNCTION('DATE', s.createdAt) = :createdDate AND s.baby.babyId = :babyId")
     List<Sleep> findAllListByDate(Date createdDate, Long babyId);
 
 }

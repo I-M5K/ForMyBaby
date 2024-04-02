@@ -2,6 +2,7 @@ package com.ssafy.c202.formybaby.notification.service;
 
 
 import com.ssafy.c202.formybaby.baby.entity.Baby;
+import com.ssafy.c202.formybaby.global.jpaEnum.DangerType;
 import com.ssafy.c202.formybaby.global.jpaEnum.NotificationType;
 import com.ssafy.c202.formybaby.health.entity.Health;
 import com.ssafy.c202.formybaby.notification.dto.request.SettingUpdateRequest;
@@ -28,6 +29,7 @@ public interface NotificationService {
     SettingReadResponse updateSetting(SettingUpdateRequest settingUpdateRequest, Long userId);
     void delete(Long notificationId);
     void deleteAll(Long userId);
-
     void checkAll(Long userId, Long babyId);
+    String createDangerTitle(String Name);
+    String createDangerContent(DangerType dangerType);
 }

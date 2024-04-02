@@ -1,6 +1,7 @@
 package com.ssafy.c202.formybaby.notification.service;
 
 import com.ssafy.c202.formybaby.baby.entity.Baby;
+import com.ssafy.c202.formybaby.global.jpaEnum.DangerType;
 import com.ssafy.c202.formybaby.global.jpaEnum.NotificationType;
 import com.ssafy.c202.formybaby.global.util.StringCheck;
 import com.ssafy.c202.formybaby.health.entity.Health;
@@ -65,6 +66,29 @@ public class NotificationServiceImpl implements NotificationService{
         }
         return StringCheck.getPostWord(health.getHealthTitle(), "은 ", "는 생후 ") + health.getStartAt()
                 + "개월에서 " + health.getEndAt() + "개월 사이에 검진 받아야 합니다.";
+    }
+
+    public String createDangerTitle(String babyName) {
+        return StringCheck.getPostWord(babyName, "이의 ", "의 ") + "위험행동";
+    }
+
+    public String createDangerContent(DangerType dangerType) {
+        switch(dangerType){
+            case insert_into_mouth -> {
+                return "입에 물건을 넣으려는 위험행동 감지";
+            }
+            case flip -> {
+                return "몸을 뒤집으려는 위험행동 감지";
+            }
+            case exit_area -> {
+                return "안전구역 벗어남 감지";
+            }
+            case stand_up -> {
+                return "일어서려는 위험행동 감지";
+            }
+
+        }
+        return null;
     }
 
     @Override

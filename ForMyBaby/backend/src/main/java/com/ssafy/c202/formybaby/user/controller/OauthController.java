@@ -63,6 +63,7 @@ public class OauthController {
     @PostMapping("/kakao/login")
     public ResponseEntity<?> requestKakaoAccessToken(@RequestParam("code") String code) {
         HttpHeaders requestHeaders = new HttpHeaders();
+        System.out.println("코드:" + code);
         requestHeaders.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
