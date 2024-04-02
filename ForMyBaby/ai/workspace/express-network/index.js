@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended: true}));
 // 방 정보를 저장할 객체
 const rooms = {};
 
-let currentStatus = false; // 초기 상태 설정
+let currentStatus = true; // 초기 상태 설정
 
 // WebSocket 연결
 io.on('connection', (socket) => {
@@ -83,7 +83,7 @@ io.on('connection', (socket) => {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // 클라이언트로부터 전달된 babyId를 확인하여 해당 폴더에 저장
-    const babyId = req.body.babyId;
+    const babyId = req.body.baby_id;
     const destinationPath = `uploads/${babyId}`;
     // 폴더가 없으면 생성
     fs.mkdir(destinationPath, { recursive: true }, (err) => {
@@ -114,28 +114,29 @@ app.post('/check', (req, res) => {
 
 // 이미지, 시간, 온습도를 받을 라우트 설정
 const upload = multer({ storage: storage });
-app.post('/data', upload.single('image'), (req, res) => {
+app.post('/data', upload.single('frame'), (req, res) => {
   try {
     // const babyId = req.params.babyId;
     //console.log('Received image for babyId:', babyId);
+    console.log("event함수 실행!*************************")
     const imageFile = req.file;
     const body = req.body; // line 데이터 수신
 
     // 받은 데이터 확인
     console.log('Received image:', imageFile);
     console.log('Received data:', body);
-
+    console.log('***********************');
     // 시간과 온습도 등의 데이터 추출
-    const babyId = body.babyId;
+    const babyId = body.baby_id;
     const timestamp = body.timestamp;
-    const temperature = body.TH ? body.TH[0] : null;
-    const humidity = body.TH ? body.TH[1] : null;
+    const temperature = body.TH[0];
+    const humidity = body.TH[1];
 
     console.log('Received babyId:', babyId);
     console.log('Received timestamp:', timestamp);
     console.log('Received temperature:', temperature);
     console.log('Received humidity:', humidity);
-
+    console.log('***********************');
     // 이미지 파일을 읽어서 데이터를 클라이언트로 전송
     fs.readFile(imageFile.path, (err, data) => {
       if (err) {
@@ -157,18 +158,24 @@ app.post('/data', upload.single('image'), (req, res) => {
 // 이벤트 
 app.post('/event', (req, res) => {
   try {
-    //const babyId = req.params.babyId;
-    const { babyId, timestamp, event_type, url_s3, detail } = req.body;
+    const babyId = req.params.baby_id;
+    console.log("event함수 실행!*************************")
+    //const imageFile = req.file;
+    const body = req.body; // line 데이터 수신
+    console.log('받은 데이터', req.body);
+    //console.log('받은 파일', req.file);
+    console.log('***********************');
+    const { baby_id, timestamp, event_type, url_s3, detail } = req.body;
 
-    // 받은 데이터 로깅
-    //console.log(`Received sleep event for babyId: ${babyId}`);
-    console.log(`babyId: ${babyId}, Timestamp: ${timestamp}, Event type: ${event_type}, detail: ${detail}, url s3: ${url_s3}`);
+    //받은 데이터 로깅
+    console.log(`Received sleep event for babyId: ${babyId}`);
+    console.log(`babyId: ${baby_id}, Timestamp: ${timestamp}, Event type: ${event_type}, detail: ${detail}, url s3: ${url_s3}`);
 
     if (event_type == '2'){ // 수면 관련
       if (detail == '0'){ // 잠에서 깸
-        io.emit('sleepEvent', { timestamp, detail, babyId});
+        io.emit('sleepEvent', { timestamp, detail, baby_id});
       } else if (detail == '1') { // 잠 듦
-        io.emit('sleepEvent', { timestamp, detail, babyId});
+        io.emit('sleepEvent', { timestamp, detail, baby_id});
       }
       res.status(200).send('수면 분석 데이터 전송 완료!');
     } else if (event_type == '1'){ // 위험 관련
@@ -178,11 +185,11 @@ app.post('/event', (req, res) => {
       res.status(200).send('위험 행동 데이터 전송 완료!');
     } else { // 스톱모션(0), 만세(1), 다리꼬기(2) 
       if (detail == '0'){ // 스톱모션
-        io.emit('commonEvent', { timestamp, detail, babyId, s3_url });
+        io.emit('commonEvent', { timestamp, detail, babyId, url_s3 });
       } else if (detail == '1'){ // 만세
-        io.emit('commonEvent', { timestamp, detail, babyId, s3_url });
+        io.emit('commonEvent', { timestamp, detail, babyId, url_s3 });
       } else if (detail == '2'){ // 다리꼬기
-        io.emit('commonEvenet', { timestamp, detail, babyId, s3_url });
+        io.emit('commonEvenet', { timestamp, detail, babyId, url_s3 });
       }
       res.status(200).send('이벤트 행동 데이터 전송 완료!');
     }       
@@ -193,7 +200,7 @@ app.post('/event', (req, res) => {
 });
 
 // 서버 실행
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8083;
 http.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

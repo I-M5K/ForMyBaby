@@ -7,9 +7,11 @@ def main():
     edge_lp_config = {
         # "ip": "192.168.100.58", # kky
         # "ip": "192.168.100.130", # icj
-        "ip": "172.30.1.57", # icj  엔젤리너스 수완
-        "port": 3001,
-        "baby_id": "1"
+        # "ip": "172.30.1.57", # icj
+        # "ip": "43.202.0.196" #  서버용
+        "ip": "43.202.0.196", 
+        "port": 8083,
+        "baby_id": 1
     }
 
     # Init NetworkManager

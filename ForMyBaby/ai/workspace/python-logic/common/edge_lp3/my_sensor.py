@@ -21,24 +21,33 @@ class MySensor:
     def initialize_data(self):
         self.cam_data = 1
         self.ser_data = SensorData2(0, 0)
-        self.prev_data = None
-        self.prev_ser = None
+        self.prev_data = SensorData2(0, 0)
+        self.prev_ser = SensorData(0, 0, 0, 0, 0, 0, 0, 0, 0)
         self.data = {
-            'image_data' : ['image.jpg', 1, 'image/jpeg'],
+            'index': None,
+            'event_type': None,
+            'detail': None,
+            'frame' : ['image.jpg', 1],
+            'th': [0, 0],
             'form_data' : {'line': SensorData2(0, 0), 'baby_id': 1},
-            'time_data' : {'timestamp': 1, 'datetime': '2021-03-25 12:00:00.000000'},
+            'time_data': '2021-03-25 12:00:00.000000',
+            'timestamp': 1711873161.4333634,
+        
             'aud':1,
             'ser_data': SensorData(0, 0, 0, 0, 0, 0, 0, 0, 0),
-            'frame' : 1
+            'image_data' : 1
         }
         self.line = '111'
 
     def get(self):
         self.frame_capture()
-        self.data['image_data'][1] = self.frame_encode()
+        self.data['frame'][1] = self.frame_encode()
+        # print(self.data['frame'][1])
         self.data['ser_data'] = self.data_get()
         self.data['form_data']['line'] = self.prev_data
-        self.data['frame'] = self.frame
+        self.data['th'][0], self.data['th'][1] = self.prev_data[0], self.prev_data[1]
+        # print(self.prev_data)
+        self.data['image_data'] = self.frame
 
         # print(self.data['image_data'][1])
         # print(self.data['form_data'])
@@ -70,8 +79,8 @@ class MySensor:
     def frame_capture(self):
         self.ret, self.frame = self.cam.read()
         # print("ddddd",self.frame)
-        self.data['time_data']['datetime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
-        self.data['time_data']['timestamp'] = time.time()
+        self.data['time_data'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+        self.data['timestamp'] = time.time()
 
     def frame_encode(self):
         try:
