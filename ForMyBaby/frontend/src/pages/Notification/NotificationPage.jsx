@@ -112,12 +112,13 @@ const NotificationPage = () => {
           </div>
         </div>
         <div className="notification-list">
-          {notifications.map(notification => (
+          {notifications.slice().reverse().map(notification => (
             <div key={notification.notificationId} className="notification-box-wrapper">
               <NotificationBox
                 key={notification.notificationId}
                 type={notification.type}
                 content={notification.content}
+                babyId={notification.babyId}
                 time={timeSince(notification.createdAt)}
                 onDelete={() => handleDeleteNotification(notification.notificationId)}
               />
