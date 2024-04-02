@@ -1,5 +1,5 @@
 # Python 애플리케이션을 위한 기본 이미지를 가져옵니다.
-FROM python:3.9-slim
+FROM python:3.9
 
 # Python 애플리케이션에 필요한 파일을 복사합니다.
 WORKDIR /app/python-logic/common/edge_lp3
