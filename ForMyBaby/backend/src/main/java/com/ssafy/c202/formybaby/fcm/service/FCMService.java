@@ -1,10 +1,7 @@
 package com.ssafy.c202.formybaby.fcm.service;
 
 import com.google.firebase.FirebaseException;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import com.ssafy.c202.formybaby.fcm.entity.FCMMessage;
 import com.ssafy.c202.formybaby.user.entity.Family;
 import com.ssafy.c202.formybaby.user.entity.User;
@@ -21,14 +18,13 @@ public class FCMService {
 
     private final FirebaseMessaging firebaseMessaging;
 
-    public FCMMessage toDangerFcm(User user, com.ssafy.c202.formybaby.notification.entity.Notification notification,
-                                  String topic) {
+    public FCMMessage toDangerFcm(String title, String content, String topic, String babyId) {
         return FCMMessage.builder()
-                .fcmToken(user.getFcmToken())
-                .title(notification.getTitle())
-                .body(notification.getContent())
+                .title(title)
+                .body(content)
                 .topic(topic)
                 .type("danger")
+                .babyId(babyId)
                 .build();
     }
 
@@ -41,6 +37,7 @@ public class FCMService {
                 .babyId(babyId)
                 .build();
     }
+
     public void sendFCM(FCMMessage fcmMessage) {
 
         Notification googleNotification = Notification.builder()
@@ -56,6 +53,7 @@ public class FCMService {
 
         if(fcmMessage.getTopic() != null) {
             messageBuilder.setTopic(fcmMessage.getTopic());
+            messageBuilder.setWebpushConfig(WebpushConfig.builder().putHeader("Urgency", "high").build());
         } else if(fcmMessage.getFcmToken() != null) {
             messageBuilder.setToken(fcmMessage.getFcmToken());
         }

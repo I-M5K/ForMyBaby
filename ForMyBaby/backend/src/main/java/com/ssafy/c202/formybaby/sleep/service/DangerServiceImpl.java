@@ -2,13 +2,18 @@ package com.ssafy.c202.formybaby.sleep.service;
 
 import com.ssafy.c202.formybaby.baby.entity.Baby;
 import com.ssafy.c202.formybaby.baby.repository.BabyRepository;
+import com.ssafy.c202.formybaby.fcm.entity.FCMMessage;
+import com.ssafy.c202.formybaby.fcm.service.FCMService;
 import com.ssafy.c202.formybaby.global.jpaEnum.DangerType;
 import com.ssafy.c202.formybaby.global.redis.RedisService;
+import com.ssafy.c202.formybaby.notification.service.NotificationService;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerCntResponse;
 import com.ssafy.c202.formybaby.sleep.dto.request.DangerCreateRequest;
 import com.ssafy.c202.formybaby.sleep.dto.response.DangerReadResponse;
 import com.ssafy.c202.formybaby.sleep.entity.Danger;
 import com.ssafy.c202.formybaby.sleep.repository.DangerRepository;
+import com.ssafy.c202.formybaby.user.entity.Family;
+import com.ssafy.c202.formybaby.user.repository.FamilyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +34,12 @@ public class DangerServiceImpl implements DangerService {
     private final RedisService redisService;
 
     private final BabyRepository babyRepository;
+
+    private final FamilyRepository familyRepository;
+
+    private final FCMService fcmService;
+
+    private final NotificationService notificationService;
 
     @Override
     public List<DangerReadResponse> selectWeekDangerList(Long babyId) {
@@ -127,6 +138,7 @@ public class DangerServiceImpl implements DangerService {
     public void createDanger(String code, DangerType dangerType, Long babyId) {
         //Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(code)));
         Baby baby = babyRepository.findByBabyId(babyId);
+        String familyCode = familyRepository.findFamilyCodeByBabyId(babyId);
 
         // Danger 엔티티를 조회
         List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(baby.getBabyId());
@@ -141,6 +153,11 @@ public class DangerServiceImpl implements DangerService {
             danger.setCreatedAt(createdAt);
             danger.setDangerType(dangerType);
             danger.setBaby(baby);
+            String title = notificationService.createDangerTitle(baby.getBabyName());
+            String content = notificationService.createDangerContent(dangerType);
+            String topic = familyCode+"_"+baby.getBabyId()+"_"+1;
+            FCMMessage fcmMessage = fcmService.toDangerFcm(title, content, topic, String.valueOf(baby.getBabyId()));
+            fcmService.sendFCM(fcmMessage);
             dangerRepository.save(danger);
         } else {
             // dangerList가 비어있는 경우 새로운 Danger 엔티티를 생성하여 저장
@@ -149,6 +166,11 @@ public class DangerServiceImpl implements DangerService {
             newDanger.setCreatedAt(createdAt);
             newDanger.setDangerType(dangerType);
             newDanger.setBaby(baby);
+            String title = notificationService.createDangerTitle(baby.getBabyName());
+            String content = notificationService.createDangerContent(dangerType);
+            String topic = familyCode+"_"+baby.getBabyId()+"_"+1;
+            FCMMessage fcmMessage = fcmService.toDangerFcm(title, content, topic, String.valueOf(baby.getBabyId()));
+            fcmService.sendFCM(fcmMessage);
             dangerRepository.save(newDanger);
         }
     }
