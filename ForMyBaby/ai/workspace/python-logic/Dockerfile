@@ -2,7 +2,6 @@
 FROM python:3.10.12
 # pyserial 모듈 설치
 RUN pip install pyserial
-RUN ls /dev/tty*
 
 # Python 애플리케이션에 필요한 파일을 복사합니다.
 WORKDIR /app/python-logic/common/
