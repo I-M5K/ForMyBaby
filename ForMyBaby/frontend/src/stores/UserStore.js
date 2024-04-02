@@ -12,7 +12,7 @@ export const useUserStore = create(persist((set) => ({
     babySelected: null, 
     babyList: [],
     uncheckedCnt: 0,
-    status: false,
+    stopCnt: null,
     setUncheckedCnt: (uncheckedCnt) => set({ uncheckedCnt: uncheckedCnt }),
     setId: (id) => set({ id: id}),
     setName: (name) => set({ name: name}),  
@@ -23,7 +23,7 @@ export const useUserStore = create(persist((set) => ({
     setFamily: (family) => set({ family: family}),
     setBabySelected: (babySelected) => set({ babySelected: babySelected }),
     setBabyList: (list) => set({ babyList: list }),
-    setStatus: (status) => set({ status: status })
+    setStopCnt: (status) => set({ status: status })
 }), {
     name: "user",
     storage: createJSONStorage(() => localStorage)
