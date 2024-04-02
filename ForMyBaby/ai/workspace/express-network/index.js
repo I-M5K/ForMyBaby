@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
   // 이미지 데이터 수신
   socket.on('image', (data) => {
     console.log('Received image data');
-    // 이미지 데이터를 클라이언트로 전송
+    // 이미지 데이터를 클라이언트로 전송o
     socket.emit('image', data);
   });
 
