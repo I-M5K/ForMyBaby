@@ -13,7 +13,7 @@ RUN apt-get -y install libgl1-mesa-glx
 RUN pip install -r /app/python-logic/common/edge_lp3/requirements.txt
 
 
-CMD ["python3", "main.py"]
+CMD ["python3", "./edge_lp3/main.py"]
 
 ## 베이스 이미지로 node와 python을 포함하는 이미지를 사용합니다.
 #FROM node:21.7.1-alpine
