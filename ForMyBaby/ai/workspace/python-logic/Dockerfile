@@ -7,8 +7,11 @@ COPY ./common/edge_lp3/ /app/python-logic/common/edge_lp3/
 #COPY ./common/edge_lp3/main.py /app/python-logic/common/edge_lp3/edge_LP.py
 #COPY ./common/edge_lp3/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
 
+RUN apt-get update
+RUN apt-get -y install libgl1-mesa-glx
 # Python 의존성을 설치합니다.
 RUN pip install -r /app/python-logic/common/edge_lp3/requirements.txt
+
 
 CMD ["python3", "main.py"]
 
