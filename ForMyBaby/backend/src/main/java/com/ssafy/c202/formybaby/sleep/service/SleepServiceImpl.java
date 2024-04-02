@@ -59,6 +59,8 @@ public class SleepServiceImpl implements SleepService {
             if (!s.isEmpty()) {
                 sleepList[cnt] = s.get(s.size() - 1).getSleepCnt();
                 hoursList[cnt] = s.get(s.size() - 1).getSleepTime();
+                System.out.println("sleepList " + cnt + " " + sleepList[cnt]);
+                System.out.println("hoursList " + cnt + " " + hoursList[cnt]);
             } else {
                 sleepList[cnt] = 0;
                 hoursList[cnt] = 0;
@@ -75,6 +77,7 @@ public class SleepServiceImpl implements SleepService {
             List<Danger> d = dangerRepository.findAllListByDate(original.getTime(), babyId);
             if (!d.isEmpty()) {
                 dangerList[cnt] = d.get(d.size() - 1).getDangerCnt();
+                System.out.println("dangerList " + cnt + " " + dangerList[cnt]);
             } else {
                 dangerList[cnt] = 0;
             }
