@@ -1,8 +1,11 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import "./babyDoughnutChart.css";
+import { useUserStore } from "../../../stores/UserStore";
 
 const DoughnutChartComponent = ({ danger, hours, awake }) => {
+  const { babyList, babySelected } = useUserStore();
+  
   const data1 = {
     datasets: [
       {
