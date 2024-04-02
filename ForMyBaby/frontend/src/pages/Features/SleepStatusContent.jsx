@@ -16,7 +16,7 @@ const SleepStatusContent = () => {
   const humid = 100; // '습도'에 대한 값
 
   const sleepData = {
-    labels: ["위험 감지", "수면 총 시간", "기상 횟수"],
+    labels: ["수면 총 시간", "기상 횟수", "위험 감지"],
     datasets: [
       {
         label: "Value",

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSpring, animated } from 'react-spring';
 import './BabyWelcome.css';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import Confetti from 'react-confetti'
 
 
 const WelcomePage = () => {
@@ -8,9 +10,9 @@ const WelcomePage = () => {
     return (
         <div className='baby-welcome-container'>
             <h1>축하축하축하</h1>
-
+            <Confetti />
             <Link to='/main'>
-                    <button type="submit" className='baby-welcome'>메인으로</button>
+                <button type="button" className='baby-welcome'>시작하기</button>
             </Link>
         </div>
     );
