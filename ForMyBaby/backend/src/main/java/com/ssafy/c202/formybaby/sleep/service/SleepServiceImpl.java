@@ -46,6 +46,7 @@ public class SleepServiceImpl implements SleepService {
 //
 //        // endAt을 00:00:00으로 설정
         Calendar endTime = getCalendar(endAt);
+        System.out.println("캘린더 형식" + endTime);
         Calendar original = endTime;
         endTime.add(Calendar.DAY_OF_MONTH, -6);
         int[] dangerList = new int[7];
@@ -65,6 +66,8 @@ public class SleepServiceImpl implements SleepService {
             cnt++;
             endTime.add(Calendar.DAY_OF_MONTH, 1);
         }
+        System.out.println(sleepList.toString());
+        System.out.println(hoursList.toString());
 
         original.add(Calendar.DAY_OF_MONTH, -6);
         cnt = 0;
@@ -78,6 +81,7 @@ public class SleepServiceImpl implements SleepService {
             cnt++;
             original.add(Calendar.DAY_OF_MONTH, 1);
         }
+        System.out.println(dangerList.toString());
 
 
 //

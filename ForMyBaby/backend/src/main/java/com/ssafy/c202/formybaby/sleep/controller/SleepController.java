@@ -51,6 +51,7 @@ public class SleepController {
     public ResponseEntity<SleepWeekAllList> getWeekAllList(@RequestHeader(name = "Authorization") String token,  @RequestParam Long endAt){
         try{
             Timestamp endTime = new Timestamp(endAt);
+            System.out.println("받은 시간: " + endTime);
             return new ResponseEntity<>(sleepService.getWeekAllList(token, endTime),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
