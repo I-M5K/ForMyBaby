@@ -128,8 +128,8 @@ const styles = {
     transition: 'color 1s ease', // 색상 변경 애니메이션
   },
   icon: {
-    width: '30px',
-    height: '30px',
+    width: '20px',
+    height: '20px',
   },
 };
 
