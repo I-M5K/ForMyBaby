@@ -235,7 +235,7 @@ const MainPage = () => {
         <div className="boxContainerRight">
           <Link to="/baby-profile">
             <div className="smallmiddleBox">
-              <img src={BabyPhoto} className="babyphoto" />
+              <img src={babyList.babySelected.profileImg} className="babyphoto" />
             </div>
           </Link>
 
