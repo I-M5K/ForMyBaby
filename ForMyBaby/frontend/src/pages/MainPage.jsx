@@ -20,6 +20,15 @@ import { GoBell } from "react-icons/go";
 
 import GaugeBar from "../components/feature/present/CountBar.jsx"
 
+const images = [
+  require("../assets/bears/hogogok.png"),
+  require("../assets/bears/jashinmanman.png"),
+  require("../assets/bears/kingbatne.png"),
+  require("../assets/bears/saranghaeyo.png"),
+  require("../assets/bears/yap.png"),
+]
+
+
 const MainPage = () => {
   const loc = useLocation();
   const params = new URLSearchParams(loc.search);
@@ -146,6 +155,12 @@ const MainPage = () => {
     setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
   };
 
+  const [selectedImage, setSelectedImage] = useState(images[0]);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * images.length); // 랜덤 인덱스 생성
+    setSelectedImage(images[randomIndex]); // 선택된 이미지 상태 업데이트
+  }, []);
 
   return (
     <div className="main-container">
@@ -172,9 +187,9 @@ const MainPage = () => {
         </Link>
       </div>
       <img
-        src={require("../assets/yap.png")}
+        src={selectedImage}
         className="gombaImage"
-        alt="Baby Bear"
+        alt="Random Baby"
       />
       <Link to="/present">
         <div className="rectangleBox">

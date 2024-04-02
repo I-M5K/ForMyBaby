@@ -169,19 +169,13 @@ const Dashboard = () => {
           className={selectedButton === "button1" ? "bold" : ""}
           onClick={() => handleButtonClick("button1")}
         >
-          대시보드
+          실시간 현황
         </button>
         <button
           className={selectedButton === "button2" ? "bold" : ""}
           onClick={() => handleButtonClick("button2")}
         >
           상세
-        </button>
-        <button
-          className={selectedButton === "button3" ? "bold" : ""}
-          onClick={() => handleButtonClick("button3")}
-        >
-          변화
         </button>
       </div>
       <div className="babyguard-content">
