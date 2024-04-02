@@ -64,7 +64,7 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             ")" +
             "FROM Baby b " +
             "left JOIN Family f ON b.babyId = f.baby.babyId " +
-            "WHERE f.user.userId = :userId GROUP BY b.babyId")
+            "WHERE f.user.userId = :userId")
     List<BabyReadResponse2> findBabiesByUserId2(Long userId);
 
 

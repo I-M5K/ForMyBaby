@@ -41,9 +41,9 @@ public class SleepController {
     }
 
     @GetMapping("/awake")
-    public ResponseEntity<?> getAwakeTimeList(@RequestHeader(name = "Authorization") String token, @RequestParam Long babyId){
-        log.info("getAwakeTimeList");
-        sleepService.getAwakeTimeList(token,babyId);
+    public ResponseEntity<?> getAwakeOnTime(@RequestHeader(name = "Authorization") String token, @RequestParam Long babyId){
+        log.info("getAwakeOnTime");
+        sleepService.getAwakeOnTime(token,babyId);
         return ResponseEntity.ok().build();
     }
 
