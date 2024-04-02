@@ -15,7 +15,7 @@ import { sendDanger, sendAwake, sendSleep } from "../../api/sleepApi";
 import { MdArrowBackIos } from "react-icons/md";
 
 //const ENDPOINT = 'http://localhost:3001';
-const ENDPOINT = "wss://j10c202.p.ssafy.io/ai";
+const ENDPOINT = "s://j10c202.p.ssafy.io/ai";
 
 // const ImageContent = ({ imageData, lineData }) => (
 //   <div className="image-content">
@@ -188,11 +188,11 @@ const Dashboard = () => {
         {selectedButton === "button1" && (
           <div className="dashboard-content">
             <div className="video-content">
-              <h1>Real-time Video</h1>
+              {/* <h1>Real-time Video</h1> */}
               {/* 이미지가 없는 경우를 처리하여 메시지 표시 */}
-              {!imageData && (
+              {/* {!imageData && (
                 <p style={{ color: "#666" }}>No video available</p>
-              )}
+              )} */}
               {imageData && (
                 <img
                   src={imageData}

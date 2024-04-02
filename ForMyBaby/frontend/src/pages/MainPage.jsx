@@ -37,7 +37,11 @@ const MainPage = () => {
   } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
+  const [selectedName, setSelectedName] = useState("");
   const [selectedBabyDay, setSelectedBabyDay] = useState("");
+  const [selectedBabyImg, setSelectedBabyImg] = useState("");
+  const [selectedBabyGender, setSelectedBabyGender] = useState("");
+  const [selectedBabyBirthDate, setSelectedBabyBirthDate] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +122,11 @@ const MainPage = () => {
       }
       //setSelectedBabyName(getPostWord(selectedBaby.babyName, '이', ''));
       setSelectedBabyDay(daysDiff);
+      setSelectedBabyImg(selectedBaby.profileImg);
+      setSelectedName(selectedBaby.babyName);
+      // 성별 업데이트
+      setSelectedBabyGender(selectedBaby.babyGender);
+      setSelectedBabyBirthDate(selectedBaby.birthDate);
     }
   }, [babyList, babySelected]);
 
@@ -210,9 +219,17 @@ const MainPage = () => {
         </div>
 
         <div className="boxContainerRight">
-          <Link to="/baby-profile">
+          <Link to={{
+                      pathname: "/baby-profile",
+                      state: {
+                          name: selectedName,
+                          gender: selectedBabyGender,
+                          birthDate: selectedBabyBirthDate,
+                          image: selectedBabyImg
+                      }
+                  }}>
             <div className="smallmiddleBox">
-              <img className="babyphoto" />
+              <img src={selectedBabyImg} className="babyphoto" />
             </div>
           </Link>
 
