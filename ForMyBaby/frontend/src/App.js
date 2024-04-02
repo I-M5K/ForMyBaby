@@ -41,7 +41,7 @@ import TutorialAndLogin from './components/TutorialAndLogin'
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const socketUrl = 'https://j10c202.p.ssafy.io/ai';
+  const socketUrl = 'wss://j10c202.p.ssafy.io/ai';
   //const socketUrl = 'http://localhost:3001';
   useEffect(() => {
     // 여기서 유저 정보를 확인하고 로그인 상태를 변경합니다.
