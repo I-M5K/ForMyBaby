@@ -16,8 +16,8 @@ pipeline {
                     sh "pwd"
                     sh "ls -al"
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker build -t ${DOCKER_USER_ID}/ai ForMyBaby/ai"
-                    }
+                        sh "docker build -t ${DOCKER_USER_ID}/ai_node ForMyBaby/ai/workspace/express-network"
+                        sh "docker build -t ${DOCKER_USER_ID}/ai_py ForMyBaby/ai/workspace/python-logic"
                 }
             }
         }
@@ -36,7 +36,8 @@ pipeline {
             steps {
                 script {
                      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker push ${DOCKER_USER_ID}/ai"
+                        sh "docker push ${DOCKER_USER_ID}/ai_node"
+                        sh "docker push ${DOCKER_USER_ID}/ai_py"
                      }
                 }
             }
@@ -51,7 +52,8 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
-                        sh "docker pull ${DOCKER_USER_ID}/ai"
+                        sh "docker pull ${DOCKER_USER_ID}/ai_node"
+                        sh "docker pull ${DOCKER_USER_ID}/ai_py"
                     }
                 }
             }
@@ -61,11 +63,15 @@ pipeline {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
                         try{
-                            sh "docker stop -f ai || true"
-                            sh "docker rm -f ai || true"
-                            sh "docker run -d --name ai -p 8083:8083 ${DOCKER_USER_ID}/ai"
+                            sh "docker stop -f ai_node || true"
+                            sh "docker rm -f ai_node || true"
+                            sh "docker run -d --name ai_node -p 8083:8083 ${DOCKER_USER_ID}/ai_node"
+                            sh "docker stop -f ai_py || true"
+                            sh "docker rm -f ai_py || true"
+                            sh "docker run -d --name ai_py -p 8084:8083 ${DOCKER_USER_ID}/ai_py"
                         } catch (Exception e){
-                            sh "docker restart ai"
+                            sh "docker restart ai_node"
+                            sh "docker restart ai_py"
                         }
                     }
                 }
