@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getMotionUrl } from '../../../api/stopmotionApi';
+import { getMotionCnt, getPresentUrl, sendMotionUrl } from '../../../api/stopmotionApi';
 import PresentBox from '../../../assets/gift.gif';
 
 import './Video.css'
@@ -12,7 +12,7 @@ const VideoComponent = () => {
     useEffect(() => {
         async function fetchS3Url() {
             try {
-                const url = await getMotionUrl(); // API를 호출하여 S3 URL을 받아옴
+                const url = await getPresentUrl(); // API를 호출하여 S3 URL을 받아옴
                 setS3Url(url);
             } catch (error) {
                 console.error('Error fetching S3 URL:', error);

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
 import { useUserStore } from '../stores/UserStore';
-import { getMotionCnt } from '../api/stopmotionApi';
+import { getMotionCnt, sendMotionUrl } from '../api/stopmotionApi';
 import { createStampByAI } from '../api/stampApi';
 import { sendDanger, sendAwake, sendSleep } from '../api/sleepApi';
 import { useRecordStore } from '../stores/RecordStore';
+import { getTodayData } from "../api/sleepApi";
 
 const WebSocketComponent = ({ endpoint }) => {
   const [socket, setSocket] = useState(null);
-  const { babySelected } = useUserStore();
+  const { babySelected,stopCnt, setStopCnt } = useUserStore();
   const { danger, hours, awake, setDanger, setHours, setAwake, sleep, setSleep } = useRecordStore();
 
   const status = false;
@@ -36,13 +37,19 @@ const WebSocketComponent = ({ endpoint }) => {
       // 소켓 일반 스탬프용 이벤트 수신
       socket.on('commonEvent', (data) => {
         // commonEvent 이벤트를 수신했을 때 할 작업을 여기에 작성합니다.
-        console.log('Received commonEvent:', data);
+        console.log('Received commonEvent - 스톱모션:', data);
         const detail = data.detail;
         if (detail == '0'){ // 스톱모션
-          const response = getMotionCnt();
+          //const response = getMotionCnt();
           // 스톱모션 사진 수 저장하기
-
+          if (stopCnt){
+            setStopCnt(stopCnt+1);
+            sendMotionUrl(data.url_s3);
+          }
+        } else if (detail == '1'){ // 이벤트-위치정보
+          console.log('Received commonEvent - 위치정보:', data);
         } else { // 성장 스탬프 - 만세 or 다리 꼬기
+          console.log('Received commonEvent - 성장스탬프:', data);
           createStampByAI({ babyId: data.babyId, step: detail, stamp_img: data.s3_url })
         } 
       });
@@ -50,36 +57,40 @@ const WebSocketComponent = ({ endpoint }) => {
       // 소켓 위험 알림용 이벤트 수신
       socket.on('dangerEvent', (data) => {
         console.log('Received dangerEvent:', data);
+        const response = getTodayData();
+        setDanger(response.dangerCnt+1);
         sendDanger({ babyId: data.babyId, dangerType: data.detail });
-        if (danger == null){
-          setDanger(1);
-        } else {
-          setDanger(danger+1);
-        }
+        // if (danger == null){
+        //   setDanger(1);
+        // } else {
+        //   setDanger(danger+1);
+        // }
       });
 
       // 소켓 수면 분석용 이벤트 수신
       socket.on('sleepEvent', (data) => {
         console.log('Received sleepEvent:', data);
         if (data.detail == '0'){ // 잠에서 깸
+          console.log('Received sleepEvent - 잠에서 깸', data);
           sendAwake(data.babyId)
           if (awake == null){
             setAwake(1);
           } else {
             setAwake(awake+1);
           }
-          // *************** 시간 설정 (어제, 오늘) 필요 *************************
-          // 잠든 시간을 가져옵니다.
-          const sleepTime = new Date(sleep).getTime();
-          // 수신한 timestamp를 밀리초로 변환합니다.
-          const awakeTime = new Date(data.timestamp).getTime();
-          // 두 timestamp 사이의 차이를 분으로 계산합니다.
-          const timeDifference = (awakeTime - sleepTime) / (1000 * 60);
-          console.log('Time difference (minutes):', timeDifference);
-          setHours(hours+timeDifference);
+          // // *************** 시간 설정 (어제, 오늘) 필요 *************************
+          // // 잠든 시간을 가져옵니다.
+          // const sleepTime = new Date(sleep).getTime();
+          // // 수신한 timestamp를 밀리초로 변환합니다.
+          // const awakeTime = new Date(data.timestamp).getTime();
+          // // 두 timestamp 사이의 차이를 분으로 계산합니다.
+          // const timeDifference = (awakeTime - sleepTime) / (1000 * 60);
+          // console.log('Time difference (minutes):', timeDifference);
+          // setHours(hours+timeDifference);
         } else if (data.detail == '1') { // 잠 듦
+          console.log('Received sleepEvent - 잠듦', data);
           sendSleep(data.babyId)
-          setSleep(data.timestamp);
+          //setSleep(data.timestamp);
         }
       });
     }
