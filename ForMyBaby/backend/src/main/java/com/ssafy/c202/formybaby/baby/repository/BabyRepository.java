@@ -22,7 +22,7 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             ")" +
             "FROM Baby b " +
             "left JOIN Family f ON b.babyId = f.baby.babyId " +
-            "WHERE f.user.userId = :userId GROUP BY b.babyId")
+            "WHERE f.user.userId = :userId")
     List<BabyReadResponse> findBabiesByUserId(Long userId);
     @Query("SELECT DISTINCT NEW com.ssafy.c202.formybaby.baby.dto.response.BabyReadResponse(" +
             "b.babyId, " +
@@ -35,7 +35,7 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             ")" +
             "FROM Baby b " +
             "left JOIN Family f ON b.babyId = f.baby.babyId " +
-            "WHERE f.familyCode = :familyCode GROUP BY b.babyId")
+            "WHERE f.familyCode = :familyCode")
 
     List<BabyReadResponse> findBabiesByFamilyCode(String familyCode);
 
@@ -79,7 +79,7 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
             ")" +
             "FROM Baby b " +
             "left JOIN Family f ON b.babyId = f.baby.babyId " +
-            "WHERE b.babyId = :babyId GROUP BY b.babyId")
+            "WHERE b.babyId = :babyId")
     Optional<BabyReadResponse> findBabyByBabyId(Long babyId);
 
     Baby findByBabyId(Long babyId);

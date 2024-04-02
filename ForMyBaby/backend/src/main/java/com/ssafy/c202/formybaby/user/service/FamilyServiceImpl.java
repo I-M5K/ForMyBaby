@@ -39,8 +39,7 @@ public class FamilyServiceImpl implements FamilyService{
     @Override
     public List<Family> familyList(Long userId) {
         try{
-            List<Family> familyList = familyRepository.findFamiliesByUserUserId(userId);
-            return familyList;
+            return familyRepository.findFamiliesByUserUserId(userId);
         } catch (Exception e){
             log.error("Error occurred while fetching family list: " + e.getMessage());
             throw new RuntimeException("Failed to fetch family list");
