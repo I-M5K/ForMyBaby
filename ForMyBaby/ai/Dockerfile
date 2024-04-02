@@ -9,7 +9,7 @@ COPY ./workspace/python-logic/common/edge_lp3/requirements.txt /app/python-logic
 # Python 의존성을 설치합니다.
 RUN pip install -r /app/python-logic/common/edge_lp3/requirements.txt
 
-CMD ["python", "main.py"]
+CMD ["python3", "main.py"]
 
 # 베이스 이미지로 node와 python을 포함하는 이미지를 사용합니다.
 FROM node:21.7.1-alpine
