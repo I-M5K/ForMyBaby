@@ -3,7 +3,7 @@ FROM python:3.10.12
 
 # Python 애플리케이션에 필요한 파일을 복사합니다.
 WORKDIR /app/python-logic/common/edge_lp3
-COPY ./common/edge_lp3/ /app/python-logic/common/edge_lp3/
+COPY ./common/ /app/python-logic/common/edge_lp3/
 #COPY ./common/edge_lp3/main.py /app/python-logic/common/edge_lp3/edge_LP.py
 #COPY ./common/edge_lp3/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
 
