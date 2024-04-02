@@ -7,18 +7,27 @@ from collections import deque, namedtuple
 from datetime import datetime
 import time
 
-# Namedtuples for sensor and feature data
 SensorData = namedtuple('SensorData', ['aX', 'aY', 'aZ', 'gX', 'gY', 'gZ', 'Tmp', 'dh', 'dt'])
 SensorData2 = namedtuple('SensorData', ['dh', 'dt'])
-FeatureData = namedtuple('FeatureData', ['f1', 'f2', 'rtn'])
+
 
 class MySensor:
+    """
+    The MySensor class is responsible for managing the sensor data, including webcam and serial data.
+    """
+
     def __init__(self):
-        self.cam = self.webcam_open()  # Open webcam
-        self.ser = self.serial_connect()  # Connect to serial
+        """
+        Initialize the MySensor with a webcam and a serial connection.
+        """
+        self.cam = self.webcam_open()
+        self.ser = self.serial_connect()
         self.initialize_data()
 
     def initialize_data(self):
+        """
+        Initialize the sensor data.
+        """
         self.cam_data = 1
         self.ser_data = SensorData2(0, 0)
         self.prev_data = SensorData2(0, 0)
@@ -27,6 +36,7 @@ class MySensor:
             'index': None,
             'event_type': None,
             'detail': None,
+            'info': [0, 0, 0],  # [0, 0, 0] : normal, [1, 0, 0] : requested, [2, 0, 0] : wake up, [2, 0, 1] : sleep
             'frame' : ['image.jpg', 1],
             'th': [0, 0],
             'form_data' : {'line': SensorData2(0, 0), 'baby_id': 1},
@@ -40,6 +50,9 @@ class MySensor:
         self.line = '111'
 
     def get(self):
+        """
+        Get the sensor data.
+        """
         self.frame_capture()
         self.data['frame'][1] = self.frame_encode()
         # print(self.data['frame'][1])
@@ -54,6 +67,10 @@ class MySensor:
         # print(self.data['ser_data'])
 
     def data_get(self):
+        """
+        Get the serial data.
+        """
+
         if self.ser.in_waiting > 0:
             self.line = self.ser.readline().decode('utf-8').rstrip()
             # print(self.line)
@@ -69,6 +86,9 @@ class MySensor:
         return self.prev_ser
 
     def webcam_open(self):
+        """
+        Open the webcam.
+        """
         try:
             print("Opening webcam...")
             return cv2.VideoCapture(0)
@@ -77,12 +97,18 @@ class MySensor:
             sys.exit(1)
 
     def frame_capture(self):
+        """
+        Capture a frame from the webcam.
+        """
         self.ret, self.frame = self.cam.read()
         # print("ddddd",self.frame)
         self.data['time_data'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         self.data['timestamp'] = time.time()
 
     def frame_encode(self):
+        """
+        Encode the captured frame.
+        """
         try:
             _, self.jpeg = cv2.imencode('.jpg', self.frame)
             return BytesIO(self.jpeg.tobytes())
@@ -91,10 +117,16 @@ class MySensor:
             return None
 
     def webcam_release(self):
+        """
+        Release the webcam.
+        """
         self.cam.release()
         cv2.destroyAllWindows()
 
     def serial_connect(self):
+        """
+        Connect to the serial.
+        """
         try:
             print("Connecting to serial...")
             return pyserial.Serial('/dev/ttyACM0', 115200)
@@ -105,6 +137,9 @@ class MySensor:
 
 
     def __del__(self):
+        """
+        Release the webcam and close the serial connection when the object is deleted.
+        """
         self.webcam_release()
         if self.ser:
             self.ser.close()

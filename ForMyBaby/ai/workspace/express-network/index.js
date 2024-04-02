@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended: true}));
 // 방 정보를 저장할 객체
 const rooms = {};
 
-let currentStatus = true; // 초기 상태 설정
+let currentStatus = false; // 초기 상태 설정
 
 // WebSocket 연결
 io.on('connection', (socket) => {
@@ -155,7 +155,10 @@ app.post('/data', upload.single('frame'), (req, res) => {
   }
 });
 
+
 // 이벤트 
+
+
 app.post('/event', (req, res) => {
   try {
     const babyId = req.params.baby_id;
