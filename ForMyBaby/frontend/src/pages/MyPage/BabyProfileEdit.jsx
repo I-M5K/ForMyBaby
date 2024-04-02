@@ -4,7 +4,7 @@ import babyImage from '../../assets/hagrid.png'; // 아이 사진 이미지 경�
 import { useLocation } from "react-router-dom";
 import { Link } from 'react-router-dom'; // Link 컴포넌트 import
 import Xbutton from '../../assets/x_button.png'
-import { useUserStore } from "../stores/UserStore";
+import { useUserStore } from "../../stores/UserStore";
 
 const KidInfo = () => {
     const {
