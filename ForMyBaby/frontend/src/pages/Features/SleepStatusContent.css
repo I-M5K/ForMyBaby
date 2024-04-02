@@ -4,6 +4,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 390px;
   margin: 0 auto; 
+  padding-bottom: 100px;
 }
 
 .sleep-status-title {

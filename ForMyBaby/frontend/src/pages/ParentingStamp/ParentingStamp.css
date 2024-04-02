@@ -10,20 +10,21 @@
 }
 
 .parenstamp-header button {
-    background-color: white;
-    color: orange;
-    border-radius: 20px;
-    border-color: orange;
-    padding: 10px 15px;
-    margin: 0 2px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background: white;
+  color: #929191;
+  border-radius: 20px;
+  border-color: transparent; /* 기존 값 제거 */
+  padding: 10px 15px;
+  margin: 0 2px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .parenstamp-header button:hover,
 .parenstamp-header button:active {
-    background-color: orange; 
-    color: white; 
+  background: rgba(247, 197, 21, 0.1);
+  color: #F7C515;
+
 }
 
 .stamp_map {

@@ -15,7 +15,7 @@ import { sendDanger, sendAwake, sendSleep } from "../../api/sleepApi";
 import { MdArrowBackIos } from "react-icons/md";
 
 //const ENDPOINT = 'http://localhost:3001';
-const ENDPOINT = "https://j10c202.p.ssafy.io/ai";
+const ENDPOINT = "wss://j10c202.p.ssafy.io/ai";
 
 // const ImageContent = ({ imageData, lineData }) => (
 //   <div className="image-content">
@@ -163,7 +163,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <MdArrowBackIos className="arrow-back-icon" />
       <div className="sleep-title">우리 아이 지킴이</div>
       <div className="button-container">
         <button

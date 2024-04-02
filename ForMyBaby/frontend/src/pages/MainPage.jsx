@@ -16,6 +16,9 @@ import SleepChart from "../assets/sleepChart.png";
 import Syringe from "../assets/syringe.png";
 import PresentBox from "../assets/presentBox.png";
 import { useLocation } from "react-router-dom";
+import { GoBell } from "react-icons/go";
+
+import GaugeBar from "../components/feature/present/CountBar.jsx"
 
 const MainPage = () => {
   const loc = useLocation();
@@ -134,32 +137,6 @@ const MainPage = () => {
     setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
   };
 
-  const GaugeBar = ({ value, maxValue }) => {
-    const [barWidth, setBarWidth] = useState(0);
-  
-    // Calculate the width of the gauge bar
-    const calculateWidth = () => {
-      const width = (value / maxValue) * 100;
-      return width > 100 ? 100 : width; // Cap width at 100%
-    };
-  
-    // Update the width when the component mounts or when the value changes
-    React.useEffect(() => {
-      setBarWidth(calculateWidth());
-    }, [value]);
-  
-    return (
-      <div className="gauge-bar-container">
-        <div
-          className="gauge-bar"
-          style={{ width: `${barWidth}%`, backgroundColor:'#F7C515' }}
-        >
-          {`${value}%`}
-        </div>
-      </div>
-    );
-  };
-
 
   return (
     <div className="main-container">
@@ -174,10 +151,11 @@ const MainPage = () => {
             className="main-notificationIcon"
             onClick={handleNotificationClick}
           >
-            <img
+            {/* <img
               src={require("../assets/mdi_bell.png")}
               alt="Notification Bell"
-            />
+            /> */}
+            <GoBell className='goBell'/>
             {uncheckedCnt > 0 && ( // 읽지 않은 알림이 있을 때만 표시
               <span className="notification-count">{uncheckedCnt}</span>
             )}
@@ -191,25 +169,23 @@ const MainPage = () => {
       />
       <Link to="/present">
         <div className="rectangleBox">
-          <img src={PresentBox} className='presentbox' />
-          <div className="rectangleBoxText">
-            100% 채우면 과연 어떤 선물이?
-          </div>
+          <img src={PresentBox} className="presentbox" />
+          <div className="rectangleBoxText">100% 채우면 과연 어떤 선물이?</div>
           <GaugeBar value={70} maxValue={100} />
         </div>
       </Link>
 
       <div className="main-content">
         <div className="boxContainerLeft">
-            <div className="smallBox" onClick={toggleBottomSheet}>
-              <span className="boxText">
-                <span className="textMiddle">{selectedBabyName} 태어난지</span>
-                <br />
-                <span className="textExSmall">
-                  '{selectedBabyDay}' 일 되었어요
-                </span>
+          <div className="yellowBox" onClick={toggleBottomSheet}>
+            <span className="boxText">
+              <span className="textMiddle">{selectedBabyName} 태어난지</span>
+              <br />
+              <span className="textExSmall">
+                <div className='babyday'>{selectedBabyDay}</div> 일 되었어요
               </span>
-            </div>
+            </span>
+          </div>
 
           <Link to="/timeline">
             <div className="smallBox">
@@ -236,7 +212,7 @@ const MainPage = () => {
         <div className="boxContainerRight">
           <Link to="/baby-profile">
             <div className="smallmiddleBox">
-              <img src={BabyPhoto} className='babyphoto' />
+              <img src={BabyPhoto} className="babyphoto" />
             </div>
           </Link>
 
