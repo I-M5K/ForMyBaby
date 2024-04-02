@@ -144,12 +144,13 @@ public class FamilyServiceImpl implements FamilyService{
         //List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(Long.valueOf(userId));
         if (!familyList.isEmpty()) {
             for (Family family : familyList) {
-                if (family.getRole() == Role.None) {
+                if (family.getRole().equals(Role.None)) {
                     family.setRole(Role.valueOf(role));
                 }
-
+                familyRepository.save(family);
             }
         }
+
         List<BabyReadResponse2> babies = babyRepository.findBabiesByFamilyCode2(familyCode);
         Map<Long, BabyReadResponse2> uniqueBabiesMap = new LinkedHashMap<>();
         for (BabyReadResponse2 baby : babies) {
