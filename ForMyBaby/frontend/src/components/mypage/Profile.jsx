@@ -1,10 +1,11 @@
 import React from "react";
 import "./Profile.css";
 import { MdArrowBackIos } from "react-icons/md";
+import { useUserStore } from '../../stores/UserStore';
 
-import BangaBanga from "../../assets/bangabanga.png";
 
 const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
+  const {profileImg, babyList} = useUserStore();
   return (
     <div>
       <MdArrowBackIos className="arrow-back-icon" />
@@ -12,7 +13,7 @@ const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
       <div className="user-profile">
         <div className="user-profile-container">
           <div className="user-photo-container">
-            <img src={BangaBanga} alt="User" className="user-photo" />
+            <img src={profileImg} alt="User" className="user-photo" />
           </div>
           <div className="user-info">
             <h3>김싸피</h3>

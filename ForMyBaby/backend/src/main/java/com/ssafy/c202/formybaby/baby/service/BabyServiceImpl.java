@@ -83,6 +83,16 @@ public class BabyServiceImpl implements BabyService{
 
             Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode, 1);
             familyRepository.save(family);
+            List<BabyReadResponse> babyList = babyRepository.findBabiesByFamilyCode(familyCode);
+            for (int i = 0; i < 20; i++){
+                Stamp stamp = new Stamp();
+                stamp.setBaby(baby);
+                stamp.setStampImg(null);
+                stamp.setMemo(null);
+                stamp.setStep(i+1);
+
+                stampRepository.save(stamp);
+            }
         }
     }
     public FamilyReadResponse createNewBabyNoShareCode(String token, BabyCreateRequest babyCreateRequest) {

@@ -3,12 +3,13 @@ import Profile from '../../components/mypage/Profile'
 import ChildInfo from '../../components/mypage/ChildInfo'
 import FamilyInfo from '../../components/mypage/FamilyInfo'
 import SettingsTab from '../../components/mypage/SettingTab'
+import TutorialAndLogin from '../../components/TutorialAndLogin'
 
 import './MyPage.css'
 
 import NavBar from '../../components/NavBar';
 
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 const MyPage = () => {
 
@@ -18,7 +19,6 @@ const MyPage = () => {
 
     return (
         <div className='mypage'>
-            {/* <p className='mypage-title'>마이페이지</p> */}
             <Profile />
             <hr/>
             <ChildInfo />

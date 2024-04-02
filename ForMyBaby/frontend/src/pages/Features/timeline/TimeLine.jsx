@@ -3,6 +3,7 @@ import NavBar from '../../../components/NavBar';
 import { useUserStore } from '../../../stores/UserStore';
 import HealthContent from './HealthContent';
 import VaccineContent from './VaccineContent';
+import { MdArrowBackIos } from 'react-icons/md';
 
 
 
@@ -18,6 +19,7 @@ const TimeLinePage = () => {
     return (
         <>
         <div>
+        <MdArrowBackIos className="arrow-back-icon" />
             <h2>타임 라인</h2>
             <div className="button-container" style={{marginBottom:10}}>
                 <button className={selectedButton === 'button1' ? 'bold' : ''} onClick={() => handleButtonClick('button1')}>영유아 검진</button>
