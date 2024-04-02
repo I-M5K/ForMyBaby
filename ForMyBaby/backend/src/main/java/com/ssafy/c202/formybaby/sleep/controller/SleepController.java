@@ -48,9 +48,10 @@ public class SleepController {
     }
 
     @GetMapping("/week")
-    public ResponseEntity<SleepWeekAllList> getWeekAllList(@RequestHeader(name = "Authorization") String token){
+    public ResponseEntity<SleepWeekAllList> getWeekAllList(@RequestHeader(name = "Authorization") String token,  @RequestParam Long endAt){
         try{
-            return new ResponseEntity<>(sleepService.getWeekAllList(token),HttpStatus.OK);
+            Timestamp endTime = new Timestamp(endAt);
+            return new ResponseEntity<>(sleepService.getWeekAllList(token, endTime),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }

@@ -32,41 +32,99 @@ public class SleepServiceImpl implements SleepService {
     private final DangerRepository dangerRepository;
 
     @Override
-    public SleepWeekAllList getWeekAllList(String token) {
-        Timestamp endAt = getCurrentTimestamp();
+    public SleepWeekAllList getWeekAllList(String token, Timestamp endAt) {
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
+       // List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
+        //List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(babyId);
 
-        // Calendar 객체를 이용하여 endAt을 처리
-        Calendar endCalendar = Calendar.getInstance();
-        endCalendar.setTimeInMillis(endAt.getTime());
 
-        // endAt을 00:00:00으로 설정
-        endCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        endCalendar.set(Calendar.MINUTE, 0);
-        endCalendar.set(Calendar.SECOND, 0);
-        endCalendar.set(Calendar.MILLISECOND, 0);
 
-        // endAt의 7일 전 날짜 계산
-        endCalendar.add(Calendar.DAY_OF_MONTH, -7);
 
-        // 7일 전 날짜를 startDate로 설정
-        Timestamp startDate = new Timestamp(endCalendar.getTimeInMillis());
+//        // Calendar 객체를 이용하여 endAt을 처리
+//        Calendar endCalendar = Calendar.getInstance();
+//        endCalendar.setTimeInMillis(endAt.getTime());
+//
+//        // endAt을 00:00:00으로 설정
+        Calendar endTime = getCalendar(endAt);
+        Calendar original = endTime;
+        endTime.add(Calendar.DAY_OF_MONTH, -6);
+        int[] dangerList = new int[7];
+        int[] hoursList = new int[7];
+        int[] sleepList = new int[7];
 
-        log.info("babyId : " + babyId);
-        log.info("startDate :" + startDate);
-        log.info("endAt :" + endAt);
-        // 일주일 동안의 수면 목록 조회
-        List<Sleep> sleepList = sleepRepository.findByWeekSleep(babyId, startDate, endAt);
+        int cnt = 0;
+        while (cnt < 7) {
+            List<Sleep> s = sleepRepository.findAllListByDate(endTime.getTime(), babyId);
+            if (!s.isEmpty()) {
+                sleepList[cnt] = s.get(s.size() - 1).getSleepCnt();
+                hoursList[cnt] = s.get(s.size() - 1).getSleepTime();
+            } else {
+                sleepList[cnt] = 0;
+                hoursList[cnt] = 0;
+            }
+            cnt++;
+            endTime.add(Calendar.DAY_OF_MONTH, 1);
+        }
 
-        log.info("sleepList : " + sleepList);
+        original.add(Calendar.DAY_OF_MONTH, -6);
+        cnt = 0;
+        while (cnt < 7) {
+            List<Danger> d = dangerRepository.findAllListByDate(original.getTime(), babyId);
+            if (!d.isEmpty()) {
+                dangerList[cnt] = d.get(d.size() - 1).getDangerCnt();
+            } else {
+                dangerList[cnt] = 0;
+            }
+            cnt++;
+            original.add(Calendar.DAY_OF_MONTH, 1);
+        }
 
-        // 일주일 동안의 위험 목록 조회
-        List<Danger> dangerList = dangerRepository.findByBaby_BabyIdAndCreatedAt(babyId, startDate, endAt);
 
-        log.info("dangerList : " + dangerList);
+//
+//        Calendar[] date = new Calendar[7];
+//        for (int i = 6; i >= 0; i++){
+//
+//        }
+//        while (cnt < 7){
+//            for (int i = 0; i < sleepList.size(); i++) {
+//
+//            }
+//        }
+//
+//        // endAt의 7일 전 날짜 계산
+//        //endTime.add(Calendar.DAY_OF_MONTH, -7);
+//        Calendar prev = endTime;
+//        boolean chk = false;
+//        if (!sleepList.isEmpty()) {
+//            for (int i = 0; i < sleepList.size(); i++) {
+//                if (comp(getCalendar(sleepList.get(0).getCreatedAt()), endTime)){
+//                    chk = true;
+//                }
+//                if (chk && getCalendar(sleepList.get(i).getCreatedAt()) != prev){
+//                    prev = getCalendar(sleepList.get(i).getCreatedAt());
+//                }
+//            }
+//        }
+//
+//
+//        // 7일 전 날짜를 startDate로 설정
+//        Timestamp startDate = new Timestamp(endCalendar.getTimeInMillis());
+//
+//        log.info("babyId : " + babyId);
+//        log.info("startDate :" + startDate);
+//        log.info("endAt :" + endAt);
+//        // 일주일 동안의 수면 목록 조회
+//        List<Sleep> sleepList = sleepRepository.findByWeekSleep(babyId, startDate, endAt);
+//
+//        log.info("sleepList : " + sleepList);
+//
+//        // 일주일 동안의 위험 목록 조회
+//        List<Danger> dangerList = dangerRepository.findByBaby_BabyIdAndCreatedAt(babyId, startDate, endAt);
+//
+//        log.info("dangerList : " + dangerList);
 
         // SleepWeekAllList 객체 생성하여 반환
-        return new SleepWeekAllList(sleepList, dangerList);
+        return new SleepWeekAllList(sleepList, dangerList, hoursList);
     }
 
 
@@ -79,29 +137,30 @@ public class SleepServiceImpl implements SleepService {
         List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(babyId);
 
         Sleep sleep = new Sleep();
+        int sleepCnt = 0;
+        int sleepTime = 0;
+        int dangerCnt = 0;
         // sleepList가 비어있지 않으면 첫 번째 Sleep 객체를 가져옴.
         if(!sleepList.isEmpty()){
-            sleep = sleepList.get(0);
-        }else{
-            log.info("sleepList가 비어 있습니다.");
+            if (getCalendar(sleepList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
+                sleepCnt = sleepList.get(0).getSleepCnt();
+                sleepTime = sleepList.get(0).getSleepTime();
+            }
         }
         Danger danger = new Danger();
         // dangerList가 비어있찌 않으면 첫 번째 Danger 객체를 가져옴.
         if(!dangerList.isEmpty()){
-            danger = dangerList.get(0);
-        }else{
-            log.info(("dangerList가 비어있습니다."));
+            if (getCalendar(dangerList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
+                dangerCnt = dangerList.get(0).getDangerCnt();
+            }
         }
 
-        // 각각의 수면 시간,횟수, 위험 행동 횟수,  생성 시간들을 가져와서 저장한다.
-        int sleepTime = sleep.getSleepTime();
-        int sleepCnt = sleep.getSleepCnt();
-        Timestamp sleepCreatedAt = sleep.getCreatedAt();
-        int dangerCnt = danger.getDangerCnt();
-        Timestamp dangerCreatedAt = danger.getCreatedAt();
+//        // 각각의 수면 시간,횟수, 위험 행동 횟수,  생성 시간들을 가져와서 저장한다.
+//        Timestamp sleepCreatedAt = sleep.getCreatedAt();
+//        Timestamp dangerCreatedAt = danger.getCreatedAt();
 
         // SleepAllList 객체 생성 후 반환
-        return new SleepTodayAllList(sleepTime, sleepCnt, dangerCnt,sleepCreatedAt,dangerCreatedAt);
+        return new SleepTodayAllList(sleepTime, sleepCnt, dangerCnt);
     }
 
     @Override
@@ -250,5 +309,20 @@ public class SleepServiceImpl implements SleepService {
         long currentTimeMillis = System.currentTimeMillis();
         // 밀리초를 Timestamp 객체로 변환하여 반환
         return new Timestamp(currentTimeMillis);
+    }
+    public Calendar getCalendar (Timestamp t){
+        // 주어진 시간의 년, 월, 일을 추출하여 날짜를 동일하게 만듭니다.
+        Calendar createdCal = Calendar.getInstance();
+        createdCal.setTimeInMillis(t.getTime());
+        int createdYear = createdCal.get(Calendar.YEAR);
+        int createdMonth = createdCal.get(Calendar.MONTH);
+        int createdDay = createdCal.get(Calendar.DAY_OF_MONTH);
+        createdCal.clear();
+        createdCal.set(createdYear, createdMonth, createdDay);
+        return createdCal;
+    }
+
+    public static boolean comp(Calendar cal1, Calendar cal2) {
+        return cal1.compareTo(cal2) <= 0;
     }
 }

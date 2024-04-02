@@ -18,6 +18,8 @@ import PresentBox from "../assets/presentBox.png";
 import { useLocation } from "react-router-dom";
 import { GoBell } from "react-icons/go";
 
+import GaugeBar from "../components/feature/present/CountBar.jsx"
+
 const MainPage = () => {
   const loc = useLocation();
   const params = new URLSearchParams(loc.search);
@@ -135,31 +137,6 @@ const MainPage = () => {
     setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
   };
 
-  const GaugeBar = ({ value, maxValue }) => {
-    const [barWidth, setBarWidth] = useState(0);
-
-    // Calculate the width of the gauge bar
-    const calculateWidth = () => {
-      const width = (value / maxValue) * 100;
-      return width > 100 ? 100 : width; // Cap width at 100%
-    };
-
-    // Update the width when the component mounts or when the value changes
-    React.useEffect(() => {
-      setBarWidth(calculateWidth());
-    }, [value]);
-
-    return (
-      <div className="gauge-bar-container">
-        <div
-          className="gauge-bar"
-          style={{ width: `${barWidth}%`, backgroundColor: "#F7C515" }}
-        >
-          {`${value}%`}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="main-container">
