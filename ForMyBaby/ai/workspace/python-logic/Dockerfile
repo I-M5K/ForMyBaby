@@ -1,5 +1,7 @@
 # Python 애플리케이션을 위한 기본 이미지를 가져옵니다.
 FROM python:3.10.12
+# pyserial 모듈 설치
+RUN pip install pyserial
 
 # Python 애플리케이션에 필요한 파일을 복사합니다.
 WORKDIR /app/python-logic/common/
@@ -7,10 +9,10 @@ COPY ./common/ /app/python-logic/common/
 #COPY ./common/edge_lp3/main.py /app/python-logic/common/edge_lp3/edge_LP.py
 #COPY ./common/edge_lp3/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
 
-RUN apt-get update
-RUN apt-get -y install libgl1-mesa-glx
 # Python 의존성을 설치합니다.
+RUN apt-get update
 RUN pip install -r /app/python-logic/common/edge_lp3/requirements.txt
+RUN apt-get -y install libgl1-mesa-glx
 
 
 CMD ["python3", "./edge_lp3/main.py"]
