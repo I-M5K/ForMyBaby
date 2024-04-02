@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -133,25 +135,28 @@ public class FamilyServiceImpl implements FamilyService{
         //List<BabyReadResponse2> babyReadResponse2List = babyService.babyList2(familyCodeCreateRequest.familyCode());
         // Family 레코드들 모두 조회
         List<Family> familyList = familyRepository.findAllByUserId(userId);
-        log.info("familyList : {}" + familyList);
         // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
-        log.info("1111111111111111111111");
-        // byUserId = 내가 저장한 아기들만 불러옴
-        //List<BabyReadResponse2> babyList = babyRepository.findBabiesByUserId2(userId);
-        List<BabyReadResponse> babyList = babyRepository.findBabiesByFamilyCode(familyCode);
-        babyList = babyList.stream().distinct().toList();
+//         byUserId = 내가 저장한 아기들만 불러옴
+        List<BabyReadResponse2> babyList = babyRepository.findBabiesByUserId2(userId);
+
         redisService.saveBabyIdsByToken(String.valueOf(userId), babyList.get(0).babyId());
         // 내 Family 레코드 조회
         //List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(Long.valueOf(userId));
         if (!familyList.isEmpty()) {
             for (Family family : familyList) {
                 if (family.getRole() == Role.None) {
-                    log.info("222222222222222222");
                     family.setRole(Role.valueOf(role));
                 }
 
             }
         }
-        return babyService.babyList3(userId);
+        List<BabyReadResponse2> babies = babyRepository.findBabiesByFamilyCode2(familyCode);
+        Map<Long, BabyReadResponse2> uniqueBabiesMap = new LinkedHashMap<>();
+        for (BabyReadResponse2 baby : babies) {
+            // babyId를 키로 사용하여 Map에 저장
+            uniqueBabiesMap.putIfAbsent(baby.babyId(), baby);
+        }
+        babies = new ArrayList<>(uniqueBabiesMap.values());
+        return babies;
     }
 }
