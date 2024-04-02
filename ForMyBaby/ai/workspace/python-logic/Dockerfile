@@ -3,8 +3,8 @@ FROM python:3.9-slim
 
 # Python 애플리케이션에 필요한 파일을 복사합니다.
 WORKDIR /app/python-logic/common/edge_lp3
-COPY ./workspace/python-logic/common/edge_lp3/main.py /app/python-logic/common/edge_lp3/main.py
-COPY ./workspace/python-logic/common/edge_lp3/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
+COPY ./common/edge_lp3/main.py /app/python-logic/common/edge_lp3/main.py
+COPY ./common/edge_lp3/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
 
 # Python 의존성을 설치합니다.
 RUN pip install -r /app/python-logic/common/edge_lp3/requirements.txt
