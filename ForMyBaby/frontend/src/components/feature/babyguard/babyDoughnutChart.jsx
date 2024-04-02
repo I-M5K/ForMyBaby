@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import "./babyDoughnutChart.css";
 import { useUserStore } from "../../../stores/UserStore";
@@ -155,7 +155,7 @@ useEffect(() => {
       }
       //setSelectedBabyName(getPostWord(selectedBaby.babyName, '이', ''));
       setSelectedBabyDay(daysDiff);
-      setSelectedName(selectedBaby.babyName);
+      setSelectedBabyName(selectedBaby.babyName);
     }
   }, [babyList, babySelected]);
   return (
