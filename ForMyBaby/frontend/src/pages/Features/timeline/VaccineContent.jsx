@@ -155,7 +155,7 @@ const VaccineContent = () => {
       ],
     },
     {
-      id: 14,
+      id: 15,
       start_at: 144,
       end_at: 156,
       category: "만 12세",

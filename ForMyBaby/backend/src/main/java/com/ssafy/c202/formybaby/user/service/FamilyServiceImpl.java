@@ -135,7 +135,11 @@ public class FamilyServiceImpl implements FamilyService{
         // Family 레코드들 모두 조회
         List<Family> familyList = familyRepository.findAllByUserId(userId);
         // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
-        List<BabyReadResponse2> babyList = babyRepository.findBabiesByUserId2(userId);
+
+        // byUserId = 내가 저장한 아기들만 불러옴
+//        List<BabyReadResponse2> babyList = babyRepository.findBabiesByUserId2(userId);
+        List<BabyReadResponse> babyList = babyRepository.findBabiesByFamilyCode(familyCode);
+        babyList = babyList.stream().distinct().toList();
         redisService.saveBabyIdsByToken(String.valueOf(userId), babyList.get(0).babyId());
         // 내 Family 레코드 조회
         //List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(Long.valueOf(userId));
@@ -148,6 +152,5 @@ public class FamilyServiceImpl implements FamilyService{
             }
         }
         return babyService.babyList3(userId);
-
     }
 }
