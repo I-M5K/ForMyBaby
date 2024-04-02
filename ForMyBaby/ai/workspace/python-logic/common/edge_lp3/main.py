@@ -4,7 +4,6 @@ from edge_LP import NetworkManager
 from my_main import EdgeLP
 
 def main():
-
     edge_lp_config = {
         # "ip": "192.168.100.58", # kky
         # "ip": "192.168.100.130", # icj

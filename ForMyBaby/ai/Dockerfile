@@ -22,3 +22,6 @@ RUN npm install
 
 # 실행할 명령을 지정합니다.
 CMD ["node", "index.js"]
+# 실행할 명령을 지정합니다.
+CMD ["python", "main.py"]
+
