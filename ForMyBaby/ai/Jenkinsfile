@@ -69,7 +69,8 @@ pipeline {
                             sh "docker run -d --name ai_node -p 8083:8083 ${DOCKER_USER_ID}/ai_node"
                             sh "docker stop -f ai_py || true"
                             sh "docker rm -f ai_py || true"
-                            sh "docker run -d --name ai_py -p 8084:8083 --device /dev/video0 --device=/dev/ttyS0 ${DOCKER_USER_ID}/ai_py"
+//                             sh "docker run -d --name ai_py -p 8084:8083 --device /dev/video0 --device=/dev/ttyACM0 ${DOCKER_USER_ID}/ai_py"
+                            sh "docker run -d --name ai_py -p 8084:8083 ${DOCKER_USER_ID}/ai_py"
                         } catch (Exception e){
                             sh "docker restart ai_node"
                             sh "docker restart ai_py"
