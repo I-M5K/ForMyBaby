@@ -16,7 +16,7 @@ public interface DangerRepository extends JpaRepository<Danger, Long> {
     List<Danger> findByDangerCntAndCreatedAt(int dangerCnt, Timestamp startDate, Timestamp endDate);
     List<Danger> findAllByBaby_BabyIdOrderByCreatedAtDesc(Long babyId);
 
-    @Query("SELECT count(d) FROM Danger d WHERE FUNCTION('DATE', d.createdAt) = :createdDate AND d.baby.babyId = :babyId")
+    @Query("SELECT d FROM Danger d WHERE FUNCTION('DATE', d.createdAt) = :createdDate AND d.baby.babyId = :babyId")
     List<Danger> findAllListByDate(Date createdDate, Long babyId);
 }
 
