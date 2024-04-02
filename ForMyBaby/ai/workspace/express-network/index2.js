@@ -130,7 +130,7 @@ app.post('/data', upload.single('frame'), (req, res) => {
     // 시간과 온습도 등의 데이터 추출
     const babyId = body.baby_id;
     const timestamp = body.timestamp;
-    //const temperature = body.TH[0];
+    const temperature = body.TH[0];
     const humidity = body.TH[1];
 
     console.log('Received babyId:', babyId);
@@ -166,15 +166,15 @@ app.post('/event', (req, res) => {
     console.log('받은 데이터', req.body);
     //console.log('받은 파일', req.file);
     console.log('***********************');
-    const { info, baby_id, timestamp, url_s3 } = req.body;
+    const { info, baby_id, timestamp, url_s3, event_type, detail } = req.body;
 
     //받은 데이터 로깅
-    //console.log(`Received sleep event for babyId: ${baby_id}`);
-    //console.log(`babyId: ${baby_id}, Timestamp: ${timestamp}, Event type: ${event_type}, detail: ${detail}, url s3: ${url_s3}`);
+    console.log(`Received sleep event for babyId: ${baby_id}`);
+    console.log(`babyId: ${baby_id}, Timestamp: ${timestamp}, Event type: ${event_type}, detail: ${detail}, url s3: ${url_s3}`);
 
     if (info[0] == '0'){ // 이벤트 - 위치정보 
-      const detail = '1';
-      io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
+        const detail = '0';
+        io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
     } else {
         if (info[1] == '0'){ // 수면
             if (info[2] == '0'){ // 잠에서 깸
@@ -200,45 +200,46 @@ app.post('/event', (req, res) => {
                 const detail = '0';
                 io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
             } else if (info[2] == '1'){ // 만세
-                const detail = '2';
+                const detail = '1';
                 io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
             } else if (info[2] == '2'){ // 다리꼬기
-                const detail = '3';
+                const detail = '2';
                 io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
             } else {
-                const detail = '4';
+                const detail = '3';
                 io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
             } 
         }
-        
+    }
+
+
+
+    if (info[0] == '0'){ // 수면 관련
+      if (detail == '0'){ // 잠에서 깸
+        io.emit('sleepEvent', { timestamp, detail, baby_id});
+      } else if (detail == '1') { // 잠 듦
+        io.emit('sleepEvent', { timestamp, detail, baby_id});
+      }
+      res.status(200).send('수면 분석 데이터 전송 완료!');
+    } else if (event_type == '1'){ // 위험 관련
+      if (detail == '0'){ // 위험행동 - 뒤집기(이전)
+        io.emit('dangerEvent', {timestamp, detail, baby_id });
+      }
+      res.status(200).send('위험 행동 데이터 전송 완료!');
+    } else { // 스톱모션(0), 만세(1), 다리꼬기(2) 
+      if (detail == '0'){ // 스톱모션
+        io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
+      } else if (detail == '1'){ // 만세
+        io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
+      } else if (detail == '2'){ // 다리꼬기
+        io.emit('commonEvenet', { timestamp, detail, baby_id, url_s3 });
       }
       res.status(200).send('이벤트 행동 데이터 전송 완료!');
-  //   if (event_type == '2'){ // 수면 관련
-  //     if (detail == '0'){ // 잠에서 깸
-  //       io.emit('sleepEvent', { timestamp, detail, baby_id});
-  //     } else if (detail == '1') { // 잠 듦
-  //       io.emit('sleepEvent', { timestamp, detail, baby_id});
-  //     }
-  //     res.status(200).send('수면 분석 데이터 전송 완료!');
-  //   } else if (event_type == '1'){ // 위험 관련
-  //     if (detail == '0'){ // 위험행동 - 뒤집기(이전)
-  //       io.emit('dangerEvent', {timestamp, detail, baby_id });
-  //     }
-  //     res.status(200).send('위험 행동 데이터 전송 완료!');
-  //   } else { // 스톱모션(0), 만세(1), 다리꼬기(2) 
-  //     if (detail == '0'){ // 스톱모션
-  //       io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
-  //     } else if (detail == '1'){ // 만세
-  //       io.emit('commonEvent', { timestamp, detail, baby_id, url_s3 });
-  //     } else if (detail == '2'){ // 다리꼬기
-  //       io.emit('commonEvenet', { timestamp, detail, baby_id, url_s3 });
-  //     }
-  //     res.status(200).send('이벤트 행동 데이터 전송 완료!');
-  //   }       
+    }       
   } catch (error) {
     console.error(error);
     res.status(500).send('데이터 전송 실패!');
-  } 
+  }
 });
 
 // 서버 실행
@@ -246,63 +247,3 @@ const PORT = process.env.PORT || 8083;
 http.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-
-// 이벤트 (일반 - 스탬프용)
-// timestamp; event_type; device_model; device_ID; baby_id
-// '/event/:babyId'
-// app.post('/event', (req, res) => {
-//   try {
-//     // const babyId = req.params.babyId;
-//     console.log(req.body);
-//     const data = req.body;
-//     const timestamp = data.timestamp;
-//     const event_type = data.event_type;
-//     const device_model = data.device_model;
-//     const device_ID = data.device_ID;
-
-
-//     // 받은 데이터 로깅
-//     //console.log(`Received sleep event for babyId: ${babyId}`);
-//     console.log(`Timestamp: ${timestamp}, Event type: ${event_type}, Device model: ${device_model}, Device ID: ${device_ID}`);
-
-//     // 해당 방에 속한 클라이언트들에게 데이터 전송
-//     io.emit('commonEvent', { timestamp, event_type, device_model, device_ID });
-
-//     res.status(200).send('일반 스탬프용 데이터 전송 완료!');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('일반 스탬프용 데이터 전송 실패!');
-//   }
-// });
-
-
-// 이벤트 (위험 - 알림용)
-// timestamp; event_type; device_model; device_ID; baby_id
-// '/danger/:babyId'
-// app.post('/danger', (req, res) => {
-//   try {
-//     console.log(req.body.data)
-//     if (!req.body) {
-//       throw new Error('Request body is undefined or empty');
-//     }
-
-//     const { timestamp, event_type, device_model, device_ID } = req.body;
-
-//     if (!timestamp || !event_type || !device_model || !device_ID) {
-//       throw new Error('One or more required fields are missing in the request body');
-//     }
-
-//     // 받은 데이터 로깅
-//     console.log('Received data:');
-//     console.log(`Timestamp: ${timestamp}, Event type: ${event_type}, Device model: ${device_model}, Device ID: ${device_ID}`);
-
-//     // 해당 방에 속한 클라이언트들에게 데이터 전송
-//     io.emit('dangerEvent', { timestamp, event_type, device_model, device_ID });
-
-//     res.status(200).send('위험 알림용 데이터 전송 완료!');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('위험 알림용 데이터 전송 실패!');
-//   }
-// });
