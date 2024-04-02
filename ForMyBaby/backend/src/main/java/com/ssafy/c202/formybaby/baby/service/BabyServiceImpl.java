@@ -83,16 +83,7 @@ public class BabyServiceImpl implements BabyService{
 
             Family family = familyMapper.initFamilyEntity(user, baby, babyCreateRequest, familyCode, 1);
             familyRepository.save(family);
-            List<BabyReadResponse> babyList = babyRepository.findBabiesByFamilyCode(familyCode);
-            for (int i = 0; i < 20; i++){
-                Stamp stamp = new Stamp();
-                stamp.setBaby(baby);
-                stamp.setStampImg(null);
-                stamp.setMemo(null);
-                stamp.setStep(i+1);
 
-                stampRepository.save(stamp);
-            }
         }
     }
     public FamilyReadResponse createNewBabyNoShareCode(String token, BabyCreateRequest babyCreateRequest) {
@@ -127,6 +118,16 @@ public class BabyServiceImpl implements BabyService{
         babyReadResponseList.add(babyReadResponse);
 
         log.info("babyReadResponseList :" + babyReadResponseList);
+
+        for (int i = 0; i < 20; i++){
+            Stamp stamp = new Stamp();
+            stamp.setBaby(baby);
+            stamp.setStampImg(null);
+            stamp.setMemo(null);
+            stamp.setStep(i+1);
+
+            stampRepository.save(stamp);
+        }
 
         //새로운 아이 등록 시 아이 번호 레디스에 저장.
         redisService.saveBabyIdsByToken(redisService.getUserIdByToken(token), baby.getBabyId());
