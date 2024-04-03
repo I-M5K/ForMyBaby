@@ -35,14 +35,15 @@ import Present from './pages/Features/Present';
 // 마이 페이지
 import MyPage from './pages/MyPage/MyPage';
 import BabyProfileEdit from './pages/MyPage/BabyProfileEdit';
+import ParentingTips from './pages/Features/tip/ParentingTips'
 
 import TutorialAndLogin from './components/TutorialAndLogin'
 
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const socketUrl = 'wss://j10c202.p.ssafy.io/ai';
-  //const socketUrl = 'http://localhost:3001';
+  // const socketUrl = 'https://j10c202.p.ssafy.io/ai';
+  const socketUrl = 'http://localhost:8083'
   useEffect(() => {
     // 여기서 유저 정보를 확인하고 로그인 상태를 변경합니다.
     // 예를 들어, 로컬 스토리지에서 유저 정보를 가져온다고 가정합니다.
@@ -72,6 +73,7 @@ function App() {
           <Route path="/baby-guard" element={<BabyGuard />} />
           <Route path="/loading" element={<Loading />} />
           <Route path="/baby-profile" element={<BabyProfileEdit />} />
+          <Route path="/parenting-tips" element={<ParentingTips />} />
           <Route
             path="/main"
             element={

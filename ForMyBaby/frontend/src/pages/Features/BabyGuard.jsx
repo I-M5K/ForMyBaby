@@ -13,8 +13,8 @@ import { getMotionCnt, sendMotionUrl } from "../../api/stopmotionApi";
 import { createStampByAI } from "../../api/stampApi";
 import { sendDanger, sendAwake, sendSleep } from "../../api/sleepApi";
 
-//const ENDPOINT = 'http://localhost:3001';
-const ENDPOINT = "s://j10c202.p.ssafy.io/ai";
+const ENDPOINT = 'http://localhost:8083';
+// const ENDPOINT = "https://j10c202.p.ssafy.io/ai";
 
 // const ImageContent = ({ imageData, lineData }) => (
 //   <div className="image-content">
@@ -86,7 +86,26 @@ const Dashboard = () => {
     console.log("소켓통신: babyId 송신", babySelected);
     console.log("소켓통신: status 송신", status);
 
+<<<<<<< HEAD
     socket.on("commonEvent", (data) => {
+=======
+    socket.on("image", ({ imageData, babyId, timestamp, temp, humid }) => {
+      const base64String = btoa(
+        new Uint8Array(imageData).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ""
+        )
+      );
+      setImageData(`data:image/jpeg;base64,${base64String}`);
+      setTemp(temp);
+      setHumid(humid);
+      setTimestamp(timestamp);
+      console.log("온습도 데이터", temp, humid);
+      console.log("시간", timestamp);
+    });
+
+    socket.on('commonEvent', (data) => {
+>>>>>>> 3c1d3c5df3deaa574bbcec0104c1ecc5bd4e4689
       // commonEvent 이벤트를 수신했을 때 할 작업을 여기에 작성합니다.
       console.log("Received commonEvent - 스톱모션:", data);
       const detail = data.detail;
@@ -98,6 +117,7 @@ const Dashboard = () => {
           setStopCnt(stopCnt + 1);
           sendMotionUrl(data.url_s3);
         }
+<<<<<<< HEAD
       } else if (detail == "1") {
         // 이벤트-위치정보
         console.log("Received commonEvent - 위치정보:", data);
@@ -110,14 +130,27 @@ const Dashboard = () => {
           stamp_img: data.s3_url,
         });
       }
+=======
+      } else if (detail == '1'){ // 이벤트-위치정보
+        console.log('Received commonEvent - 위치정보:', data);
+      } else { // 성장 스탬프 - 만세 or 다리 꼬기
+        console.log('Received commonEvent - 성장스탬프:', data);
+        createStampByAI({  babyId: data.baby_id, step: detail, stampUrl: data.s3_url, memo: null })
+      } 
+>>>>>>> 3c1d3c5df3deaa574bbcec0104c1ecc5bd4e4689
     });
 
     // 소켓 위험 알림용 이벤트 수신
     socket.on("dangerEvent", (data) => {
       console.log("Received dangerEvent:", data);
       const response = getTodayData();
+<<<<<<< HEAD
       setDanger(response.dangerCnt + 1);
       sendDanger({ babyId: data.babyId, dangerType: data.detail });
+=======
+      setDanger(response.dangerCnt+1);
+      sendDanger(data.baby_id, data.detail);
+>>>>>>> 3c1d3c5df3deaa574bbcec0104c1ecc5bd4e4689
       // if (danger == null){
       //   setDanger(1);
       // } else {
@@ -126,6 +159,7 @@ const Dashboard = () => {
     });
 
     // 소켓 수면 분석용 이벤트 수신
+<<<<<<< HEAD
     socket.on("sleepEvent", (data) => {
       console.log("Received sleepEvent:", data);
       if (data.detail == "0") {
@@ -133,6 +167,14 @@ const Dashboard = () => {
         console.log("Received sleepEvent - 잠에서 깸", data);
         sendAwake(data.babyId);
         if (awake == null) {
+=======
+    socket.on('sleepEvent', (data) => {
+      console.log('Received sleepEvent:', data);
+      if (data.detail == '0'){ // 잠에서 깸
+        console.log('Received sleepEvent - 잠에서 깸', data);
+        sendAwake(data.baby_id)
+        if (awake == null){
+>>>>>>> 3c1d3c5df3deaa574bbcec0104c1ecc5bd4e4689
           setAwake(1);
         } else {
           setAwake(awake + 1);
@@ -146,10 +188,16 @@ const Dashboard = () => {
         // const timeDifference = (awakeTime - sleepTime) / (1000 * 60);
         // console.log('Time difference (minutes):', timeDifference);
         // setHours(hours+timeDifference);
+<<<<<<< HEAD
       } else if (data.detail == "1") {
         // 잠 듦
         console.log("Received sleepEvent - 잠듦", data);
         sendSleep(data.babyId);
+=======
+      } else if (data.detail == '1') { // 잠 듦
+        console.log('Received sleepEvent - 잠듦', data);
+        sendSleep(data.baby_id)
+>>>>>>> 3c1d3c5df3deaa574bbcec0104c1ecc5bd4e4689
         //setSleep(data.timestamp);
       }
     });
@@ -182,13 +230,13 @@ const Dashboard = () => {
               {/* {!imageData && (
                 <p style={{ color: "#666" }}>No video available</p>
               )} */}
-              {imageData && (
+              
                 <img
                   src={imageData}
                   alt="Received"
                   style={{ maxWidth: "100%", maxHeight: "100%" }}
                 />
-              )}
+             
             </div>
             <SleepStatusContent
               danger={danger}
