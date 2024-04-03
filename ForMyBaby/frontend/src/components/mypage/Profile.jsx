@@ -3,6 +3,8 @@ import "./Profile.css";
 import { LuPencil } from "react-icons/lu";
 
 
+import BangaBanga from "../../assets/bangabanga.png";
+
 const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
   const {profileImg, name, } = useUserStore();
   return (

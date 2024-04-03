@@ -32,6 +32,7 @@ import ParentingStamp from './pages/ParentingStamp/ParentingStamp';
 import Present from './pages/Features/Present';
 // 마이 페이지
 import MyPage from './pages/MyPage/MyPage';
+import MyPageSettings from './pages/MyPage/MyPageSettings.jsx';
 import BabyProfileEdit from './pages/MyPage/BabyProfileEdit';
 import ParentingTips from './pages/Features/tip/ParentingTips'
 
@@ -72,6 +73,7 @@ function App() {
           <Route path="/loading" element={<Loading />} />
           <Route path="/baby-profile" element={<BabyProfileEdit />} />
           <Route path="/parenting-tips" element={<ParentingTips />} />
+          <Route path="/mypage-settings" element={<MyPageSettings />} />
           <Route
             path="/main"
             element={

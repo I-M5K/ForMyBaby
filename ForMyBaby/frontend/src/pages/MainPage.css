@@ -239,3 +239,9 @@
   justify-content: center; /* 수평 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */
 }
+
+.babyday {
+  font-weight: bold; /* 글씨 굵게 */
+  font-size: 25px; /* 글씨 크기 */
+  color: #ffc919; /* 글씨 색상 */
+}

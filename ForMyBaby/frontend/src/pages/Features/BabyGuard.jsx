@@ -87,12 +87,14 @@ const Dashboard = () => {
     console.log("소켓통신: status 송신", status);
 
     socket.on("image", ({ imageData, babyId, timestamp, temp, humid }) => {
+      console.log("받은 이미지 데이터: ", imageData);
       const base64String = btoa(
         new Uint8Array(imageData).reduce(
           (data, byte) => data + String.fromCharCode(byte),
           ""
         )
       );
+      console.log("받은 이미지 스트링: " + base64String);
       setImageData(`data:image/jpeg;base64,${base64String}`);
       setTemp(temp);
       setHumid(humid);

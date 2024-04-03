@@ -26,9 +26,6 @@ const MyPage = () => {
             <ChildInfo />
             <FamilyInfo/>
             <SettingsTab />
-            <Link to="/">
-                <div onClick={() => handleLogout()} className='logout-btn'><LuLogOut /></div>
-            </Link>
             <NavBar />
         </div>
     );

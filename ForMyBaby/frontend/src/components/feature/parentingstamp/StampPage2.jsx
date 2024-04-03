@@ -37,7 +37,7 @@ const AgeGroup0To3Months = ({ stampList }) => {
                 style={{ top: loc[index].top, left: loc[index].left }}
                 onClick={() => openModal(stamp)}
               >
-                <img src={stamp.image} alt="" />
+                <img src={stamp.stampImg} alt="" />
               </button>
             );
           })
@@ -47,7 +47,7 @@ const AgeGroup0To3Months = ({ stampList }) => {
         <h2>정보 입력</h2>
         {selectedStamp && (
           <div>
-            <img src = {selectedStamp.image}></img>
+            <img src = {selectedStamp.stampImg}></img>
             <p>스탬프 번호: {selectedStamp.step}</p>
             <p>스탬프 메모: {selectedStamp.memo}</p>
             <p>스탬프 등록일자: {selectedStamp.createdAt}</p>

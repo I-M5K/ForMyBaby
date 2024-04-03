@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ChildInfo.css";
 
+import { PiBaby } from "react-icons/pi";
 import ChildPhoto from "../../assets/smilebaby.png";
 import { useUserStore } from "../../stores/UserStore";
 

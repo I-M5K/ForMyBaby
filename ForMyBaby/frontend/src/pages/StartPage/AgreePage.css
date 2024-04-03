@@ -1,0 +1,29 @@
+.agree-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .agree-page-title {
+    margin-bottom: 20px;
+  }
+  
+  .agree-page-description {
+    margin-bottom: 20px;
+  }
+  
+  .agree-button {
+    width: 100%;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 260px;
+    height: 47px;
+    margin-top: 30px;
+    background: #f7c515;
+    border-radius: 30px;
+  }
+  

@@ -48,6 +48,7 @@ const SleepStatusContent = () => {
     layout: {
       padding: {
         right: 30,
+        bottom: 70,
       },
     },
     plugins: {
@@ -89,6 +90,12 @@ const SleepStatusContent = () => {
   // sleepData 차트에 특화된 옵션
   const sleepOptions = {
     ...baseOptions,
+    layout: {
+      padding: {
+        right: 30,
+        bottom: 40,
+      },
+    },
     scales: {
       ...baseOptions.scales,
       y: {
@@ -110,10 +117,10 @@ const SleepStatusContent = () => {
     <div className="sleep-status-content">
       <p className="sleep-status-title">오늘의 수면 현황</p>
       <div className="sleep-status-chart">
-        <div className="sleep-status-item">
+        <div className="sleep-status-item" style={{ height: 150 }}>
           <Bar data={sleepData} options={sleepOptions} />
         </div>
-        <div className="sleep-status-item">
+        <div className="sleep-status-item" style={{ height: 100 }}>
           <Bar data={weatherData} options={baseOptions} />
         </div>
       </div>

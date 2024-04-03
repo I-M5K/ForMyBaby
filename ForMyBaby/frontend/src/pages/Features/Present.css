@@ -9,16 +9,11 @@
 
 .present-quit-button {
     position: fixed; /* 화면에 고정 */
-    right: 20px;
-    top: 20px; /* 상단에서 10px 떨어진 위치 */
+    left: 30px;
+    top: 30px; /* 상단에서 10px 떨어진 위치 */
     z-index: 1000; /* 다른 요소들 위에 보이도록 z-index 설정 */
     background-color: transparent; /* 버튼 배경 투명하게 */
     border: none; /* 테두리 없앰 */
-}
-
-.present-quit-button-img {
-    width: 50px;
-    height: 50px;
 }
 
 .present-container .gauge-bar-container {
