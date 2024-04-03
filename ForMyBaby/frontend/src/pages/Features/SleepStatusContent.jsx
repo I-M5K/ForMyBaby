@@ -48,7 +48,7 @@ const SleepStatusContent = () => {
     layout: {
       padding: {
         right: 30,
-      }
+      },
     },
     plugins: {
       legend: {
@@ -98,7 +98,7 @@ const SleepStatusContent = () => {
           font: {
             size: 10, // sleepData의 라벨 폰트 크기 줄임
           },
-          stepSize: 10
+          stepSize: 10,
         },
       },
     },

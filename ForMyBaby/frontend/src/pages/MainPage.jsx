@@ -1,28 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import NavBar from '../components/NavBar';
-import './MainPage.css';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import NavBar from "../components/NavBar";
+import "./MainPage.css";
 import useGeoLocation from "../hooks/useGeolocation";
-import { sendLocation,selectBaby } from '../api/userApi';
-import { getNotificationList } from '../api/notificationApi';
+import { sendLocation, selectBaby } from "../api/userApi";
+import { getNotificationList } from "../api/notificationApi";
 import { requestPermission } from "../FCM/firebase-messaging-sw";
-<<<<<<< HEAD
-import { useUserStore } from '../stores/UserStore';
-import { getPostWord } from '../components/postWords.js';
-import ChildSelect from '../components/babyselect/babyselect.jsx';
-=======
 import { useUserStore } from "../stores/UserStore";
 import ChildSelect from "../components/babyselect/babyselect.jsx";
->>>>>>> 24b9c55d60c307129fa735f563e8bf41c7b58470
 
-import BabyPhoto from '../assets/child_sleep.jpg';
-import Books from '../assets/books.png';
-import SleepChart from '../assets/sleepChart.png';
-import Syringe from '../assets/syringe.png';
-import PresentBox from '../assets/presentBox.png';
+import BabyPhoto from "../assets/child_sleep.jpg";
+import Books from "../assets/books.png";
+import SleepChart from "../assets/sleepChart.png";
+import Syringe from "../assets/syringe.png";
+import PresentBox from "../assets/presentBox.png";
 import { useLocation } from "react-router-dom";
 
-import GaugeBar from "../components/feature/present/CountBar.jsx"
+import GaugeBar from "../components/feature/present/CountBar.jsx";
 
 const images = [
   require("../assets/bears/hogogok.png"),
@@ -30,8 +24,7 @@ const images = [
   require("../assets/bears/kingbatne.png"),
   require("../assets/bears/saranghaeyo.png"),
   require("../assets/bears/yap.png"),
-]
-
+];
 
 const MainPage = () => {
   const loc = useLocation();
@@ -39,16 +32,7 @@ const MainPage = () => {
   const babyId = params.get("babyId");
 
   const location = useGeoLocation();
-  const {
-    babyList,
-    fcm,
-    setFcm,
-    uncheckedCnt,
-    setUncheckedCnt,
-    babySelected,
-    setBabySelected,
-    stopCnt, setStopCnt
-  } = useUserStore();
+  const { babyList, fcm, setFcm, uncheckedCnt, setUncheckedCnt, babySelected, setBabySelected, stopCnt, setStopCnt } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
   const [selectedName, setSelectedName] = useState("");
@@ -59,34 +43,34 @@ const MainPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (babySelected == null || babySelected == 0){
+      if (babySelected == null || babySelected == 0) {
         setBabySelected(babyList[0].babyId);
       }
 
       if (stopCnt) {
-        console.log('스톱모션 수: ' + stopCnt);
+        console.log("스톱모션 수: " + stopCnt);
         setStopCnt(stopCnt);
       }
 
       if (babyId) {
         console.log(babyId);
-        if (babySelected != babyId){
+        if (babySelected != babyId) {
           setBabySelected(babyId);
           console.log("선택 아이 정보 바꾸기!");
           selectBaby(babyId);
         }
       }
 
-      if (fcm == null){
+      if (fcm == null) {
         requestPermission();
-        setFcm(localStorage.getItem('fcmToken'));
+        setFcm(localStorage.getItem("fcmToken"));
         //localStorage.removeItem('fcmToken');
       }
 
       const fetchedNotifications = await getNotificationList(); // 알림 목록 가져오는 API 호출
 
       // check 칼럼이 false인 알림의 개수 세기
-      const uncheckedNoti = fetchedNotifications.filter(notification => !notification.isChecked).length;
+      const uncheckedNoti = fetchedNotifications.filter((notification) => !notification.isChecked).length;
 
       // 확인 안한 알림 수 업데이트
       setUncheckedCnt(uncheckedNoti);
@@ -100,11 +84,11 @@ const MainPage = () => {
 
   useEffect(() => {
     // 선택된 아이의 이름과 생일 업데이트
-    const selectedBaby = babyList.find(baby => baby.babyId === babySelected);
+    const selectedBaby = babyList.find((baby) => baby.babyId === babySelected);
     if (selectedBaby) {
       const givenDateStr = selectedBaby.birthDate; // 주어진 날짜 문자열
       // 주어진 날짜 문자열을 연도, 월, 일로 분리
-      const [year, month, day] = givenDateStr.split('-');
+      const [year, month, day] = givenDateStr.split("-");
       // 분리된 연도, 월, 일을 이용하여 Date 객체 생성
       const givenDate = new Date(year, month - 1, day); // month는 0부터 시작하므로 1을 빼줌
       const today = new Date(); // 오늘 날짜 객체
@@ -112,8 +96,8 @@ const MainPage = () => {
       const timeDiff = today.getTime() - givenDate.getTime();
       // 밀리초를 일로 변환하여 일수 차이 계산
       const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-      console.log('오늘과 주어진 날짜의 일수 차이:', daysDiff);
-      
+      console.log("오늘과 주어진 날짜의 일수 차이:", daysDiff);
+
       // const particle = (() => {
       //   if (babyName && babyName.length > 0) {
       //     const lastChar = babyName[babyName.length - 1];
@@ -126,10 +110,10 @@ const MainPage = () => {
       if (selectedBaby.babyName && selectedBaby.babyName.length > 0) {
         const lastChar = selectedBaby.babyName[selectedBaby.babyName.length - 1];
         if (lastChar) {
-          if (lastChar.match(/[가-힣]/) && (lastChar.charCodeAt(0) - 0xac00) % 28 > 0){
-            setSelectedBabyName(selectedBaby.babyName.slice(1)+'이가');
-          } else{
-            setSelectedBabyName(selectedBaby.babyName.slice(1)+'가');
+          if (lastChar.match(/[가-힣]/) && (lastChar.charCodeAt(0) - 0xac00) % 28 > 0) {
+            setSelectedBabyName(selectedBaby.babyName.slice(1) + "이가");
+          } else {
+            setSelectedBabyName(selectedBaby.babyName.slice(1) + "가");
           }
         }
       }
@@ -170,26 +154,25 @@ const MainPage = () => {
     <div className="main-container">
       <div className="main-header">
         <span className="main-headerText">
-          지금은 {selectedBabyName}<br />
+          지금은 {selectedBabyName}
+          <br />
           낮잠 잘 시간이에요!
         </span>
         <Link to="/">
-        <button onClick={() => handleLogout()} className='logout-btn'>로그아웃</button>
+          <button onClick={() => handleLogout()} className="logout-btn">
+            로그아웃
+          </button>
         </Link>
         <Link to="/notification">
           <div className="main-notificationIcon" onClick={handleNotificationClick}>
-            <img src={require('../assets/mdi_bell.png')} alt="Notification Bell"/>
+            <img src={require("../assets/mdi_bell.png")} alt="Notification Bell" />
             {uncheckedCnt > 0 && ( // 읽지 않은 알림이 있을 때만 표시
-            <span className="notification-count">{uncheckedCnt}</span>
-          )}
+              <span className="notification-count">{uncheckedCnt}</span>
+            )}
           </div>
         </Link>
       </div>
-      <img
-        src={selectedImage}
-        className="gombaImage"
-        alt="Random Baby"
-      />
+      <img src={selectedImage} className="gombaImage" alt="Random Baby" />
       <Link to="/present">
         <div className="rectangleBox">
           <img src={PresentBox} className="presentbox" />
@@ -203,44 +186,46 @@ const MainPage = () => {
           <Link to="/baby-profile">
             <div className="smallBox">
               <span className="boxText">
-                <span className="textLarge">{selectedBabyName} 태어난지</span><br />
-                <span className="textExSmall">
-                  '{selectedBabyDay}'
-                  일 되었어요
-                </span>
+                <span className="textLarge">{selectedBabyName} 태어난지</span>
+                <br />
+                <span className="textExSmall">'{selectedBabyDay}' 일 되었어요</span>
               </span>
             </div>
           </Link>
           <Link to="/timeline">
             <div className="smallBox">
               <span className="boxText">
-                <span className="textSmall">이번주</span><br />
+                <span className="textSmall">이번주</span>
+                <br />
                 <span className="textLarge">건강/검진</span>
               </span>
-              <img src={Syringe} className='syringe' />
+              <img src={Syringe} className="syringe" />
             </div>
           </Link>
           <Link to="/parenting-tips">
             <div className="smallBox">
               <span className="boxText">
-                <span className="textSmall">우리아이</span><br />
+                <span className="textSmall">우리아이</span>
+                <br />
                 <span className="textLarge">육아꿀팁</span>
               </span>
-              <img src={Books} className='syringe' />
+              <img src={Books} className="syringe" />
             </div>
           </Link>
         </div>
 
         <div className="boxContainerRight">
-          <Link to={{
-                      pathname: "/baby-profile",
-                      state: {
-                          name: selectedName,
-                          gender: selectedBabyGender,
-                          birthDate: selectedBabyBirthDate,
-                          image: selectedBabyImg
-                      }
-                  }}>
+          <Link
+            to={{
+              pathname: "/baby-profile",
+              state: {
+                name: selectedName,
+                gender: selectedBabyGender,
+                birthDate: selectedBabyBirthDate,
+                image: selectedBabyImg,
+              },
+            }}
+          >
             <div className="smallmiddleBox">
               <img src={selectedBabyImg} className="babyphoto" />
             </div>
@@ -249,22 +234,23 @@ const MainPage = () => {
           <Link to="/baby-guard?selectedButton=button2">
             <div className="smallBox">
               <span className="boxText">
-                <span className="textSmall">우리아이</span><br />
+                <span className="textSmall">우리아이</span>
+                <br />
                 <span className="textLarge">수면패턴</span>
               </span>
-              <img src={SleepChart} className='syringe' />
+              <img src={SleepChart} className="syringe" />
             </div>
           </Link>
         </div>
       </div>
 
-      <div className={`bottomSheet ${showBottomSheet ? 'showBottomSheet' : ''}`}>
+      <div className={`bottomSheet ${showBottomSheet ? "showBottomSheet" : ""}`}>
         <div className="bottomSheetContent">
           <ChildSelect handleClose={toggleBottomSheet} />
         </div>
       </div>
 
-      <div className={`overlay ${showOverlay ? 'showOverlay' : ''}`} onClick={toggleBottomSheet}></div>
+      <div className={`overlay ${showOverlay ? "showOverlay" : ""}`} onClick={toggleBottomSheet}></div>
       <NavBar />
     </div>
   );
