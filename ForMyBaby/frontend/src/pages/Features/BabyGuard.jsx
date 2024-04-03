@@ -82,10 +82,20 @@ const Dashboard = () => {
       transports: ["websocket"],
     });
 
-    socket.emit("babyId", babySelected);
-    socket.emit("status", status);
-    console.log("소켓통신: babyId 송신", babySelected);
-    console.log("소켓통신: status 송신", status);
+    socket.on("image", ({ imageData, babyId, timestamp, temp, humid }) => {
+      const base64String = btoa(
+        new Uint8Array(imageData).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ""
+        )
+      );
+      setImageData(`data:image/jpeg;base64,${base64String}`);
+      setTemp(temp);
+      setHumid(humid);
+      setTimestamp(timestamp);
+      console.log("온습도 데이터", temp, humid);
+      console.log("시간", timestamp);
+    });
 
     socket.on('commonEvent', (data) => {
       // commonEvent 이벤트를 수신했을 때 할 작업을 여기에 작성합니다.
