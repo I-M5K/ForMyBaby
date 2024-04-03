@@ -179,6 +179,10 @@ const MainPage = () => {
     setSelectedImage(images[randomIndex]); // 선택된 이미지 상태 업데이트
   }, []);
 
+  // useEffect(() => {
+  //   setUncheckedCnt(99); // 알림이 3개 있다고 가정한 예시 데이터 설정
+  // }, []);
+
   return (
     <div className="main-container">
       <div className="main-header">
