@@ -14,8 +14,8 @@ import { createStampByAI } from "../../api/stampApi";
 import { sendDanger, sendAwake, sendSleep } from "../../api/sleepApi";
 import { MdArrowBackIos } from "react-icons/md";
 
-// const ENDPOINT = 'http://localhost:8083';
-const ENDPOINT = "https://j10c202.p.ssafy.io/ai";
+const ENDPOINT = 'http://localhost:8083';
+// const ENDPOINT = "https://j10c202.p.ssafy.io/ai";
 
 // const ImageContent = ({ imageData, lineData }) => (
 //   <div className="image-content">
@@ -82,6 +82,11 @@ const Dashboard = () => {
       transports: ["websocket"],
     });
 
+    socket.emit("babyId", babySelected);
+    socket.emit("status", status);
+    console.log("소켓통신: babyId 송신", babySelected);
+    console.log("소켓통신: status 송신", status);
+
     socket.on("image", ({ imageData, babyId, timestamp, temp, humid }) => {
       const base64String = btoa(
         new Uint8Array(imageData).reduce(
@@ -112,7 +117,7 @@ const Dashboard = () => {
         console.log('Received commonEvent - 위치정보:', data);
       } else { // 성장 스탬프 - 만세 or 다리 꼬기
         console.log('Received commonEvent - 성장스탬프:', data);
-        createStampByAI({ babyId: data.babyId, step: detail, stamp_img: data.s3_url })
+        createStampByAI({  babyId: data.baby_id, step: detail, stampUrl: data.s3_url, memo: null })
       } 
     });
 
@@ -121,7 +126,7 @@ const Dashboard = () => {
       console.log('Received dangerEvent:', data);
       const response = getTodayData();
       setDanger(response.dangerCnt+1);
-      sendDanger({ babyId: data.babyId, dangerType: data.detail });
+      sendDanger(data.baby_id, data.detail);
       // if (danger == null){
       //   setDanger(1);
       // } else {
@@ -134,7 +139,7 @@ const Dashboard = () => {
       console.log('Received sleepEvent:', data);
       if (data.detail == '0'){ // 잠에서 깸
         console.log('Received sleepEvent - 잠에서 깸', data);
-        sendAwake(data.babyId)
+        sendAwake(data.baby_id)
         if (awake == null){
           setAwake(1);
         } else {
@@ -151,7 +156,7 @@ const Dashboard = () => {
         // setHours(hours+timeDifference);
       } else if (data.detail == '1') { // 잠 듦
         console.log('Received sleepEvent - 잠듦', data);
-        sendSleep(data.babyId)
+        sendSleep(data.baby_id)
         //setSleep(data.timestamp);
       }
     });
