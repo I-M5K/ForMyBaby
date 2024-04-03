@@ -194,7 +194,7 @@ public class SleepServiceImpl implements SleepService {
         // 수면 목록이 있다면
         if (!sleepList.isEmpty()) {
             Sleep latestSleep = sleepList.get(0);
-            log.info("sleepList : " + sleepList);
+            log.info("latestSleep : " + latestSleep);
 
             //최근 잠든 시간을 구한다.
             Calendar latestSleepCal = Calendar.getInstance();
