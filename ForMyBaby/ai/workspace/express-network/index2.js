@@ -9,7 +9,6 @@ const fs = require('fs');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-
 // 방 정보를 저장할 객체
 const rooms = {};
 

@@ -25,14 +25,14 @@ class NetworkManager:
         self.baby_id = baby_id
 
         # 개발용
-        self.url_data = f'http://{self.ip}:{self.port}/data'
-        self.url_event = f'http://{self.ip}:{self.port}/event'
-        self.url_check = f'http://{self.ip}:{self.port}/check'
+        # self.url_data = f'http://{self.ip}:{self.port}/data'
+        # self.url_event = f'http://{self.ip}:{self.port}/event'
+        # self.url_check = f'http://{self.ip}:{self.port}/check'
 
         # 배포용
-        # self.url_data = f'http://{self.ip}:{self.port}/ai/data'
-        # self.url_event = f'http://{self.ip}:{self.port}/ai/event'
-        # self.url_check = f'http://{self.ip}:{self.port}/ai/check'
+        self.url_data = f'http://{self.ip}:{self.port}/ai/data'
+        self.url_event = f'http://{self.ip}:{self.port}/ai/event'
+        self.url_check = f'http://{self.ip}:{self.port}/ai/check'
         
         self.last_upload_time = datetime.datetime.now()
 
