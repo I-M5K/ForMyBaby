@@ -149,13 +149,13 @@ public class DangerServiceImpl implements DangerService {
             Danger firstDanger = dangerList.get(0);
             Danger danger = new Danger();
             // Danger 엔티티를 수정하여 저장
-            danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
+            danger.setDangerCnt(firstDanger.getDangerCnt() + 3);
             danger.setCreatedAt(createdAt);
             danger.setDangerType(dangerType);
             danger.setBaby(baby);
             String title = notificationService.createDangerTitle(baby.getBabyName());
             String content = notificationService.createDangerContent(dangerType);
-            String topic = familyCode+"_"+baby.getBabyId()+"_"+1;
+            String topic = familyCode+"_"+baby.getBabyId()+"_"+3;
             FCMMessage fcmMessage = fcmService.toDangerFcm(title, content, topic, String.valueOf(baby.getBabyId()));
             fcmService.sendFCM(fcmMessage);
             dangerRepository.save(danger);
@@ -168,7 +168,7 @@ public class DangerServiceImpl implements DangerService {
             newDanger.setBaby(baby);
             String title = notificationService.createDangerTitle(baby.getBabyName());
             String content = notificationService.createDangerContent(dangerType);
-            String topic = familyCode+"_"+baby.getBabyId()+"_"+1;
+            String topic = familyCode+"_"+baby.getBabyId()+"_"+3;
             FCMMessage fcmMessage = fcmService.toDangerFcm(title, content, topic, String.valueOf(baby.getBabyId()));
             fcmService.sendFCM(fcmMessage);
             dangerRepository.save(newDanger);
