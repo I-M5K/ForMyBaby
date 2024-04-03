@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import './SettingTab.css'
 
-const PresentPage = () => {
+const SettingTab = () => {
 
     return (
         <div>
@@ -8,9 +9,11 @@ const PresentPage = () => {
             <div className="family-code-title">가족 코드</div>
             <br />
             <br />
-            <div className="mypage-settings">환경 설정</div>
+            <Link to="/mypage-settings">
+                <div className="mypage-settings">환경 설정</div>
+            </Link>
         </div>
     );
 }
 
-export default PresentPage;
+export default SettingTab;

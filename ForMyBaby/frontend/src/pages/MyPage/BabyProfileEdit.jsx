@@ -4,6 +4,7 @@ import babyImage from "../../assets/hagrid.png"; // 아이 사진 이미지 경�
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom"; // Link 컴포넌트 import
 import { useUserStore } from "../../stores/UserStore";
+import arrowLeft from '../../assets/arrow_left.png'
 
 const KidInfo = () => {
   const { babyList, babySelected } = useUserStore();
@@ -25,7 +26,11 @@ const KidInfo = () => {
 
   return (
     <div className="baby-profile-container">
-      <Link to="/main"></Link>
+        <Link to="/main">
+          <button className="settings-quit-button">
+            <img src={arrowLeft} alt="Settings" />
+          </button>
+        </Link>
       <div className="baby-profile">
         <div className="baby-profile-image">
           <img src={selectedBabyImg} alt="baby" />

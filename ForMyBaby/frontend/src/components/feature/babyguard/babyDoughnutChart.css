@@ -34,19 +34,18 @@
   
   .chart-footer {
     font-size: 14px;
+    font-weight: bold;
     margin-top: 10px;
   }
   
-  /* Range styles */
-  .chart-footer.red {
-    color: red;
+  .chart-footer.적합 {
+    color: green; /* 초록색 */
   }
   
-  .chart-footer.orange {
-    color: orange;
+  .chart-footer.부족 {
+    color: orange; /* 노란색 */
   }
   
-  .chart-footer.green {
-    color: green;
+  .chart-footer.위험 {
+    color: red; /* 빨간색 */
   }
-  

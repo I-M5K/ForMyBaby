@@ -14,10 +14,10 @@ const DoughnutChartComponent = ({ danger, hours, awake }) => {
         label: "# of Votes",
         data: [hours, 24 - hours], // 첫 번째 차트 데이터
         backgroundColor: [
-          "rgba(255, 206, 86, 0.2)",
+          "rgba(0, 255, 0, 0.2)", // 초록색
           "rgba(200, 200, 200, 0.2)",
         ],
-        borderColor: ["rgba(255, 206, 86, 1)"],
+        borderColor: ["rgba(0, 255, 0, 1)"], // 초록색
         borderWidth: [2, 0],
       },
     ],
@@ -29,10 +29,10 @@ const DoughnutChartComponent = ({ danger, hours, awake }) => {
         label: "# of Votes",
         data: [awake, 10 - awake], // 두 번째 차트 데이터
         backgroundColor: [
-          "rgba(255, 206, 86, 0.2)",
+          "rgba(0, 255, 0, 0.2)", // 초록색
           "rgba(200, 200, 200, 0.2)",
         ],
-        borderColor: ["rgba(255, 206, 86, 1)"],
+        borderColor: ["rgba(0, 255, 0, 1)"], // 초록색
         borderWidth: [2, 0],
       },
     ],
@@ -44,10 +44,10 @@ const DoughnutChartComponent = ({ danger, hours, awake }) => {
         label: "# of Votes",
         data: [danger, 20 - danger], // 세 번째 차트 데이터
         backgroundColor: [
-          "rgba(255, 206, 86, 0.2)",
+          "rgba(255, 0, 0, 0.2)", // 빨간색
           "rgba(200, 200, 200, 0.2)",
         ],
-        borderColor: ["rgba(255, 206, 86, 1)"],
+        borderColor: ["rgba(255, 0, 0, 1)"], // 빨간색
         borderWidth: [2, 0],
       },
     ],
@@ -103,12 +103,12 @@ const DoughnutChartComponent = ({ danger, hours, awake }) => {
 
   // 범위에 따른 텍스트 표시 함수
   const getRangeText = (value) => {
-    if (value === "적합") {
-      return "부족";
-    } else if (value === "위험") {
-      return "위험";
-    } else {
-      return "적합";
+    if (value === "hours") {
+      return hours >= 8 ? "적합" : hours >= 6 ? "부족" : "위험";
+    } else if (value === "awake") {
+      return awake <= 2 ? "적합" : awake <= 4 ? "부족" : "위험";
+    } else if (value === "danger") {
+      return danger <= 5 ? "적합" : danger <= 10 ? "부족" : "위험";
     }
   };
 
@@ -124,19 +124,19 @@ const DoughnutChartComponent = ({ danger, hours, awake }) => {
         <div className="chart-item">
           <div className="chart-title">수면 시간</div>
           <Doughnut data={data1} options={options} />
-          <div className="chart-footer">{getRangeText("hours")}</div>
+          <div className={`chart-footer ${getRangeText("hours")}`}>{getRangeText("hours")}</div>
         </div>
 
         <div className="chart-item">
           <div className="chart-title">기상 횟수</div>
           <Doughnut data={data2} options={options} />
-          <div className="chart-footer">{getRangeText("awake")}</div>
+          <div className={`chart-footer ${getRangeText("awake")}`}>{getRangeText("awake")}</div>
         </div>
 
         <div className="chart-item">
           <div className="chart-title">위험 감지</div>
           <Doughnut data={data3} options={options} />
-          <div className="chart-footer">{getRangeText("danger")}</div>
+          <div className={`chart-footer ${getRangeText("danger")}`}>{getRangeText("danger")}</div>
         </div>
       </div>
     </div>

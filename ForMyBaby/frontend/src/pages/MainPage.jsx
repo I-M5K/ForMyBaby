@@ -223,7 +223,7 @@ const MainPage = () => {
               <span className="textMiddle">{selectedBabyName} 태어난지</span>
               <br />
               <span className="textExSmall">
-                <div className="babyday">{selectedBabyDay}</div> 일 되었어요
+                <div className="babyday">{selectedBabyDay}</div> <br />일 되었어요
               </span>
             </span>
           </div>
