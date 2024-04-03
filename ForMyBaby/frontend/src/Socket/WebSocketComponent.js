@@ -44,6 +44,7 @@ const WebSocketComponent = ({ endpoint }) => {
           // 스톱모션 사진 수 저장하기
           setStopCnt(cnt+1);
           const uploadedFileUrl = JSON.parse(data.url_s3[0])["uploaded_file_url"];
+          console.log(uploadedFileUrl);
           sendMotionUrl(uploadedFileUrl);
         } else if (detail == '1'){ // 이벤트-위치정보
           console.log('Received commonEvent - 위치정보:', data);
