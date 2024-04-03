@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 //import AppRouter from './Router'
 import './App.css'
-import Tutorial from './components/tutorial/Tutorial'
-import Login from './pages/StartPage/Login'
 import Loading from './pages/StartPage/LoadingPage'
 import WebSocketComponent from './Socket/WebSocketComponent'; 
 import { BrowserRouter, Navigate } from 'react-router-dom';

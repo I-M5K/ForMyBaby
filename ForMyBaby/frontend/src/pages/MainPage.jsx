@@ -6,9 +6,14 @@ import useGeoLocation from "../hooks/useGeolocation";
 import { sendLocation,selectBaby } from '../api/userApi';
 import { getNotificationList } from '../api/notificationApi';
 import { requestPermission } from "../FCM/firebase-messaging-sw";
+<<<<<<< HEAD
 import { useUserStore } from '../stores/UserStore';
 import { getPostWord } from '../components/postWords.js';
 import ChildSelect from '../components/babyselect/babyselect.jsx';
+=======
+import { useUserStore } from "../stores/UserStore";
+import ChildSelect from "../components/babyselect/babyselect.jsx";
+>>>>>>> 24b9c55d60c307129fa735f563e8bf41c7b58470
 
 import BabyPhoto from '../assets/child_sleep.jpg';
 import Books from '../assets/books.png';
@@ -17,16 +22,40 @@ import Syringe from '../assets/syringe.png';
 import PresentBox from '../assets/presentBox.png';
 import { useLocation } from "react-router-dom";
 
+import GaugeBar from "../components/feature/present/CountBar.jsx"
+
+const images = [
+  require("../assets/bears/hogogok.png"),
+  require("../assets/bears/jashinmanman.png"),
+  require("../assets/bears/kingbatne.png"),
+  require("../assets/bears/saranghaeyo.png"),
+  require("../assets/bears/yap.png"),
+]
+
+
 const MainPage = () => {
   const loc = useLocation();
   const params = new URLSearchParams(loc.search);
   const babyId = params.get("babyId");
 
   const location = useGeoLocation();
-  const { babyList, fcm, setFcm, uncheckedCnt, setUncheckedCnt, babySelected, setBabySelected } = useUserStore();
+  const {
+    babyList,
+    fcm,
+    setFcm,
+    uncheckedCnt,
+    setUncheckedCnt,
+    babySelected,
+    setBabySelected,
+    stopCnt, setStopCnt
+  } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
+  const [selectedName, setSelectedName] = useState("");
   const [selectedBabyDay, setSelectedBabyDay] = useState("");
+  const [selectedBabyImg, setSelectedBabyImg] = useState("");
+  const [selectedBabyGender, setSelectedBabyGender] = useState("");
+  const [selectedBabyBirthDate, setSelectedBabyBirthDate] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +63,12 @@ const MainPage = () => {
         setBabySelected(babyList[0].babyId);
       }
 
-      if (babyId){
+      if (stopCnt) {
+        console.log('스톱모션 수: ' + stopCnt);
+        setStopCnt(stopCnt);
+      }
+
+      if (babyId) {
         console.log(babyId);
         if (babySelected != babyId){
           setBabySelected(babyId);
@@ -101,6 +135,11 @@ const MainPage = () => {
       }
       //setSelectedBabyName(getPostWord(selectedBaby.babyName, '이', ''));
       setSelectedBabyDay(daysDiff);
+      setSelectedBabyImg(selectedBaby.profileImg);
+      setSelectedName(selectedBaby.babyName);
+      // 성별 업데이트
+      setSelectedBabyGender(selectedBaby.babyGender);
+      setSelectedBabyBirthDate(selectedBaby.birthDate);
     }
   }, [babyList, babySelected]);
 
@@ -119,6 +158,13 @@ const MainPage = () => {
   const handleNotificationClick = () => {
     setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
   };
+
+  const [selectedImage, setSelectedImage] = useState(images[0]);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * images.length); // 랜덤 인덱스 생성
+    setSelectedImage(images[randomIndex]); // 선택된 이미지 상태 업데이트
+  }, []);
 
   return (
     <div className="main-container">
@@ -139,13 +185,16 @@ const MainPage = () => {
           </div>
         </Link>
       </div>
-      <img src={require('../assets/babybear.png')} className="gombaImage" alt="Baby Bear" />
+      <img
+        src={selectedImage}
+        className="gombaImage"
+        alt="Random Baby"
+      />
       <Link to="/present">
         <div className="rectangleBox">
-          <img src={PresentBox} className='presentbox' />
-          <div className="rectangleBoxText">
-            100% 채우면 과연 어떤 선물이?
-          </div>
+          <img src={PresentBox} className="presentbox" />
+          <div className="rectangleBoxText">100% 채우면 과연 어떤 선물이?</div>
+          <GaugeBar value={stopCnt} maxValue={100} />
         </div>
       </Link>
 
@@ -183,9 +232,20 @@ const MainPage = () => {
         </div>
 
         <div className="boxContainerRight">
-          <div className="smallmiddleBox" onClick={toggleBottomSheet}>
-            <img src={BabyPhoto} className='babyphoto' />
-          </div>
+          <Link to={{
+                      pathname: "/baby-profile",
+                      state: {
+                          name: selectedName,
+                          gender: selectedBabyGender,
+                          birthDate: selectedBabyBirthDate,
+                          image: selectedBabyImg
+                      }
+                  }}>
+            <div className="smallmiddleBox">
+              <img src={selectedBabyImg} className="babyphoto" />
+            </div>
+          </Link>
+
           <Link to="/baby-guard?selectedButton=button2">
             <div className="smallBox">
               <span className="boxText">

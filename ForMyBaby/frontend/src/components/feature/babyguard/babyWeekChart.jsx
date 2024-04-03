@@ -79,7 +79,7 @@ const SleepChart = ({ type, time, weekData }) => {
   };
 
   return (
-    <div style={{ width: '400px', height: '300px', marginTop: '20px' }}> {/* 차트의 크기를 조절합니다. */}
+    <div style={{ width: '380px', height: '300px', marginTop: '20px' }}> {/* 차트의 크기를 조절합니다. */}
       <Line data={data} options={options} />
     </div>
   );

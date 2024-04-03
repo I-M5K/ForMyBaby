@@ -3,19 +3,26 @@ import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
-import "./SleepStatusContent.css";
+import "./SleepStatusContent.css"; // 귀하의 CSS 스타일링
 
 Chart.register(ChartDataLabels);
 
-const SleepStatusContent = ({ danger, hours, awake, temp, humid }) => {
+const SleepStatusContent = () => {
+  // { danger, hours, awake, temp, humid }
+  const danger = 2; // '위험 감지'에 대한 값
+  const hours = 7; // '수면 총 시간'에 대한 값
+  const awake = 100; // '기상 횟수'에 대한 값
+  const temp = 22; // '온도'에 대한 값
+  const humid = 100; // '습도'에 대한 값
+
   const sleepData = {
-    labels: ["위험 감지", "수면 총 시간", "기상 횟수"],
+    labels: ["수면 총 시간", "기상 횟수", "위험 감지"],
     datasets: [
       {
         label: "Value",
         backgroundColor: ["#FFCE56", "#000000", "#9966FF"],
         data: [danger, hours, awake],
-        barThickness: 20,
+        barThickness: 10,
         borderRadius: 10,
       },
     ],
@@ -28,15 +35,21 @@ const SleepStatusContent = ({ danger, hours, awake, temp, humid }) => {
         label: "Value",
         backgroundColor: ["#FF6384", "#36A2EB"],
         data: [temp, humid],
-        barThickness: 20,
+        barThickness: 10,
         borderRadius: 10,
       },
     ],
   };
 
-  const options = {
+  // 기본 옵션
+  const baseOptions = {
     indexAxis: "y",
-    responsive: true,
+    responsive: false,
+    layout: {
+      padding: {
+        right: 30,
+      }
+    },
     plugins: {
       legend: {
         display: false,
@@ -49,9 +62,7 @@ const SleepStatusContent = ({ danger, hours, awake, temp, humid }) => {
         anchor: "end",
         align: "end",
         offset: 4,
-        formatter: (value, context) => {
-          return value;
-        },
+        formatter: (value) => value,
       },
     },
     scales: {
@@ -62,22 +73,11 @@ const SleepStatusContent = ({ danger, hours, awake, temp, humid }) => {
         grid: {
           display: false,
         },
-        layout: {
-          padding: {
-            left: 0,
-            right: 35,
-            top: 0,
-            bottom: 0,
+        ticks: {
+          font: {
+            size: 14,
           },
         },
-      },
-    },
-    layout: {
-      padding: {
-        left: 0,
-        right: 35,
-        top: 0,
-        bottom: 0,
       },
     },
     animation: {
@@ -86,15 +86,33 @@ const SleepStatusContent = ({ danger, hours, awake, temp, humid }) => {
     },
   };
 
+  // sleepData 차트에 특화된 옵션
+  const sleepOptions = {
+    ...baseOptions,
+    scales: {
+      ...baseOptions.scales,
+      y: {
+        ...baseOptions.scales.y,
+        ticks: {
+          ...baseOptions.scales.y.ticks,
+          font: {
+            size: 10, // sleepData의 라벨 폰트 크기 줄임
+          },
+          stepSize: 10
+        },
+      },
+    },
+  };
+
   return (
     <div className="sleep-status-content">
       <p className="sleep-status-title">오늘의 수면 현황</p>
       <div className="sleep-status-chart">
         <div className="sleep-status-item">
-          <Bar data={sleepData} options={options} />
+          <Bar data={sleepData} options={sleepOptions} />
         </div>
         <div className="sleep-status-item">
-          <Bar data={weatherData} options={options} />
+          <Bar data={weatherData} options={baseOptions} />
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { useUserStore } from '../../stores/UserStore';
 
 
 const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
-  const {profileImg, babyList} = useUserStore();
+  const {profileImg, name, } = useUserStore();
   return (
     <div>
       <MdArrowBackIos className="arrow-back-icon" />
@@ -16,7 +16,7 @@ const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
             <img src={profileImg} alt="User" className="user-photo" />
           </div>
           <div className="user-info">
-            <h3>김싸피</h3>
+            <h3>{name}</h3>
           </div>
           <button className="edit-profile-button" onClick={onProfileEdit}>
             프로필 수정
