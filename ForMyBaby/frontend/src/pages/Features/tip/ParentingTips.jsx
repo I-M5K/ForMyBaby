@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import BackButton from '../../../components/backbutton';
-
 import './ParentingTips.css'
+
+import Babypeed from '../../../assets/parentips/babypeed.jpg'
+import Babyplay from '../../../assets/parentips/babyplay.jpg'
+import Babysleep from '../../../assets/parentips/babysleep.jpg'
+import Babytalk from '../../../assets/parentips/babytalk.jpg'
 
 const ParentingTips = () => {
   const [currentTip, setCurrentTip] = useState('tip1');
@@ -40,6 +44,7 @@ const ParentingTips = () => {
 
 const Tip1 = () => (
   <div>
+    <img src={Babysleep} className='baby-tip-photo' />
     <div className='tip-months'>1~3개월</div>
     <div className='tip-text'>이 시기에 아기는 낮과 밤에 주로 구분없이 대부분의 시간을 잠을 자고 24시간 중 약 16시간을 잠을 잡니다.</div>
     <div className='tip-text'>아기의 수면에는 깊은 잠과 얕은 잠이 있습니다. 얕은 잠을 잘 때 몸을 움직임이거나 비틀거나 소스라치는 듯한 모습을 볼 수 있고, 쉽게 깰 수 있습니다. 조용하고 고르게 호흡을 할 때는 깊은 잠을 자는 것입니다.</div>
@@ -64,6 +69,7 @@ const Tip1 = () => (
 
 const Tip2 = () => (
   <div>
+    <img src={Babypeed} className='baby-tip-photo' />
     <div className='tip-months'>1~3개월</div>
     <div className='tip-text'>모유수유를 하는 경우, 한쪽 젖을 각각 10~15분 정도 먹으며, 하루에 8~12번(2~3시간 마다 수유)정도 먹다가 2개월이 지나면 5~8회 정도 먹습니다. 모유수유 중인 아기는 1~6개월까지 하루 평균 750cc-800cc의 모유를 섭취합니다. 그러나 이것은 아기마다 다를 수 있습니다. 모유를 먹이는 경우 아기가 2~3시간 정도의 간격으로 젖을 먹고 잘 잔다면 모유량에 대하여 너무 걱정하지 않으셔도 좋습니다.</div>
     <div className='tip-text'>분유를 먹이는 경우 3개월이 될 때까지 체중(kg) 당 150cc가 필요합니다. 일부 아기들은 체중(kg)당 최대 200cc의 분유가 필요할 수 있는데 특히 조산아일 경우 그렇습니다. 따라서 체중이 4kg인 아기가 1개월이 되면 600-800cc를 먹일 수 있습니다. 분유를 먹이는 경우에는 하루에 아기가 얼마나 먹는지 기록합니다. 위 연령에 따른 수유량에 대한 정보는 단지 가이드일 뿐입니다. 아기에게 꼭 맞지 않을 수도 있습니다.</div>
@@ -79,6 +85,7 @@ const Tip2 = () => (
 
 const Tip3 = () => (
   <div>
+    <img src={Babyplay} className='baby-tip-photo' />
     <div className='tip-months'>1~3개월</div>
     <div className='tip-text'>부모가 하는 모든 활동이 아기가 배우는 데에 도움이 됩니다. 아기는 모든 시간동안 배우고 있기 때문에 아기를 가르치기 위해 특별히 시간을 낼 필요가 없습니다. 아기는 엄마와 함께 있는 것만으로도 가장 잘 배우고 있으며 새로운 경험을 할 기회를 갖는 것입니다. 수유, 기저귀 교환, 목욕시간과 같이 일과 속에서 아기가 배우고 놀 수 있도록 아기에게 말을 걸고 아기의 반응을 기다려 봅니다. 아기는 엄마의 이야기에 몸을 움직여 반응한다는 것을 기억하세요.</div>
     <div className='tip-sub-title'>엎드려 놀기</div>
@@ -97,6 +104,7 @@ const Tip3 = () => (
 
 const Tip4 = () => (
     <div>
+      <img src={Babytalk} className='baby-tip-photo' />
       <div className='tip-months'>1~3개월</div>
       <div className='tip-sub-title'>애착형성</div>
       <div className='tip-text'>영아기에는 적절한 반응을 통해 엄마와의 신뢰감을 형성하는 것이 가장 중요한 과업입니다. 이 신호에 대해 양육자가 재빠르고 정확하게 눈치 채고 요구에 적절히 반응해 주면, 아이는 이러한 보호와 사랑, 접촉의 경험으로 세상이 자신을 환영하는 곳임을 인식하게 되고 주 양육자와 특별한 정서적 유대감을 형성하게 됩니다.</div>
