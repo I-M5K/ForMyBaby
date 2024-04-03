@@ -1,10 +1,10 @@
 .notification-box {
     box-sizing: border-box;
     position: relative;
-    width: 381px;
+    width: 370px;
     background: #FFFFFF;
-    border: 1px solid #C4C4C4;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 0.2px solid #C4C4C4;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     padding: 10px;
     margin-top: 10px;
@@ -12,19 +12,34 @@
   }
   
   .noti-container {
+    margin-left: 10px;
     display: flex;
     flex-direction: column; 
   }
   
   .notification-content {
-    /* overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis; */
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     text-align: left;
     margin-left: 15px;
-    padding-right: 30px;
+    padding-right: 50px;    
+    max-height: 40px;
+    overflow: hidden; /* 내용이 넘치는 경우 숨김 처리 */
+    text-overflow: ellipsis; /* 텍스트가 넘칠 경우 ...으로 축약 */
+    white-space: nowrap; /* 줄 바꿈 방지 */
+  }
+
+  .notification-content.expanded {
+    max-height: none; /* 전체 내용을 보여주기 위해 최대 높이 제거 */
+    overflow: visible; /* 모든 내용을 보여주기 위해 오버플로우 설정 제거 */
+    white-space: normal;
+  }
+
+  .notification-babyName {
+    font-size: 18px;
+    padding-left: 10px;
+    margin-right: auto;
+    margin-bottom: 10px;
   }
   
   .notification-time {
@@ -42,15 +57,7 @@
     top: 0;
     bottom: 0;
     width: 5px;
-    background-color: transparent;
-  }
-  
-  .notification-box.info:before {
-    background-color: lightblue;
-  }
-  
-  .notification-box.warning:before {
-    background-color: red;
+    background-color: var(--notification-box-color); /* 사용할 색상 변수 적용 */
   }
   
   .notification-type, .notification-content, .notification-time {

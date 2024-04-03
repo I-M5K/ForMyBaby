@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import './babyselect.css';
-import { useUserStore } from '../../stores/UserStore';
-import {selectBaby} from '../../api/userApi';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "./babyselect.css";
+import { useUserStore } from "../../stores/UserStore";
+import { selectBaby } from "../../api/userApi";
+// import { MdArrowBackIos } from "react-icons/md";
 
 const ChildSelect = ({ handleClose }) => {
   const { babyList, babySelected, setBabySelected } = useUserStore();
@@ -14,14 +15,23 @@ const ChildSelect = ({ handleClose }) => {
 
   return (
     <div className="child-select-container">
-      {babyList.map(baby => (
-        <div key={baby.babyId} className={`child-box ${baby.babyId === babySelected ? 'selected' : ''}`} onClick={() => handleChildSelect(baby.babyId)}>
+      {/* <MdArrowBackIos className="arrow-back-icon" /> */}
+      {babyList.map((baby) => (
+        <div
+          key={baby.babyId}
+          className={`child-box ${
+            baby.babyId === babySelected ? "selected" : ""
+          }`}
+          onClick={() => handleChildSelect(baby.babyId)}
+        >
           <div className="child-photo"></div>
           <div className="child-info">
             <div className="child-name">{baby.babyName}</div>
             <div className="child-birthday">{baby.babyBirthdate}</div>
           </div>
-          {baby.babyId === babySelected && <div className="selected-icon">✔</div>}
+          {baby.babyId === babySelected && (
+            <div className="selected-icon">✔</div>
+          )}
         </div>
       ))}
       <Link to="/baby-add">

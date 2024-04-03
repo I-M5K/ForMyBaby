@@ -147,18 +147,20 @@ public class DangerServiceImpl implements DangerService {
         if (!dangerList.isEmpty()) {
             // dangerList가 비어있지 않은 경우에만 첫 번째 Danger 엔티티를 가져옴
             Danger firstDanger = dangerList.get(0);
-            Danger danger = new Danger();
-            // Danger 엔티티를 수정하여 저장
-            danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
-            danger.setCreatedAt(createdAt);
-            danger.setDangerType(dangerType);
-            danger.setBaby(baby);
-            String title = notificationService.createDangerTitle(baby.getBabyName());
-            String content = notificationService.createDangerContent(dangerType);
-            String topic = familyCode+"_"+baby.getBabyId()+"_"+3;
-            FCMMessage fcmMessage = fcmService.toDangerFcm(title, content, topic, String.valueOf(baby.getBabyId()));
-            fcmService.sendFCM(fcmMessage);
-            dangerRepository.save(danger);
+            if((createdAt.getTime() - firstDanger.getCreatedAt().getTime()) / (1000*60) >= 5){
+                Danger danger = new Danger();
+                // Danger 엔티티를 수정하여 저장
+                danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
+                danger.setCreatedAt(createdAt);
+                danger.setDangerType(dangerType);
+                danger.setBaby(baby);
+                String title = notificationService.createDangerTitle(baby.getBabyName());
+                String content = notificationService.createDangerContent(dangerType);
+                String topic = familyCode+"_"+baby.getBabyId()+"_"+3;
+                FCMMessage fcmMessage = fcmService.toDangerFcm(title, content, topic, String.valueOf(baby.getBabyId()));
+                fcmService.sendFCM(fcmMessage);
+                dangerRepository.save(danger);
+            }
         } else {
             // dangerList가 비어있는 경우 새로운 Danger 엔티티를 생성하여 저장
             Danger newDanger = new Danger();

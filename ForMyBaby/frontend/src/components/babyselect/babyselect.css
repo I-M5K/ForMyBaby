@@ -1,4 +1,4 @@
-/* ChildSelect.css */
+
 
 .child-select-container {
     display: flex;
@@ -9,6 +9,13 @@
   .children-list {
     width: 100%; /* 리스트 너비를 부모 요소에 맞춤 */
   }
+
+  .arrow-back-icon {
+    position: absolute; 
+    left: 30px;
+    font-size: 22px;
+  }
+  
   
   .child-box {
     display: flex;
