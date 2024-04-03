@@ -25,7 +25,7 @@ export const getWeekData = async (endAt) => {
 
 export const sendSleep = async (babyId) => {
     try {
-        await axiosWrapper.get(`/v1/sleep/${babyId}`); // 받은 data를 그대로 전송
+        await axiosWrapper.get(`/v1/sleep`, { params: { babyId: babyId} }); // 받은 data를 그대로 전송
         console.log('잠듦 이벤트 저장 완료!');
     } catch (error) {
         throw new Error('잠듦 이벤트 저장 실패', error);
@@ -34,16 +34,16 @@ export const sendSleep = async (babyId) => {
 
 export const sendAwake = async (babyId) => {
     try {
-        await axiosWrapper.get(`/v1/sleep/awake/${babyId}`); // 받은 data를 그대로 전송
+        await axiosWrapper.get(`/v1/sleep/awake`, { params: { babyId: babyId} }); // 받은 data를 그대로 전송
         console.log('깸 이벤트 저장 완료!');
     } catch (error) {
         throw new Error('깸 이벤트 저장 실패', error);
     }
 };
 
-export const sendDanger = async (dangerType) => {
+export const sendDanger = async (data) => {
     try {
-        await axiosWrapper.get(`/v1/danger/${dangerType}`,); // 받은 data를 그대로 전송
+        await axiosWrapper.get(`/v1/danger`, data); // 받은 data를 그대로 전송
         console.log('위험 이벤트 완료!');
     } catch (error) {
         throw new Error('위험 이벤트 저장 실패', error);
