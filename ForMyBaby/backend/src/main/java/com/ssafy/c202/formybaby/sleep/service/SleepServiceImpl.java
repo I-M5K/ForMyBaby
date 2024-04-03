@@ -38,6 +38,7 @@ public class SleepServiceImpl implements SleepService {
         setCalender.setTimeInMillis(endAt.getTime());
         // 주어진 시간에 9시간을 더함
         setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        endAt.setTime(setCalender.getTimeInMillis());
 
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
        // List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
@@ -256,11 +257,13 @@ public class SleepServiceImpl implements SleepService {
     public void getAwakeOnTime(String token, Long babyId) {
         Timestamp endAt = getCurrentTimestamp();
         log.info("endAt1 : " + endAt);
-        // Calendar 객체를 생성하고 endAt을 설정
+
+        // 주어진 시간에 9시간을 더함
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(endAt.getTime());
-        // 주어진 시간에에 9시간을 더함
         setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        endAt.setTime(setCalender.getTimeInMillis());
+
         log.info("endAt2 : " + endAt);
 //        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(babyId);

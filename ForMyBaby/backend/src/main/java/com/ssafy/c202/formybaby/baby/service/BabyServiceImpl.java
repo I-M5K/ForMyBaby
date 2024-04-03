@@ -52,11 +52,15 @@ public class BabyServiceImpl implements BabyService{
         List<Long> userIdList = familyRepository.findFirstUserIdByFamilyCode(familyCode);
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         Timestamp timestamp = getCurrentTimestamp();
-        // Calendar 객체를 생성하고 endAt을 설정
+        log.info("timestamp1 : " + timestamp);
+
+        // 주어진 시간에 9시간을 더함
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(timestamp.getTime());
-        // 주어진 시간에에 9시간을 더함
         setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        timestamp.setTime(setCalender.getTimeInMillis());
+
+        log.info("timestamp2 : " + timestamp);
         babyRepository.save(baby);
         String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp,"pro");
         baby.setProfileImg(uploadFileName);
@@ -101,11 +105,15 @@ public class BabyServiceImpl implements BabyService{
         log.info("familyCode : " + familyCode);
 
         Timestamp timestamp = getCurrentTimestamp();
-        // Calendar 객체를 생성하고 endAt을 설정
+        log.info("timestamp1 : " + timestamp);
+
+        // 주어진 시간에 9시간을 더함
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(timestamp.getTime());
-        // 주어진 시간에에 9시간을 더함
         setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        timestamp.setTime(setCalender.getTimeInMillis());
+
+        log.info("timestamp2 : " + timestamp);
 
         babyRepository.save(baby);
         String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp, "pro");

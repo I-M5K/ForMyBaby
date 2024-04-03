@@ -64,11 +64,15 @@ public class StampServiceImpl implements StampService{
         //Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(stampCreateAIRequest.babyId());
         Timestamp timestamp = getCurrentTimestamp();
-        // Calendar 객체를 생성하고 endAt을 설정
+        log.info("timestamp1 : " + timestamp);
+
+        // 주어진 시간에 9시간을 더함
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(timestamp.getTime());
-        // 주어진 시간에에 9시간을 더함
         setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        timestamp.setTime(setCalender.getTimeInMillis());
+
+        log.info("timestamp2 : " + timestamp);
         Stamp stamp = stampRepository.findByStepAndBabyId(stampCreateAIRequest.step(), stampCreateAIRequest.babyId());
         stamp.setBaby(baby);
         stamp.setStampImg(stampCreateAIRequest.stampUrl());
