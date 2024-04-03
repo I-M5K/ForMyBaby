@@ -189,13 +189,13 @@ const Dashboard = () => {
               {/* {!imageData && (
                 <p style={{ color: "#666" }}>No video available</p>
               )} */}
-              {imageData && (
+              
                 <img
                   src={imageData}
                   alt="Received"
                   style={{ maxWidth: "100%", maxHeight: "100%" }}
                 />
-              )}
+             
             </div>
             <SleepStatusContent
               danger={danger}
