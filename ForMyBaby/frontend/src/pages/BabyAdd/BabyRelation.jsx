@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore';
 import { updateBabyRole } from '../../api/userApi'; // Assume there is an API function for updating baby roles
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import { MdArrowBackIos } from "react-icons/md";
 const BabyRelationPage = () => {
     const { babyList, setBabyList, id, family } = useUserStore();
     const [relationship, setRelationship] = useState('');
@@ -51,9 +51,14 @@ const BabyRelationPage = () => {
     };
     
     return (
+        
         <div className="baby-add-container">
+            <MdArrowBackIos className="arrow-back-icon" />
+
             <p className="baby-rel-comment">아이와의 관계를 선택해주세요</p>
+            
             <form className='baby-rel-form'>
+
                 <div className="relationship-buttons">
                     <button
                         type="button"

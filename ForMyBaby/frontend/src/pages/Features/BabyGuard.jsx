@@ -9,12 +9,11 @@ import "./BabyGuard.css";
 import { getTodayData } from "../../api/sleepApi";
 import { useUserStore } from "../../stores/UserStore";
 import { useLocation } from "react-router-dom";
-import { getMotionCnt, sendMotionUrl } from '../../api/stopmotionApi';
+import { getMotionCnt, sendMotionUrl } from "../../api/stopmotionApi";
 import { createStampByAI } from "../../api/stampApi";
 import { sendDanger, sendAwake, sendSleep } from "../../api/sleepApi";
-import { MdArrowBackIos } from "react-icons/md";
 
-const ENDPOINT = 'http://localhost:8083';
+const ENDPOINT = "http://localhost:8083";
 // const ENDPOINT = "https://j10c202.p.ssafy.io/ai";
 
 // const ImageContent = ({ imageData, lineData }) => (
@@ -31,7 +30,7 @@ const Dashboard = () => {
   const [humid, setHumid] = useState("");
   const [timestamp, setTimestamp] = useState("");
   const [selectedButton, setSelectedButton] = useState("button1");
-  const { babySelected,stopCnt, setStopCnt } = useUserStore();
+  const { babySelected, stopCnt, setStopCnt } = useUserStore();
   const {
     danger,
     hours,
@@ -104,13 +103,14 @@ const Dashboard = () => {
 
     socket.on('commonEvent', (data) => {
       // commonEvent 이벤트를 수신했을 때 할 작업을 여기에 작성합니다.
-      console.log('Received commonEvent - 스톱모션:', data);
+      console.log("Received commonEvent - 스톱모션:", data);
       const detail = data.detail;
-      if (detail == '0'){ // 스톱모션
+      if (detail == "0") {
+        // 스톱모션
         //const response = getMotionCnt();
         // 스톱모션 사진 수 저장하기
-        if (stopCnt){
-          setStopCnt(stopCnt+1);
+        if (stopCnt) {
+          setStopCnt(stopCnt + 1);
           sendMotionUrl(data.url_s3);
         }
       } else if (detail == '1'){ // 이벤트-위치정보
@@ -122,8 +122,8 @@ const Dashboard = () => {
     });
 
     // 소켓 위험 알림용 이벤트 수신
-    socket.on('dangerEvent', (data) => {
-      console.log('Received dangerEvent:', data);
+    socket.on("dangerEvent", (data) => {
+      console.log("Received dangerEvent:", data);
       const response = getTodayData();
       setDanger(response.dangerCnt+1);
       sendDanger(data.baby_id, data.detail);
@@ -143,7 +143,7 @@ const Dashboard = () => {
         if (awake == null){
           setAwake(1);
         } else {
-          setAwake(awake+1);
+          setAwake(awake + 1);
         }
         // // *************** 시간 설정 (어제, 오늘) 필요 *************************
         // // 잠든 시간을 가져옵니다.
@@ -189,13 +189,12 @@ const Dashboard = () => {
               {/* {!imageData && (
                 <p style={{ color: "#666" }}>No video available</p>
               )} */}
-              {imageData && (
-                <img
-                  src={imageData}
-                  alt="Received"
-                  style={{ maxWidth: "100%", maxHeight: "100%" }}
-                />
-              )}
+
+              <img
+                src={imageData}
+                alt="Received"
+                style={{ maxWidth: "100%", maxHeight: "100%" }}
+              />
             </div>
             <SleepStatusContent
               danger={danger}

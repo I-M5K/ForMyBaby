@@ -37,9 +37,9 @@ const TimeLinePage = () => {
         <>
         <div>
             <h2>타임 라인</h2>
-            <Link to="/main">
-          <button className="settings-quit-button">
-            <img src={MdArrowBackIos} alt="Settings" />
+        <Link to="/main">
+          <button style={{position: 'fixed', top:"25px", left:"30px", zIndex: 1000, backgroundColor: 'transparent', border:'none'}}>
+            <img src={arrowLeft} alt="Settings" />
           </button>
         </Link>
             <div className="button-container" style={{marginBottom:10}}>
