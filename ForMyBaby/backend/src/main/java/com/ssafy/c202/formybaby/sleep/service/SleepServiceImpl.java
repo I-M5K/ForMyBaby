@@ -253,7 +253,7 @@ public class SleepServiceImpl implements SleepService {
             // 가장 최근의 잠든 시간과 잠든 횟수를 가져옵니다.
             Sleep latestSleep = sleepList.get(0);
             Timestamp createdAt = latestSleep.getCreatedAt();
-            int sleepCnt = latestSleep.getSleepCnt() + 1;
+            int sleepCnt = latestSleep.getSleepCnt();
 
 
             Calendar endAtCal = Calendar.getInstance();
@@ -282,7 +282,7 @@ public class SleepServiceImpl implements SleepService {
 
                 //현재 목록에 시간과 횟수를 갱신해서 넣고
                 latestSleep.setSleepTime(currSleepTime);
-                latestSleep.setSleepCnt(sleepCnt);
+                latestSleep.setSleepCnt(sleepCnt+1);
                 sleepRepository.save(latestSleep);
 
                 // 새로운 슬립에 시간과 횟수를 0으로 설정합니다.
@@ -303,7 +303,7 @@ public class SleepServiceImpl implements SleepService {
 
                 //현재 목록만 갱신합니다.
                 latestSleep.setSleepTime(currSleepTime);
-                latestSleep.setSleepCnt(sleepCnt);
+                latestSleep.setSleepCnt(sleepCnt+1);
                 latestSleep.setBaby(baby);
                 latestSleep.setEndAt(endAt);
                 sleepRepository.save(latestSleep);
