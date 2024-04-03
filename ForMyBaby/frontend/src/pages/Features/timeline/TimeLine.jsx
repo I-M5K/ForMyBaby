@@ -3,7 +3,8 @@ import NavBar from '../../../components/NavBar';
 import { useUserStore } from '../../../stores/UserStore';
 import HealthContent from './HealthContent';
 import VaccineContent from './VaccineContent';
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { MdArrowBackIos, MdArrowLeft } from 'react-icons/md';
 
 
 const TimeLinePage = () => {
@@ -28,6 +29,7 @@ const TimeLinePage = () => {
         }
     }, [type]);
 
+
     const handleButtonClick = (buttonName) => {
         setSelectedButton(buttonName);
       };
@@ -35,6 +37,11 @@ const TimeLinePage = () => {
         <>
         <div>
             <h2>타임 라인</h2>
+            <Link to="/main">
+          <button className="settings-quit-button">
+            <img src={MdArrowBackIos} alt="Settings" />
+          </button>
+        </Link>
             <div className="button-container" style={{marginBottom:10}}>
                 <button className={selectedButton === 'button1' ? 'bold' : ''} onClick={() => handleButtonClick('button1')}>영유아 검진</button>
                 <button className={selectedButton === 'button2' ? 'bold' : ''} onClick={() => handleButtonClick('button2')}>예방 접종</button>
