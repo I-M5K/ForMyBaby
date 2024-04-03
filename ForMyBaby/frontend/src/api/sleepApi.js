@@ -41,9 +41,9 @@ export const sendAwake = async (babyId) => {
     }
 };
 
-export const sendDanger = async (data) => {
+export const sendDanger = async (babyId, dangerType) => {
     try {
-        await axiosWrapper.get(`/v1/danger`, data); // 받은 data를 그대로 전송
+        await axiosWrapper.get(`/v1/danger`, { params: { babyId: babyId, dangerTyep: dangerType} }); // 받은 data를 그대로 전송
         console.log('위험 이벤트 완료!');
     } catch (error) {
         throw new Error('위험 이벤트 저장 실패', error);
