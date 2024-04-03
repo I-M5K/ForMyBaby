@@ -45,6 +45,7 @@
 <img src="https://img.shields.io/badge/StyledComponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
 <img src="https://img.shields.io/badge/pwa-FF6F00?style=for-the-badge&logo=pwa&logoColor=white">
 
+
 **BE**
 
 <img src="https://img.shields.io/badge/IntellijIdea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
@@ -54,8 +55,11 @@
 <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
 <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white"/> 
 
+
 **AI**
+
 <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"/>
+**AI추가**
 
 
 **DevOps**
@@ -63,10 +67,69 @@
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/> 
 <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"/>
-    
+
+
 **협업**
 
 <img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
 <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
+
+
+## 시스템 아키텍처
+
+
+
+<br>
+<br>                                                                            
+
+
+## ER 다이어그램
+
+![FMB_ERD](/uploads/ba15e3b31a23a71b7bee106b202348b3/FMB_ERD.png)
+
+
+## API 명세서
+
+![apiㅁㅇㅅ](/uploads/7cdbb7f655231a75b2bd77f952590664/apiㅁㅇㅅ.PNG)
+
+<br></br>
+<br></br>
+    
+
+## 화면 정의서
+
+
+
+<br><br>
+
+## 주요 기능 및 화면
+
+### 아이 지킴이
+
+
+
+<br><br>
+
+### 수면 패턴 분석
+
+
+
+### 검진/접종 타임라인
+
+
+### 푸시알림
+
+
+
+
+## :family:  팀원소개
+
+**Front End** 
+김광연 김준형 임채진
+
+**Back End**
+김무준 김도현 김혜인
+
+</center>
