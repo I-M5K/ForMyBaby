@@ -246,7 +246,7 @@ app.post('/event', (req, res) => {
 
 // 서버 실행
 const PORT = process.env.PORT || 8083;
-http.listen(PORT, () => {
+http.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
