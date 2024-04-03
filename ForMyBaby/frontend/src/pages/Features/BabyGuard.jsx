@@ -121,7 +121,7 @@ const Dashboard = () => {
       console.log('Received dangerEvent:', data);
       const response = getTodayData();
       setDanger(response.dangerCnt+1);
-      sendDanger({ babyId: data.baby_id, dangerType: data.detail });
+      sendDanger(data.baby_id, data.detail);
       // if (danger == null){
       //   setDanger(1);
       // } else {
