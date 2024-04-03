@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import BabyDoughnutChart from '../../components/feature/babyguard/babyDoughnutChart'; 
 import BabyWeekChart from '../../components/feature/babyguard/babyWeekChart'; 
 import { getWeekData } from '../../api/sleepApi';
-import { useRecordStore } from '../../stores/RecordStore';
+import { useRecordDetailStore, useRecordStore } from '../../stores/RecordStore';
 
 const BabyGuardChange = ({ danger, hours, awake }) => {
-  const { endTime, setEndTime, dangerList, setDangerList, hoursList, setHoursList, awakeList, setAwakeList } = useRecordStore();
+  const { endTime, setEndTime  } = useRecordStore();
+  const {  dangerList, setDangerList, hoursList, setHoursList, awakeList, setAwakeList } = useRecordDetailStore();
   const [time, setTime] = useState();
   const [type, setType] = useState('hours');
   const [weekData, setWeekData] = useState(null);

@@ -52,7 +52,7 @@ const NotificationSettings = () => {
             <img src={arrowLeft} alt="Settings" />
           </button>
         </Link>
-        <div className='notification-setting-title'>알림 설정</div>
+       
       </div>
 
       <div className='noti-list'>

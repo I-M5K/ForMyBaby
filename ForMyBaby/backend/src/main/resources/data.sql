@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 INSERT INTO health (health_title, start_at, end_at)
 SELECT '1차 건강검진', 14, 35
 FROM DUAL

@@ -1,11 +1,14 @@
 import React from 'react';
 import Video from '../../components/feature/present/Video';
-import CountBar from '../../components/feature/present/CountBar';
+import GaugeBar from "../../components/feature/present/CountBar.jsx"
+
 
 import { Link } from 'react-router-dom'; // Link 컴포넌트 import
 import Xbutton from '../../assets/x_button.png'
 
 import './Present.css'
+
+
 
 const PresentPage = () => {
     return (
@@ -15,8 +18,9 @@ const PresentPage = () => {
                     <img src={Xbutton} className='present-quit-button-img' />
                 </button>
             </Link>
-            <CountBar />
+            <h1>깜~~~짝 선물</h1>
             <Video />
+            <GaugeBar value={70} maxValue={100} />
         </div>
     );
 }

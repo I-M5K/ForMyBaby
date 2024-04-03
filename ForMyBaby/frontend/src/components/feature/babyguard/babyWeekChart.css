@@ -1,0 +1,4 @@
+.week-chart-btns {
+    display: flex;
+    justify-content: space-around;
+}

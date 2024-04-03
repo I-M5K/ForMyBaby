@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import "./babyDoughnutChart.css";
+import { useUserStore } from "../../../stores/UserStore";
 
 const DoughnutChartComponent = ({ danger, hours, awake }) => {
+  const { babyList, babySelected } = useUserStore();
+  const [selectedBabyName, setSelectedBabyName] = useState("");
+  const [selectedBabyDay, setSelectedBabyDay] = useState("");
+
   const data1 = {
     datasets: [
       {
@@ -75,66 +80,63 @@ const DoughnutChartComponent = ({ danger, hours, awake }) => {
     },
   };
 
-  // const totalData1 = data1.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
-  // const totalData2 = data2.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
-  // const totalData3 = data3.datasets[0].data.reduce((acc, curr) => acc + curr, 0);
+  useEffect(() => {
+    // 선택된 아이의 이름과 생일 업데이트
+    const selectedBaby = babyList.find((baby) => baby.babyId === babySelected);
+    if (selectedBaby) {
+      const givenDateStr = selectedBaby.birthDate; // 주어진 날짜 문자열
+      const [year, month, day] = givenDateStr.split("-");
+      const givenDate = new Date(year, month - 1, day);
+      const today = new Date();
+      const timeDiff = today.getTime() - givenDate.getTime();
+      const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      setSelectedBabyDay(daysDiff);
 
-  // const percentData1 = data1.datasets[0].data.map(value => ((value / totalData1) * 100).toFixed(2));
-  // const percentData2 = data2.datasets[0].data.map(value => ((value / totalData2) * 100).toFixed(2));
-  // const percentData3 = data3.datasets[0].data.map(value => ((value / totalData3) * 100).toFixed(2));
+      if (selectedBaby.babyName && selectedBaby.babyName.length > 0) {
+        const lastChar = selectedBaby.babyName[selectedBaby.babyName.length - 1];
+        if (lastChar) {
+          setSelectedBabyName(selectedBaby.babyName.slice(1) + "의");
+        }
+      }
+    }
+  }, [babyList, babySelected]);
 
-  // const data1WithPercent = {
-  //   datasets: [
-  //     {
-  //       ...data1.datasets[0],
-  //       data: percentData1,
-  //     },
-  //   ],
-  // };
-
-  // const data2WithPercent = {
-  //   datasets: [
-  //     {
-  //       ...data2.datasets[0],
-  //       data: percentData2,
-  //     },
-  //   ],
-  // };
-
-  // const data3WithPercent = {
-  //   datasets: [
-  //     {
-  //       ...data3.datasets[0],
-  //       data: percentData3,
-  //     },
-  //   ],
-  // };
+  // 범위에 따른 텍스트 표시 함수
+  const getRangeText = (value) => {
+    if (value === "적합") {
+      return "부족";
+    } else if (value === "위험") {
+      return "위험";
+    } else {
+      return "적합";
+    }
+  };
 
   return (
     <div>
       <div className="chart-detail-header">
-      <span className="bold-text">135일 된 우리 땡구 </span>의
+        <span className="bold-text">{selectedBabyDay}일 된 우리 {selectedBabyName}</span>
         <br />
-        <span className="bold-text">수면현황 </span>입니다
+        <span className="bold-text">수면현황</span>입니다
       </div>
 
       <div className="chart-container">
         <div className="chart-item">
           <div className="chart-title">수면 시간</div>
           <Doughnut data={data1} options={options} />
-          <div className="chart-footer">부족</div>
+          <div className="chart-footer">{getRangeText("hours")}</div>
         </div>
 
         <div className="chart-item">
           <div className="chart-title">기상 횟수</div>
           <Doughnut data={data2} options={options} />
-          <div className="chart-footer">적합</div>
+          <div className="chart-footer">{getRangeText("awake")}</div>
         </div>
 
         <div className="chart-item">
           <div className="chart-title">위험 감지</div>
           <Doughnut data={data3} options={options} />
-          <div className="chart-footer">위험</div>
+          <div className="chart-footer">{getRangeText("danger")}</div>
         </div>
       </div>
     </div>
