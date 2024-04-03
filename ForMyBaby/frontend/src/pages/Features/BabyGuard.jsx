@@ -14,8 +14,8 @@ import { createStampByAI } from "../../api/stampApi";
 import { sendDanger, sendAwake, sendSleep } from "../../api/sleepApi";
 import { MdArrowBackIos } from "react-icons/md";
 
-//const ENDPOINT = 'http://localhost:3001';
-const ENDPOINT = "wss://j10c202.p.ssafy.io/ai";
+const ENDPOINT = 'http://localhost:8083';
+//const ENDPOINT = "wss://j10c202.p.ssafy.io/ai";
 
 // const ImageContent = ({ imageData, lineData }) => (
 //   <div className="image-content">
