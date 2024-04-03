@@ -149,7 +149,7 @@ public class DangerServiceImpl implements DangerService {
             Danger firstDanger = dangerList.get(0);
             Danger danger = new Danger();
             // Danger 엔티티를 수정하여 저장
-            danger.setDangerCnt(firstDanger.getDangerCnt() + 3);
+            danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
             danger.setCreatedAt(createdAt);
             danger.setDangerType(dangerType);
             danger.setBaby(baby);
