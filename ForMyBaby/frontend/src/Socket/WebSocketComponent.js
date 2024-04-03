@@ -40,17 +40,16 @@ const WebSocketComponent = ({ endpoint }) => {
         console.log('Received commonEvent - 스톱모션:', data);
         const detail = data.detail;
         if (detail == '0'){ // 스톱모션
-          //const response = getMotionCnt();
+          const cnt = getMotionCnt();
           // 스톱모션 사진 수 저장하기
-          if (stopCnt){
-            setStopCnt(stopCnt+1);
-            sendMotionUrl(data.url_s3);
-          }
+          setStopCnt(cnt+1);
+          const uploadedFileUrl = JSON.parse(data.url_s3[0])["uploaded_file_url"];
+          sendMotionUrl(uploadedFileUrl);
         } else if (detail == '1'){ // 이벤트-위치정보
           console.log('Received commonEvent - 위치정보:', data);
         } else { // 성장 스탬프 - 만세 or 다리 꼬기
           console.log('Received commonEvent - 성장스탬프:', data);
-          const uploadedFileUrl = JSON.parse(data.s3_url[0])["uploaded_file_url"];
+          const uploadedFileUrl = JSON.parse(data.url_s3[0])["uploaded_file_url"];
           createStampByAI({ babyId: data.baby_id, step: detail, stampUrl: uploadedFileUrl, memo: null })
         } 
       });
