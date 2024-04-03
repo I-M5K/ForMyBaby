@@ -1,4 +1,3 @@
-
 import './BabyProfileEdit.css';
 import React, { useEffect, useState } from "react";
 import babyImage from '../../assets/hagrid.png'; // 아이 사진 이미지 경로를 적절히 수정해주세요.

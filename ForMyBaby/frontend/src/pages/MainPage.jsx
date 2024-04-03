@@ -7,7 +7,6 @@ import { sendLocation, selectBaby } from "../api/userApi";
 import { getNotificationList } from "../api/notificationApi";
 import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { useUserStore } from "../stores/UserStore";
-import { getPostWord } from "../components/postWords.js";
 import ChildSelect from "../components/babyselect/babyselect.jsx";
 
 import BabyPhoto from "../assets/child_sleep.jpg";
@@ -43,6 +42,7 @@ const MainPage = () => {
     setUncheckedCnt,
     babySelected,
     setBabySelected,
+    stopCnt, setStopCnt
   } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
@@ -56,6 +56,11 @@ const MainPage = () => {
     const fetchData = async () => {
       if (babySelected == null || babySelected == 0) {
         setBabySelected(babyList[0].babyId);
+      }
+
+      if (stopCnt) {
+        console.log('스톱모션 수: ' + stopCnt);
+        setStopCnt(stopCnt);
       }
 
       if (babyId) {
@@ -195,7 +200,7 @@ const MainPage = () => {
         <div className="rectangleBox">
           <img src={PresentBox} className="presentbox" />
           <div className="rectangleBoxText">100% 채우면 과연 어떤 선물이?</div>
-          <GaugeBar value={70} maxValue={100} />
+          <GaugeBar value={stopCnt} maxValue={100} />
         </div>
       </Link>
 
