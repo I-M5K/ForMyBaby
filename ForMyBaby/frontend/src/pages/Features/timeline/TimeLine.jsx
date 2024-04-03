@@ -3,8 +3,9 @@ import NavBar from '../../../components/NavBar';
 import { useUserStore } from '../../../stores/UserStore';
 import HealthContent from './HealthContent';
 import VaccineContent from './VaccineContent';
-import { Link, useLocation } from "react-router-dom";
-import { MdArrowBackIos, MdArrowLeft } from 'react-icons/md';
+import { Link, useLocation } from "react-router-dom";            
+import arrowLeft from '../../../assets/arrow_left.png'
+
 
 
 const TimeLinePage = () => {
@@ -37,9 +38,9 @@ const TimeLinePage = () => {
         <>
         <div>
             <h2>타임 라인</h2>
-            <Link to="/main">
-          <button className="settings-quit-button">
-            <img src={MdArrowBackIos} alt="Settings" />
+        <Link to="/main">
+          <button style={{position: 'fixed', top:"20px", zIndex: 1000, backgroundColor: 'transparent', border:'none'}}>
+            <img src={arrowLeft} alt="Settings" />
           </button>
         </Link>
             <div className="button-container" style={{marginBottom:10}}>
