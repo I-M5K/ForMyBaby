@@ -81,7 +81,7 @@
   .goBell{
     font-size: 25px;
     color: rgb(106, 105, 105);
-    margin-right: 15px;
+    margin-right: 1px;
       }
 
   .yellowBox {
@@ -229,12 +229,12 @@
 .notification-count {
   position: absolute;
   padding-bottom: 1px;
-  padding-bottom: 1px;
   background-color: red; /* 배경색을 빨간색으로 설정 */
   color: white; /* 글자색을 하얀색으로 설정 */
   border-radius: 50%;
-  width: 12px; /* 너비 설정 */
-  height: 12px; /* 높이 설정 */
+  font-size: 12px;
+  width: 17px; /* 너비 설정 */
+  height: 16px; /* 높이 설정 */
   display: flex; /* 내용을 중앙으로 정렬하기 위해 Flexbox 사용 */
   justify-content: center; /* 수평 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */

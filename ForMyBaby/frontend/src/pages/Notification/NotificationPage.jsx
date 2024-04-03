@@ -7,6 +7,9 @@ import arrowLeft from '../../assets/arrow_left.png'
 import { checkNotificationAll } from '../../api/notificationApi';
 import './NotificationPage.css'
 
+import { AiOutlineDelete } from "react-icons/ai";
+import { IoSettingsOutline } from "react-icons/io5";
+
 const NotificationPage = () => {
  const { notifications, fetchNotificationList, deleteNotificationById, deleteAllNotifications } = useNotificationStore();
  const { uncheckdCnt, setUncheckedCnt } = useUserStore();
@@ -18,36 +21,42 @@ const NotificationPage = () => {
   }, []); // 빈 배열을 전달하여 이펙트가 한 번만 실행되도록 함
   // const [notifications, setNotifications] = useState([
   //   {
+  //     babyId: '빵빵이',
   //     notificationId: 1,
   //     type: 'info',
   //     content: '새로운 알림이 도착했습니다.',
   //     createdAt: new Date().toISOString() // 현재 시간으로 설정
   //   },
   //   {
+  //     babyId: '빵빵이',
   //     notificationId: 2,
   //     type: 'warning',
   //     content: '중요한 공지사항입니다.',
   //     createdAt: new Date().toISOString() // 현재 시간으로 설정
   //   },
   //   {
+  //     babyId: '빵빵이',
   //     notificationId: 1,
   //     type: 'info',
   //     content: '새로운 알림이 도착했습니다. 새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.새로운 알림이 도착했습니다.',
   //     createdAt: new Date().toISOString() // 현재 시간으로 설정
   //   },
   //   {
+  //     babyId: '빵빵이',
   //     notificationId: 2,
   //     type: 'warning',
   //     content: '중요한 공지사항입니다.',
   //     createdAt: new Date().toISOString() // 현재 시간으로 설정
   //   },
   //   {
+  //     babyId: '빵빵이',
   //     notificationId: 1,
   //     type: 'info',
   //     content: '새로운 알림이 도착했습니다.',
   //     createdAt: new Date().toISOString() // 현재 시간으로 설정
   //   },
   //   {
+  //     babyId: '빵빵이',
   //     notificationId: 2,
   //     type: 'warning',
   //     content: '중요한 공지사항입니다.',
@@ -93,6 +102,20 @@ const NotificationPage = () => {
     return Math.floor(seconds) + "초 전";
   };
   
+  const exampleNotifications = [
+    {
+      notificationId: 1,
+      type: 'info',
+      content: '새로운 알림이 도착했습니다.',
+      createdAt: new Date().toISOString()
+    },
+    {
+      notificationId: 2,
+      type: 'warning',
+      content: '중요한 공지사항입니다.',
+      createdAt: new Date().toISOString()
+    }
+  ];
 
   return (
     <div className='notification-container'>
@@ -105,9 +128,9 @@ const NotificationPage = () => {
         <div className="notification-header">
           <div className='notification-title'>알림 목록</div>
           <div className="notification-buttons">
-            <button className="delete-all-button" onClick={handleDeleteAllNotifications}>전체 삭제</button>
+            <button className="delete-all-button" onClick={handleDeleteAllNotifications}><AiOutlineDelete /></button>
             <Link to="/notification/setting">
-              <button className="settings-button">설정</button>
+              <button className="settings-button"><IoSettingsOutline /></button>
             </Link>
           </div>
         </div>

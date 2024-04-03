@@ -26,10 +26,6 @@ const images = [
   require("../assets/bears/kingbatne.png"),
   require("../assets/bears/saranghaeyo.png"),
   require("../assets/bears/yap.png"),
-<<<<<<< HEAD
-  require("../assets/bears/arrowRectangle.png"),
-];
-=======
 ]
 
 const mainHeaderTexts = [
@@ -44,7 +40,6 @@ const getRandomHeaderText = () => {
   const randomIndex = Math.floor(Math.random() * mainHeaderTexts.length);
   return mainHeaderTexts[randomIndex];
 };
->>>>>>> 3c1d3c5df3deaa574bbcec0104c1ecc5bd4e4689
 
 const MainPage = () => {
   const loc = useLocation();
@@ -60,11 +55,6 @@ const MainPage = () => {
     setUncheckedCnt,
     babySelected,
     setBabySelected,
-<<<<<<< HEAD
-    stopCnt,
-    setStopCnt,
-=======
->>>>>>> 3c1d3c5df3deaa574bbcec0104c1ecc5bd4e4689
   } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
@@ -80,14 +70,6 @@ const MainPage = () => {
         setBabySelected(babyList[0].babyId);
       }
 
-<<<<<<< HEAD
-      if (stopCnt) {
-        console.log("스톱모션 수: " + stopCnt);
-        setStopCnt(stopCnt);
-      }
-
-=======
->>>>>>> 3c1d3c5df3deaa574bbcec0104c1ecc5bd4e4689
       if (babyId) {
         console.log(babyId);
         if (babySelected != babyId) {
@@ -191,6 +173,10 @@ const MainPage = () => {
     const randomIndex = Math.floor(Math.random() * images.length); // 랜덤 인덱스 생성
     setSelectedImage(images[randomIndex]); // 선택된 이미지 상태 업데이트
   }, []);
+
+  // useEffect(() => {
+  //   setUncheckedCnt(99); // 알림이 3개 있다고 가정한 예시 데이터 설정
+  // }, []);
 
   return (
     <div className="main-container">
