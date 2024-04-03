@@ -139,17 +139,17 @@ app.post('/data', upload.single('frame'), (req, res) => {
     console.log('Received humidity:', humidity);
     console.log('***********************');
     // 이미지 파일을 읽어서 데이터를 클라이언트로 전송
-    fs.readFile(imageFile.path, (err, data) => {
-      if (err) {
-        console.error('Error reading image file:', err);
-        res.status(500).send('이미지 파일 읽기 실패!!');
-        return;
-      }
+    // fs.readFile(imageFile.path, (err, data) => {
+    //   if (err) {
+    //     console.error('Error reading image file:', err);
+    //     res.status(500).send('이미지 파일 읽기 실패!!');
+    //     return;
+    //   }
       // 이미지와 데이터를 방에 소속된 모든 소켓에게 전송
-      io.emit('image', { imageData: data, babyId: babyId, timestamp: timestamp, temp: temperature, humid: humidity });
+      io.emit('image', { imageData: imageFile, babyId: babyId, timestamp: timestamp, temp: temperature, humid: humidity });
       // 이미지 데이터를 성공적으로 전송한 후에는 응답을 클라이언트에게 보냅니다.
       res.status(200).send('실시간 영상 전송 성공!');
-    });
+    // });
   } catch (error) {
     console.error(error);
     res.status(500).send('실시간 영상 전송 실패!');
