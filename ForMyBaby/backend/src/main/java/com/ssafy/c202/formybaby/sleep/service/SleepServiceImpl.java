@@ -149,17 +149,17 @@ public class SleepServiceImpl implements SleepService {
         int dangerCnt = 0;
         // sleepList가 비어있지 않으면 첫 번째 Sleep 객체를 가져옴.
         if(!sleepList.isEmpty()){
-            if (getCalendar(sleepList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
+//            if (getCalendar(sleepList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
                 sleepCnt = sleepList.get(0).getSleepCnt();
                 sleepTime = sleepList.get(0).getSleepTime();
-            }
+//            }
         }
         Danger danger = new Danger();
         // dangerList가 비어있찌 않으면 첫 번째 Danger 객체를 가져옴.
         if(!dangerList.isEmpty()){
-            if (getCalendar(dangerList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
+//            if (getCalendar(dangerList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
                 dangerCnt = dangerList.get(0).getDangerCnt();
-            }
+//            }
         }
 
 //        // 각각의 수면 시간,횟수, 위험 행동 횟수,  생성 시간들을 가져와서 저장한다.
