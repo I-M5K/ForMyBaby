@@ -82,6 +82,11 @@ const Dashboard = () => {
       transports: ["websocket"],
     });
 
+    socket.emit("babyId", babySelected);
+    socket.emit("status", status);
+    console.log("소켓통신: babyId 송신", babySelected);
+    console.log("소켓통신: status 송신", status);
+
     socket.on("image", ({ imageData, babyId, timestamp, temp, humid }) => {
       const base64String = btoa(
         new Uint8Array(imageData).reduce(
