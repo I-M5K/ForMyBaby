@@ -6,9 +6,9 @@ import useGeoLocation from "../hooks/useGeolocation";
 import { sendLocation,selectBaby } from '../api/userApi';
 import { getNotificationList } from '../api/notificationApi';
 import { requestPermission } from "../FCM/firebase-messaging-sw";
-import { useUserStore } from '../stores/UserStore';
-import { getPostWord } from '../components/postWords.js';
-import ChildSelect from '../components/babyselect/babyselect.jsx';
+import { useUserStore } from "../stores/UserStore";
+import { getPostWord } from "../components/postWords.js";
+import ChildSelect from "../components/babyselect/babyselect.jsx";
 
 import BabyPhoto from '../assets/child_sleep.jpg';
 import Books from '../assets/books.png';
@@ -16,6 +16,7 @@ import SleepChart from '../assets/sleepChart.png';
 import Syringe from '../assets/syringe.png';
 import PresentBox from '../assets/presentBox.png';
 import { useLocation } from "react-router-dom";
+import { GoBell } from "react-icons/go";
 
 const MainPage = () => {
   const loc = useLocation();
@@ -26,7 +27,11 @@ const MainPage = () => {
   const { babyList, fcm, setFcm, uncheckedCnt, setUncheckedCnt, babySelected, setBabySelected } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
+  const [selectedName, setSelectedName] = useState("");
   const [selectedBabyDay, setSelectedBabyDay] = useState("");
+  const [selectedBabyImg, setSelectedBabyImg] = useState("");
+  const [selectedBabyGender, setSelectedBabyGender] = useState("");
+  const [selectedBabyBirthDate, setSelectedBabyBirthDate] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,6 +106,11 @@ const MainPage = () => {
       }
       //setSelectedBabyName(getPostWord(selectedBaby.babyName, '이', ''));
       setSelectedBabyDay(daysDiff);
+      setSelectedBabyImg(selectedBaby.profileImg);
+      setSelectedName(selectedBaby.babyName);
+      // 성별 업데이트
+      setSelectedBabyGender(selectedBaby.babyGender);
+      setSelectedBabyBirthDate(selectedBaby.birthDate);
     }
   }, [babyList, babySelected]);
 
@@ -120,6 +130,32 @@ const MainPage = () => {
     setUncheckedCnt(0); // 알림 아이콘 클릭 시 알림 수를 0으로 설정
   };
 
+  const GaugeBar = ({ value, maxValue }) => {
+    const [barWidth, setBarWidth] = useState(0);
+
+    // Calculate the width of the gauge bar
+    const calculateWidth = () => {
+      const width = (value / maxValue) * 100;
+      return width > 100 ? 100 : width; // Cap width at 100%
+    };
+
+    // Update the width when the component mounts or when the value changes
+    React.useEffect(() => {
+      setBarWidth(calculateWidth());
+    }, [value]);
+
+    return (
+      <div className="gauge-bar-container">
+        <div
+          className="gauge-bar"
+          style={{ width: `${barWidth}%`, backgroundColor: "#F7C515" }}
+        >
+          {`${value}%`}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="main-container">
       <div className="main-header">
@@ -131,15 +167,26 @@ const MainPage = () => {
         <button onClick={() => handleLogout()} className='logout-btn'>로그아웃</button>
         </Link>
         <Link to="/notification">
-          <div className="main-notificationIcon" onClick={handleNotificationClick}>
-            <img src={require('../assets/mdi_bell.png')} alt="Notification Bell"/>
+          <div
+            className="main-notificationIcon"
+            onClick={handleNotificationClick}
+          >
+            {/* <img
+              src={require("../assets/mdi_bell.png")}
+              alt="Notification Bell"
+            /> */}
+            <GoBell className='goBell'/>
             {uncheckedCnt > 0 && ( // 읽지 않은 알림이 있을 때만 표시
-            <span className="notification-count">{uncheckedCnt}</span>
-          )}
+              <span className="notification-count">{uncheckedCnt}</span>
+            )}
           </div>
         </Link>
       </div>
-      <img src={require('../assets/babybear.png')} className="gombaImage" alt="Baby Bear" />
+      <img
+        src={require("../assets/yap.png")}
+        className="gombaImage"
+        alt="Baby Bear"
+      />
       <Link to="/present">
         <div className="rectangleBox">
           <img src={PresentBox} className='presentbox' />
@@ -183,9 +230,12 @@ const MainPage = () => {
         </div>
 
         <div className="boxContainerRight">
-          <div className="smallmiddleBox" onClick={toggleBottomSheet}>
-            <img src={BabyPhoto} className='babyphoto' />
-          </div>
+          <Link to="/baby-profile">
+            <div className="smallmiddleBox">
+              <img src={BabyPhoto} className="babyphoto" />
+            </div>
+          </Link>
+
           <Link to="/baby-guard?selectedButton=button2">
             <div className="smallBox">
               <span className="boxText">

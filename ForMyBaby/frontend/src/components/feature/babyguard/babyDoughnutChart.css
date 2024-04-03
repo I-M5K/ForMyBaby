@@ -33,8 +33,20 @@
   }
   
   .chart-footer {
+    font-size: 14px;
     margin-top: 10px;
-    font-size: 0.9em;
-    color: #666;
+  }
+  
+  /* Range styles */
+  .chart-footer.red {
+    color: red;
+  }
+  
+  .chart-footer.orange {
+    color: orange;
+  }
+  
+  .chart-footer.green {
+    color: green;
   }
   

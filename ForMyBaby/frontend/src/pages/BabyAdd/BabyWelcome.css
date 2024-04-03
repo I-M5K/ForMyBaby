@@ -19,3 +19,16 @@
     color: #fff;
     background: #f7c515;
 }
+
+.confetti-container {
+    visibility: hidden;
+    transition: visibility 0s linear 1s;
+}
+
+.confetti-container.show {
+    visibility: visible;
+}
+
+/* 이하 confetti의 CSS는 유지합니다. */
+
+

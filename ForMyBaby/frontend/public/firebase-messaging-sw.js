@@ -45,14 +45,14 @@
     //   console.log("선택 아이 정보 바꾸기!");
     //   selectBaby(babyId);
     // }
-    var url = "/main?babyId=${babyId}";
+    var url = `/main?babyId=${babyId}`;
     console.log('type: ', type);
     if (type === 'danger'){ // 위험 감지
-      url = '/baby-guard?babyId=${babyId}';
+      url = `/baby-guard?babyId=${babyId}`;
     } else if (type === 'health'){ // 건강검진
-      url = '/timeline?babyId=${babyId}%?type=${type}';
+      url = `/timeline?babyId=${babyId}&type=${type}`;
     } else if (type === 'vaccine'){ // 접종
-      url = '/timeline?babyId=${babyId}%?type=${type}';
+      url = `/timeline?babyId=${babyId}&type=${type}`;
     }
     event.notification.close();
     event.waitUntil(clients.openWindow(url));

@@ -61,7 +61,8 @@ pipeline {
                         try{
                             sh "docker stop -f ai || true"
                             sh "docker rm -f ai || true"
-                            sh "docker run -d --name ai -p 8083:3002 ${DOCKER_USER_ID}/ai"
+                            sh "docker rmi -f ${DOCKER_USER_ID}/ai || true"
+                            sh "docker run -d --name ai -p 8083:3002 -e WDS_SOCKET_PORT=0 ${DOCKER_USER_ID}/ai"
                         } catch (Exception e){
                             sh "docker restart ai"
                         }
