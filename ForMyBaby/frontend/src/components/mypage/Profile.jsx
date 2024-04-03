@@ -1,14 +1,12 @@
 import React from "react";
 import "./Profile.css";
-import { MdArrowBackIos } from "react-icons/md";
-import { useUserStore } from '../../stores/UserStore';
+import { LuPencil } from "react-icons/lu";
 
 
 const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
   const {profileImg, name, } = useUserStore();
   return (
     <div>
-      <MdArrowBackIos className="arrow-back-icon" />
       <div className="my-title">마이 페이지</div>
       <div className="user-profile">
         <div className="user-profile-container">
@@ -18,9 +16,6 @@ const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
           <div className="user-info">
             <h3>{name}</h3>
           </div>
-          <button className="edit-profile-button" onClick={onProfileEdit}>
-            프로필 수정
-          </button>
         </div>
       </div>
     </div>

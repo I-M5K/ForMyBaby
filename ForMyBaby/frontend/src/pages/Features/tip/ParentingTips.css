@@ -1,0 +1,53 @@
+.parentip-top {
+  display: flex;
+  justify-content: space-between; /* 요소들을 양쪽 끝에 배치 */
+  align-items: center; /* 수직 가운데 정렬 */
+  padding: 10px 30px;
+}
+
+.parentip-title {
+  margin-right: 100px;
+  text-align: center;
+  font-size: 30px;
+  padding: 15px;
+}
+
+.parentip-header button {
+    background: white;
+    color: #929191;
+    border-radius: 20px;
+    border-color: transparent; /* 기존 값 제거 */
+    padding: 10px 30px;
+    margin: 0 2px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .parentip-header button:hover,
+  .parentip-header button:active {
+    background: rgba(247, 197, 21, 0.1);
+    color: #F7C515;
+  
+  }
+
+.tip-months {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.tip-sub-title {
+  font-weight: bold;
+  padding-top: 20px;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.tip-text {
+    text-align: left;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

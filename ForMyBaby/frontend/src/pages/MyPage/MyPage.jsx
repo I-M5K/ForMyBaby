@@ -9,7 +9,9 @@ import './MyPage.css'
 
 import NavBar from '../../components/NavBar';
 
-import { Link, Navigate } from 'react-router-dom';
+import { LuLogOut } from "react-icons/lu";
+
+import { Link } from 'react-router-dom';
 
 const MyPage = () => {
 
@@ -20,16 +22,14 @@ const MyPage = () => {
     return (
         <div className='mypage'>
             <Profile />
-            <hr/>
+            <br />
             <ChildInfo />
-            <hr />
             <FamilyInfo/>
-            <hr />
             <SettingsTab />
-            <NavBar />
             <Link to="/">
-                <button onClick={() => handleLogout()} className='logout-btn'>로그아웃</button>
+                <div onClick={() => handleLogout()} className='logout-btn'><LuLogOut /></div>
             </Link>
+            <NavBar />
         </div>
     );
 }

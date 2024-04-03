@@ -11,7 +11,7 @@
 
 .baby-add-comment {
     margin-bottom: 20px;
-    font-size: 20px;
+    font-size: 23px;
     text-align: center;
 }
 
@@ -24,15 +24,17 @@
 
 .gender-btn {
     padding: 10px 20px;
+    margin: 10px;
     width: 100%;
     background-color: transparent;
-    color: #f7c515;
+    color: #DADADA;
     font-size: 16px;
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border: 2px solid #f7c515;
+    border: 2px solid #DADADA;
     transition: all 0.3s ease;
+    margin-left: auto; 
+    margin-right: 10px; 
 }
 
 .gender-btn:disabled {
@@ -40,36 +42,60 @@
     cursor: not-allowed;
 }
 
+
 .gender-selection {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
+    margin-left: 20px;
+    /* margin-bottom: 20px; */
 }
 
+.arrow-back-icon {
+    position: absolute; 
+    left: 30px;
+    font-size: 22px;
+
+  }
+
+  
 .gender-btn.active {
-    background-color: #f7c515;
-    color: white;
+    background: rgba(247, 197, 21, 0.1);
+    color: #f7c515;
+    border: 2px solid #f7c515;
 }
 
 .file-input {
     opacity: 0;
-    width: 0.1px;
-    height: 0.1px;
+    width: 0.5px;
+    height: 0.5px;
     position: absolute;
+
 }
 
+.input-field.empty {
+    border-color: red;
+  }
+  
+
+.facamera{
+    margin-top: 15px;
+}
 .file-input-label {
     display: inline-block;
-    background-color: #f7c515; /* 원하는 배경 색 */
+    background-color: #DADADA; /* 원하는 배경 색 */
     color: #fff;
     padding: 10px 16px;
+
     border-radius: 50%; /* 동그랗게 만듭니다 */
-    font-size: 20px;
+    /* font-size: 30px; */
+ width: 60px;
+ height: 70px;
     font-weight: bold;
     cursor: pointer;
     text-align: center;
     margin: auto;
     transition: background-color 0.3s;
+    margin-right: 20px;
 }
 
 .text-date {
@@ -79,11 +105,37 @@
 .input-field {
     width: 260px;
     height: 47px; 
-    border-radius: 30px; 
-    border: 2px solid #f7c515;
+    border-radius: 20px;
+    border: 2px solid #DADADA;
     padding: 0 15px;
     margin-top: 15px; 
-    font-size: 16px; 
+    font-size: 16px;
+    transition: border-color 0.3s; /* 트랜지션 효과 추가 */
+    background-color: #fff; /* 입력 필드 배경색을 흰색으로 설정 */
+}
+
+/* 클릭 시 아웃라인 색상 변경 */
+.input-field:focus, .input-field:not(:placeholder-shown) {
+    outline: none; /* 기본 아웃라인 제거 */
+    border-color: #f7c515; /* 클릭 시 아웃라인 색상 변경 */
+}
+
+.input-field[type="date"] {
+    width: 260px;
+    height: 47px; 
+    border-radius: 20px;
+    border: 2px solid #DADADA; /* 아웃라인 색상 변경 */
+    padding: 0 15px;
+    margin-top: 15px; 
+    font-size: 16px;
+    transition: border-color 0.3s; /* 트랜지션 효과 추가 */
+    background-color: #fff; /* 입력 필드 배경색을 흰색으로 설정 */
+}
+
+/* 클릭 시 아웃라인 색상 변경 */
+.input-field[type="date"]:focus {
+    outline: none; /* 기본 아웃라인 제거 */
+    border-color: #f7c515; /* 클릭 시 아웃라인 색상 변경 */
 }
 
 .baby-add-submit {
@@ -144,3 +196,11 @@
     height: 50px; /* 적절한 크기 지정 */
     cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
 }
+
+.arrow-back-icon {
+    position: absolute; 
+    left: 30px;
+    font-size: 22px;
+    margin-top: -50px;
+  }
+  

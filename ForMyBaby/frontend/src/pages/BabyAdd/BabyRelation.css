@@ -4,17 +4,24 @@
     text-align: center;
 }
 
+.arrow-back-icon {
+    position: absolute; 
+    left: 30px;
+    font-size: 22px;
+    margin-bottom: 650px;
+  }
+  
+
 .relation-btn {
     padding: 10px 20px;
     width: 300px;
     background-color: transparent;
-    color: #f7c515;
+    color: #494949;
     font-size: 18px;
     border-radius: 20px;
     margin-bottom: 30px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border: 2px solid #f7c515;
+    border: 2px solid #DADADA;
     transition: all 0.3s ease;
 }
 
@@ -24,8 +31,9 @@
 }
 
 .relation-btn.selected {
-    background-color: #ffe380;
-    color: white;
+    background: rgba(247, 197, 21, 0.1);
+    color: #f7c515;
+    border: 2px solid #f7c515;
 }
 
 .baby-add-submit-fin {

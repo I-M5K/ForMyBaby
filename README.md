@@ -40,10 +40,14 @@
 ## ⚙ 개발 환경
 **FE**
 
+<img src="https://shields.io/badge/JavaScript-F7DF1E?logo=JavaScript&logoColor=000&style=for-the-badge">
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
 <img src="https://img.shields.io/badge/ZUSTAND-764ABC?style=for-the-badge&logo=zustand&logoColor=white">
 <img src="https://img.shields.io/badge/StyledComponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
 <img src="https://img.shields.io/badge/pwa-FF6F00?style=for-the-badge&logo=pwa&logoColor=white">
+<img src="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black">
+
+
 
 **BE**
 
@@ -52,10 +56,15 @@
 <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
 <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
-<img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white"/> 
+<img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white"/>
+<img src="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black">
+<img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
+
 
 **AI**
+
 <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"/>
+![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white)
 
 
 **DevOps**
@@ -63,10 +72,76 @@
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/> 
 <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"/>
-    
+
+
 **협업**
 
 <img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
 <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
+
+
+## 시스템 아키텍처
+
+
+
+<br>
+<br>                                                                            
+
+
+## ER 다이어그램
+
+![FMB_ERD](/uploads/ba15e3b31a23a71b7bee106b202348b3/FMB_ERD.png)
+
+
+## API 명세서
+
+![image](/uploads/e3dd9aa8d15df263fa18377643efa5b1/image.png)
+
+https://www.notion.so/1227ef1f15f54148a51f36aefc0e3289?v=3cef4b8b00654b2cbe4db7d83294cd7f
+
+
+<br></br>
+<br></br>
+    
+
+## 화면 정의서
+
+![image](/uploads/5feedc93e72af108c33bc2b460965773/image.png)
+
+https://www.notion.so/a8139528b99c4278961ed2ca37cfcbf0?v=be78df78104647a09bf164efca0c9e8b
+
+
+<br><br>
+
+## 주요 기능 및 화면
+
+### 아이 지킴이
+![애기백분위](/uploads/73f02dbfd257e2eb3d39dc3b0832e8ba/애기백분위.PNG)
+
+
+<br><br>
+
+### 수면 패턴 분석
+![KakaoTalk_20240403_115343332_01](/uploads/ca7375cf1cdf32607c00258046f5f683/KakaoTalk_20240403_115343332_01.jpg){:width="250" height="497"}
+
+
+### 검진/접종 타임라인
+![KakaoTalk_20240403_115343332_03](/uploads/fd58eb3c014be6f75e36f904aff0413d/KakaoTalk_20240403_115343332_03.jpg){:width="250" height="497"}
+
+
+### 푸시알림
+![KakaoTalk_20240403_124606905](/uploads/dae9afcead9b2544b4b0ae7e994411a4/KakaoTalk_20240403_124606905.jpg){:width="250" height="497"}
+
+
+
+## :family:  팀원소개
+
+**Front End** 
+김광연 김준형 임채진
+
+**Back End**
+김무준 김도현 김혜인
+
+</center>
