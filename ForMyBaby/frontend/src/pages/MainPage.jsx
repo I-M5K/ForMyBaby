@@ -55,6 +55,7 @@ const MainPage = () => {
     setUncheckedCnt,
     babySelected,
     setBabySelected,
+    stopCnt
   } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
@@ -83,6 +84,10 @@ const MainPage = () => {
         requestPermission();
         setFcm(localStorage.getItem("fcmToken"));
         //localStorage.removeItem('fcmToken');
+      }
+
+      if (!stopCnt){
+        
       }
 
       const fetchedNotifications = await getNotificationList(); // 알림 목록 가져오는 API 호출

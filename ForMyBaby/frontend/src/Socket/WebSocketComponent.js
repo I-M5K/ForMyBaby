@@ -50,7 +50,8 @@ const WebSocketComponent = ({ endpoint }) => {
           console.log('Received commonEvent - 위치정보:', data);
         } else { // 성장 스탬프 - 만세 or 다리 꼬기
           console.log('Received commonEvent - 성장스탬프:', data);
-          createStampByAI({ babyId: data.baby_id, step: detail, stampUrl: data.s3_url, memo: null })
+          const uploadedFileUrl = JSON.parse(data.s3_url[0])["uploaded_file_url"];
+          createStampByAI({ babyId: data.baby_id, step: detail, stampUrl: uploadedFileUrl, memo: null })
         } 
       });
 
