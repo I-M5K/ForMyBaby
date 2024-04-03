@@ -180,11 +180,13 @@ public class SleepServiceImpl implements SleepService {
     public void getSleepOnTime(String token,Long babyId) {
         Timestamp createdAt = getCurrentTimestamp();
         log.info("createdAt1 : " + createdAt);
-        // Calendar 객체를 생성하고 endAt을 설정
+
+        // 주어진 시간에 9시간을 더함
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(createdAt.getTime());
-        // 주어진 시간에에 9시간을 더함
         setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        createdAt.setTime(setCalender.getTimeInMillis());
+
         log.info("createdAt2 : " + createdAt);
 
         // 유저 정보를 가져온다.
