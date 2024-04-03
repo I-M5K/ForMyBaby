@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,11 @@ public class StampServiceImpl implements StampService{
     public void createStamp(String token, StampCreateRequest stampCreateRequest) {
         log.info("stampCreateRequest : " + stampCreateRequest);
         Timestamp timestamp = getCurrentTimestamp();
+        // Calendar 객체를 생성하고 endAt을 설정
+        Calendar setCalender = Calendar.getInstance();
+        setCalender.setTimeInMillis(timestamp.getTime());
+        // 주어진 시간에에 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, 9);
 
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(babyId);
@@ -58,6 +64,11 @@ public class StampServiceImpl implements StampService{
         //Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(stampCreateAIRequest.babyId());
         Timestamp timestamp = getCurrentTimestamp();
+        // Calendar 객체를 생성하고 endAt을 설정
+        Calendar setCalender = Calendar.getInstance();
+        setCalender.setTimeInMillis(timestamp.getTime());
+        // 주어진 시간에에 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, 9);
         Stamp stamp = stampRepository.findByStepAndBabyId(stampCreateAIRequest.step(), stampCreateAIRequest.babyId());
         stamp.setBaby(baby);
         stamp.setStampImg(stampCreateAIRequest.stampUrl());

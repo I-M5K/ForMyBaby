@@ -143,6 +143,11 @@ public class DangerServiceImpl implements DangerService {
         // Danger 엔티티를 조회
         List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(baby.getBabyId());
         Timestamp createdAt = getCurrentTimestamp();
+        // Calendar 객체를 생성하고 endAt을 설정
+        Calendar setCalender = Calendar.getInstance();
+        setCalender.setTimeInMillis(createdAt.getTime());
+        // 주어진 시간에에 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, 9);
 
         if (!dangerList.isEmpty()) {
             // dangerList가 비어있지 않은 경우에만 첫 번째 Danger 엔티티를 가져옴
