@@ -43,6 +43,9 @@ export const sendAwake = async (babyId) => {
 
 export const sendDanger = async (babyId, dangerType) => {
     try {
+        if (dangerType == '0'){
+            dangerType = 'flip';
+        }
         await axiosWrapper.get(`/v1/danger`, { params: { babyId: babyId, dangerType: dangerType} }); // 받은 data를 그대로 전송
         console.log('위험 이벤트 완료!');
     } catch (error) {
