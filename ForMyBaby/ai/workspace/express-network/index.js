@@ -130,7 +130,7 @@ app.post('/data', upload.single('frame'), (req, res) => {
     // 시간과 온습도 등의 데이터 추출
     const babyId = body.baby_id;
     const timestamp = body.timestamp;
-    //const temperature = body.TH[0];
+    const temperature = body.TH[0];
     const humidity = body.TH[1];
 
     console.log('Received babyId:', babyId);
