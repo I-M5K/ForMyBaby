@@ -7,6 +7,7 @@ import { sendLocation, selectBaby } from "../api/userApi";
 import { getNotificationList } from "../api/notificationApi";
 import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { useUserStore } from "../stores/UserStore";
+// import { getPostWord } from "../components/postWords.js";
 import ChildSelect from "../components/babyselect/babyselect.jsx";
 
 import BabyPhoto from "../assets/child_sleep.jpg";
@@ -27,6 +28,18 @@ const images = [
   require("../assets/bears/yap.png"),
 ]
 
+const mainHeaderTexts = [
+  "찬바람, 찬음식은 {selectedBabyName} 피해주는 게 좋아요!",
+  "{selectedBabyName}는 지금까지 {selectedBabyDay} 일 버텨냈어요!",
+  "{selectedBabyName}가 큰 소리로 웃는 것 같아요. 행복한 하루네요!",
+  "오늘은 {selectedBabyName}의 첫 명절이에요. 즐거운 시간 되세요!",
+  "{selectedBabyName}가 어느새 많이 자라서 놀랐죠? 성장하는 모습이 참 아름다워요!"
+];
+
+const getRandomHeaderText = () => {
+  const randomIndex = Math.floor(Math.random() * mainHeaderTexts.length);
+  return mainHeaderTexts[randomIndex];
+};
 
 const MainPage = () => {
   const loc = useLocation();
@@ -42,7 +55,6 @@ const MainPage = () => {
     setUncheckedCnt,
     babySelected,
     setBabySelected,
-    stopCnt, setStopCnt
   } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
@@ -56,11 +68,6 @@ const MainPage = () => {
     const fetchData = async () => {
       if (babySelected == null || babySelected == 0) {
         setBabySelected(babyList[0].babyId);
-      }
-
-      if (stopCnt) {
-        console.log('스톱모션 수: ' + stopCnt);
-        setStopCnt(stopCnt);
       }
 
       if (babyId) {
@@ -184,10 +191,10 @@ const MainPage = () => {
               src={require("../assets/mdi_bell.png")}
               alt="Notification Bell"
             /> */}
-            <GoBell className='goBell'/>
             {uncheckedCnt > 0 && ( // 읽지 않은 알림이 있을 때만 표시
               <span className="notification-count">{uncheckedCnt}</span>
             )}
+            <GoBell className='goBell'/>
           </div>
         </Link>
       </div>
@@ -200,7 +207,7 @@ const MainPage = () => {
         <div className="rectangleBox">
           <img src={PresentBox} className="presentbox" />
           <div className="rectangleBoxText">100% 채우면 과연 어떤 선물이?</div>
-          <GaugeBar value={stopCnt} maxValue={100} />
+          <GaugeBar value={70} maxValue={100} />
         </div>
       </Link>
 
