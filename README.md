@@ -119,15 +119,15 @@ https://www.notion.so/a8139528b99c4278961ed2ca37cfcbf0?v=be78df78104647a09bf164e
 <br><br>
 
 ### 수면 패턴 분석
-![KakaoTalk_20240403_115343332_01](/uploads/ca7375cf1cdf32607c00258046f5f683/KakaoTalk_20240403_115343332_01.jpg)
+![KakaoTalk_20240403_115343332_01](/uploads/ca7375cf1cdf32607c00258046f5f683/KakaoTalk_20240403_115343332_01.jpg){:width="250" height="497"}
 
 
 ### 검진/접종 타임라인
-![KakaoTalk_20240403_115343332_03](/uploads/fd58eb3c014be6f75e36f904aff0413d/KakaoTalk_20240403_115343332_03.jpg)
+![KakaoTalk_20240403_115343332_03](/uploads/fd58eb3c014be6f75e36f904aff0413d/KakaoTalk_20240403_115343332_03.jpg){:width="250" height="497"}
 
 
 ### 푸시알림
-![KakaoTalk_20240403_124606905](/uploads/dae9afcead9b2544b4b0ae7e994411a4/KakaoTalk_20240403_124606905.jpg)
+![KakaoTalk_20240403_124606905](/uploads/dae9afcead9b2544b4b0ae7e994411a4/KakaoTalk_20240403_124606905.jpg){:width="250" height="497"}
 
 
 
