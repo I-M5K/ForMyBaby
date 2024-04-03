@@ -10,14 +10,14 @@ import { useUserStore } from "../stores/UserStore";
 import ChildSelect from "../components/babyselect/babyselect.jsx";
 
 import BabyPhoto from "../assets/child_sleep.jpg";
-import Books from "../assets/books.png";
-import SleepChart from "../assets/sleepChart.png";
+import Books from "../assets/honey.png";
+import SleepChart from "../assets/graph.png";
 import Syringe from "../assets/syringe.png";
 import PresentBox from "../assets/presentBox.png";
 import { useLocation } from "react-router-dom";
 import { GoBell } from "react-icons/go";
 
-import GaugeBar from "../components/feature/present/CountBar.jsx"
+import GaugeBar from "../components/feature/present/CountBar.jsx";
 
 const images = [
   require("../assets/bears/hogogok.png"),
@@ -25,8 +25,8 @@ const images = [
   require("../assets/bears/kingbatne.png"),
   require("../assets/bears/saranghaeyo.png"),
   require("../assets/bears/yap.png"),
-]
-
+  require("../assets/bears/arrowRectangle.png"),
+];
 
 const MainPage = () => {
   const loc = useLocation();
@@ -42,7 +42,8 @@ const MainPage = () => {
     setUncheckedCnt,
     babySelected,
     setBabySelected,
-    stopCnt, setStopCnt
+    stopCnt,
+    setStopCnt,
   } = useUserStore();
 
   const [selectedBabyName, setSelectedBabyName] = useState("");
@@ -59,7 +60,7 @@ const MainPage = () => {
       }
 
       if (stopCnt) {
-        console.log('스톱모션 수: ' + stopCnt);
+        console.log("스톱모션 수: " + stopCnt);
         setStopCnt(stopCnt);
       }
 
@@ -184,18 +185,14 @@ const MainPage = () => {
               src={require("../assets/mdi_bell.png")}
               alt="Notification Bell"
             /> */}
-            <GoBell className='goBell'/>
+            <GoBell className="goBell" />
             {uncheckedCnt > 0 && ( // 읽지 않은 알림이 있을 때만 표시
               <span className="notification-count">{uncheckedCnt}</span>
             )}
           </div>
         </Link>
       </div>
-      <img
-        src={selectedImage}
-        className="gombaImage"
-        alt="Random Baby"
-      />
+      <img src={selectedImage} className="gombaImage" alt="Random Baby" />
       <Link to="/present">
         <div className="rectangleBox">
           <img src={PresentBox} className="presentbox" />
@@ -211,7 +208,7 @@ const MainPage = () => {
               <span className="textMiddle">{selectedBabyName} 태어난지</span>
               <br />
               <span className="textExSmall">
-                <div className='babyday'>{selectedBabyDay}</div> 일 되었어요
+                <div className="babyday">{selectedBabyDay}</div> 일 되었어요
               </span>
             </span>
           </div>
@@ -239,15 +236,17 @@ const MainPage = () => {
         </div>
 
         <div className="boxContainerRight">
-          <Link to={{
-                      pathname: "/baby-profile",
-                      state: {
-                          name: selectedName,
-                          gender: selectedBabyGender,
-                          birthDate: selectedBabyBirthDate,
-                          image: selectedBabyImg
-                      }
-                  }}>
+          <Link
+            to={{
+              pathname: "/baby-profile",
+              state: {
+                name: selectedName,
+                gender: selectedBabyGender,
+                birthDate: selectedBabyBirthDate,
+                image: selectedBabyImg,
+              },
+            }}
+          >
             <div className="smallmiddleBox">
               <img src={selectedBabyImg} className="babyphoto" />
             </div>

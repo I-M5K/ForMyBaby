@@ -1,13 +1,11 @@
 import React from "react";
 import "./Profile.css";
-import { MdArrowBackIos } from "react-icons/md";
 
 import BangaBanga from "../../assets/bangabanga.png";
 
 const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
   return (
     <div>
-      <MdArrowBackIos className="arrow-back-icon" />
       <div className="my-title">마이 페이지</div>
       <div className="user-profile">
         <div className="user-profile-container">

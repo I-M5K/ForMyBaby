@@ -46,6 +46,16 @@ function FamilyCodeForm() {
     navigate('/baby-add'); // 아이 정보 등록 페이지로
   };
 
+  const handleInputFocus = (index) => {
+    // 입력란이 포커스를 받았을 때 outline 색상 변경
+    inputRefs.current[index].style.outlineColor = '#f7c515';
+  };
+
+  const handleInputBlur = (index) => {
+    // 입력란이 포커스를 잃었을 때 outline 색상 초기화
+    inputRefs.current[index].style.outlineColor = '';
+  };
+
   return (
     <form className="family-code-form" onSubmit={handleSubmit}>
       <img src={require('../../assets/babybear.png')} className='familyImage'/>
@@ -63,6 +73,8 @@ function FamilyCodeForm() {
             maxLength={1}
             value={code[index] || ''}
             onChange={(e) => handleChange(index, e.target.value)}
+            onFocus={() => handleInputFocus(index)} // 포커스 이벤트 핸들러 추가
+            onBlur={() => handleInputBlur(index)} // 포커스 아웃 이벤트 핸들러 추가
           />
         ))}
       </div>

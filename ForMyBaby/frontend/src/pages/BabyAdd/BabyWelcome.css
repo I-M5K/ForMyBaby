@@ -19,7 +19,13 @@
     color: #fff;
     background: #f7c515;
 }
-
+.weltex {
+    font-size: 25px;
+    line-height: 1.3;
+    font-weight: bold;
+    margin-top: 50px;
+    color: #f7c515;
+}
 .confetti-container {
     visibility: hidden;
     transition: visibility 0s linear 1s;
@@ -27,6 +33,12 @@
 
 .confetti-container.show {
     visibility: visible;
+    transition: opacity 2s ease-in-out;
+    }
+
+.sarang {
+    width: 70%;
+    height: 70%;
 }
 
 /* 이하 confetti의 CSS는 유지합니다. */
