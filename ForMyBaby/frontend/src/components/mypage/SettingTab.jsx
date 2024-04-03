@@ -1,14 +1,13 @@
+import { useUserStore } from '../../stores/UserStore';
 import './SettingTab.css'
 
 const PresentPage = () => {
 
+    const {family} = useUserStore();
+    
     return (
         <div>
-            <br />
-            <div className="family-code-title">가족 코드</div>
-            <br />
-            <br />
-            <div className="mypage-settings">환경 설정</div>
+            <p className="family-code-title">가족 코드 : {family && family[0].familyCode}</p>
         </div>
     );
 }

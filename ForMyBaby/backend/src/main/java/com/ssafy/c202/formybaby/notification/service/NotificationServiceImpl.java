@@ -69,7 +69,7 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     public String createDangerTitle(String babyName) {
-        return StringCheck.getPostWord(babyName, "이의 ", "의 ") + "위험행동";
+        return StringCheck.getPostWord(babyName.substring(1), "이의 ", "의 ") + "위험행동";
     }
 
     public String createDangerContent(DangerType dangerType) {

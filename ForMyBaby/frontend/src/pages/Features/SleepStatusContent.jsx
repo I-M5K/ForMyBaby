@@ -48,7 +48,7 @@ const SleepStatusContent = () => {
     layout: {
       padding: {
         right: 30,
-      }
+      },
     },
     plugins: {
       legend: {

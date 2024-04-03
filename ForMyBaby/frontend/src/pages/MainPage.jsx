@@ -212,7 +212,7 @@ const MainPage = () => {
         <div className="rectangleBox">
           <img src={PresentBox} className="presentbox" />
           <div className="rectangleBoxText">100% 채우면 과연 어떤 선물이?</div>
-          <GaugeBar value={70} maxValue={100} />
+          <GaugeBar value={stopCnt} maxValue={100} />
         </div>
       </Link>
 

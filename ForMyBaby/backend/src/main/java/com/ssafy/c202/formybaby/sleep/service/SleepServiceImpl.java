@@ -46,6 +46,7 @@ public class SleepServiceImpl implements SleepService {
 //
 //        // endAt을 00:00:00으로 설정
         Calendar endTime = getCalendar(endAt);
+        System.out.println("캘린더 형식" + endTime);
         Calendar original = endTime;
         endTime.add(Calendar.DAY_OF_MONTH, -6);
         int[] dangerList = new int[7];
@@ -58,6 +59,8 @@ public class SleepServiceImpl implements SleepService {
             if (!s.isEmpty()) {
                 sleepList[cnt] = s.get(s.size() - 1).getSleepCnt();
                 hoursList[cnt] = s.get(s.size() - 1).getSleepTime();
+                System.out.println("sleepList " + cnt + " " + sleepList[cnt]);
+                System.out.println("hoursList " + cnt + " " + hoursList[cnt]);
             } else {
                 sleepList[cnt] = 0;
                 hoursList[cnt] = 0;
@@ -65,6 +68,8 @@ public class SleepServiceImpl implements SleepService {
             cnt++;
             endTime.add(Calendar.DAY_OF_MONTH, 1);
         }
+        System.out.println(sleepList.toString());
+        System.out.println(hoursList.toString());
 
         original.add(Calendar.DAY_OF_MONTH, -6);
         cnt = 0;
@@ -72,12 +77,14 @@ public class SleepServiceImpl implements SleepService {
             List<Danger> d = dangerRepository.findAllListByDate(original.getTime(), babyId);
             if (!d.isEmpty()) {
                 dangerList[cnt] = d.get(d.size() - 1).getDangerCnt();
+                System.out.println("dangerList " + cnt + " " + dangerList[cnt]);
             } else {
                 dangerList[cnt] = 0;
             }
             cnt++;
             original.add(Calendar.DAY_OF_MONTH, 1);
         }
+        System.out.println(dangerList.toString());
 
 
 //

@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -39,8 +41,7 @@ public class FamilyServiceImpl implements FamilyService{
     @Override
     public List<Family> familyList(Long userId) {
         try{
-            List<Family> familyList = familyRepository.findFamiliesByUserUserId(userId);
-            return familyList;
+            return familyRepository.findFamiliesByUserUserId(userId);
         } catch (Exception e){
             log.error("Error occurred while fetching family list: " + e.getMessage());
             throw new RuntimeException("Failed to fetch family list");
@@ -135,19 +136,28 @@ public class FamilyServiceImpl implements FamilyService{
         // Family 레코드들 모두 조회
         List<Family> familyList = familyRepository.findAllByUserId(userId);
         // 가족 공유 코드로 회원 가입 시 처음 아이번호를 레디스에 저장
+//         byUserId = 내가 저장한 아기들만 불러옴
         List<BabyReadResponse2> babyList = babyRepository.findBabiesByUserId2(userId);
+
         redisService.saveBabyIdsByToken(String.valueOf(userId), babyList.get(0).babyId());
         // 내 Family 레코드 조회
         //List<Family> myFamilyList = familyRepository.findFamiliesByUserUserId(Long.valueOf(userId));
         if (!familyList.isEmpty()) {
             for (Family family : familyList) {
-                if (family.getRole() == Role.None) {
+                if (family.getRole().equals(Role.None)) {
                     family.setRole(Role.valueOf(role));
                 }
-
+                familyRepository.save(family);
             }
         }
-        return babyService.babyList3(userId);
 
+        List<BabyReadResponse2> babies = babyRepository.findBabiesByFamilyCode2(familyCode);
+        Map<Long, BabyReadResponse2> uniqueBabiesMap = new LinkedHashMap<>();
+        for (BabyReadResponse2 baby : babies) {
+            // babyId를 키로 사용하여 Map에 저장
+            uniqueBabiesMap.putIfAbsent(baby.babyId(), baby);
+        }
+        babies = new ArrayList<>(uniqueBabiesMap.values());
+        return babies;
     }
 }

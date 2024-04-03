@@ -3,6 +3,7 @@ import Profile from '../../components/mypage/Profile'
 import ChildInfo from '../../components/mypage/ChildInfo'
 import FamilyInfo from '../../components/mypage/FamilyInfo'
 import SettingsTab from '../../components/mypage/SettingTab'
+import TutorialAndLogin from '../../components/TutorialAndLogin'
 
 import './MyPage.css'
 
@@ -20,7 +21,6 @@ const MyPage = () => {
 
     return (
         <div className='mypage'>
-            {/* <p className='mypage-title'>마이페이지</p> */}
             <Profile />
             <br />
             <ChildInfo />

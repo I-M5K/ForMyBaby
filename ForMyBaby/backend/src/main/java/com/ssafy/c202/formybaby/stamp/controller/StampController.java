@@ -31,8 +31,9 @@ public class StampController {
         return new ResponseEntity<>("Stamp create successfully^^!", HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PatchMapping("/create")
     public ResponseEntity<?> createStampAI(@RequestHeader(name = "Authorization") String token, @RequestBody StampCreateAIRequest stampCreateAIRequest){
+        System.out.println(stampCreateAIRequest.stampUrl() + " " + stampCreateAIRequest.babyId() + " " + stampCreateAIRequest.step());
         stampService.createStampAI(token, stampCreateAIRequest);
         return null;
     }

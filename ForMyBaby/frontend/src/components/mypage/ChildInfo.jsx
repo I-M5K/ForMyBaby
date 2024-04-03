@@ -3,33 +3,31 @@ import { useNavigate } from "react-router-dom";
 import "./ChildInfo.css";
 
 import ChildPhoto from "../../assets/smilebaby.png";
+import { useUserStore } from "../../stores/UserStore";
 
 const ChildInfo = () => {
-  const [children, setChildren] = useState([]);
-  const navigate = useNavigate();
 
-  const addChild = () => {
-    setChildren([...children, { name: "김싸피", photo: "child_photo_url" }]);
-  };
+const {babyList} = useUserStore();
+  
 
   return (
     <div className="child-info-container">
       <div>
         <p className="child-title">우리 아이 정보</p>
         <div className="child-container">
-          {children.map((child, index) => (
+          {babyList.map((child, index) => (
             <div
               key={index}
               className="child-item"
               onClick={() => console.log("Clicked on child")}
             >
               <div className="child-photo">
-                <img src={ChildPhoto} />
+                <img src={child.profileImg} />
               </div>
               <div>{child.name}</div>
             </div>
           ))}
-          <button className="add-child-button" onClick={addChild}>
+          <button className="add-child-button" onClick={''}>
             아이 <br />
             추가
           </button>
