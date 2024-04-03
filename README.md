@@ -92,7 +92,10 @@
 
 ## API 명세서
 
-![apiㅁㅇㅅ](/uploads/7cdbb7f655231a75b2bd77f952590664/apiㅁㅇㅅ.PNG)
+![image](/uploads/e3dd9aa8d15df263fa18377643efa5b1/image.png)
+
+https://www.notion.so/1227ef1f15f54148a51f36aefc0e3289?v=3cef4b8b00654b2cbe4db7d83294cd7f
+
 
 <br></br>
 <br></br>
@@ -100,6 +103,9 @@
 
 ## 화면 정의서
 
+![image](/uploads/5feedc93e72af108c33bc2b460965773/image.png)
+
+https://www.notion.so/a8139528b99c4278961ed2ca37cfcbf0?v=be78df78104647a09bf164efca0c9e8b
 
 
 <br><br>
@@ -107,20 +113,21 @@
 ## 주요 기능 및 화면
 
 ### 아이 지킴이
-
+![애기백분위](/uploads/73f02dbfd257e2eb3d39dc3b0832e8ba/애기백분위.PNG)
 
 
 <br><br>
 
 ### 수면 패턴 분석
-
+![KakaoTalk_20240403_115343332_01](/uploads/ca7375cf1cdf32607c00258046f5f683/KakaoTalk_20240403_115343332_01.jpg)
 
 
 ### 검진/접종 타임라인
+![KakaoTalk_20240403_115343332_03](/uploads/fd58eb3c014be6f75e36f904aff0413d/KakaoTalk_20240403_115343332_03.jpg)
 
 
 ### 푸시알림
-
+![KakaoTalk_20240403_124606905](/uploads/dae9afcead9b2544b4b0ae7e994411a4/KakaoTalk_20240403_124606905.jpg)
 
 
 
