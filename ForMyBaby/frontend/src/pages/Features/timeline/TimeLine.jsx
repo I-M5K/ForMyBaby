@@ -39,7 +39,7 @@ const TimeLinePage = () => {
         <div>
             <h2>타임 라인</h2>
         <Link to="/main">
-          <button style={{position: 'fixed', top:"20px", left:"40px", zIndex: 1000, backgroundColor: 'transparent', border:'none'}}>
+          <button style={{position: 'fixed', top:"20px", left:"30px", zIndex: 1000, backgroundColor: 'transparent', border:'none'}}>
             <img src={arrowLeft} alt="Settings" />
           </button>
         </Link>
