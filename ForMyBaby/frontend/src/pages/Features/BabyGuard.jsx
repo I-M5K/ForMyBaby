@@ -125,7 +125,7 @@ const Dashboard = () => {
     socket.on("dangerEvent", (data) => {
       console.log("Received dangerEvent:", data);
       const response = getTodayData();
-      setDanger(response.dangerCnt + 1);
+      setDanger(response.dangerCnt+1);
       sendDanger(data.baby_id, data.detail);
       // if (danger == null){
       //   setDanger(1);
@@ -135,13 +135,12 @@ const Dashboard = () => {
     });
 
     // 소켓 수면 분석용 이벤트 수신
-    socket.on("sleepEvent", (data) => {
-      console.log("Received sleepEvent:", data);
-      if (data.detail == "0") {
-        // 잠에서 깸
-        console.log("Received sleepEvent - 잠에서 깸", data);
-        sendAwake(data.baby_id);
-        if (awake == null) {
+    socket.on('sleepEvent', (data) => {
+      console.log('Received sleepEvent:', data);
+      if (data.detail == '0'){ // 잠에서 깸
+        console.log('Received sleepEvent - 잠에서 깸', data);
+        sendAwake(data.baby_id)
+        if (awake == null){
           setAwake(1);
         } else {
           setAwake(awake + 1);
@@ -155,10 +154,9 @@ const Dashboard = () => {
         // const timeDifference = (awakeTime - sleepTime) / (1000 * 60);
         // console.log('Time difference (minutes):', timeDifference);
         // setHours(hours+timeDifference);
-      } else if (data.detail == "1") {
-        // 잠 듦
-        console.log("Received sleepEvent - 잠듦", data);
-        sendSleep(data.baby_id);
+      } else if (data.detail == '1') { // 잠 듦
+        console.log('Received sleepEvent - 잠듦', data);
+        sendSleep(data.baby_id)
         //setSleep(data.timestamp);
       }
     });
