@@ -46,13 +46,12 @@ public class StopMotionServiceImpl implements StopMotionService {
         Optional<StopMotion> stopMotion = stopMotionRepository.findFirstByBaby_BabyIdOrderByCreatedAtDesc(babyId);
         Timestamp timestamp = getCurrentTimestamp();
         log.info("timestamp1 : " + timestamp);
-
-        // 주어진 시간에 9시간을 더함
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(timestamp.getTime());
-        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
         timestamp.setTime(setCalender.getTimeInMillis());
-
         log.info("timestamp2 : " + timestamp);
         Baby baby = babyRepository.findByBabyId(babyId);
         if(!stopMotion.isPresent()){

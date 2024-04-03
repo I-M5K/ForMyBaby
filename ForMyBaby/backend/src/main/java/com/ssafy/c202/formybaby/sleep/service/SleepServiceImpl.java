@@ -32,16 +32,19 @@ public class SleepServiceImpl implements SleepService {
     private final DangerRepository dangerRepository;
 
     @Override
-    public SleepWeekAllList getWeekAllList(String token, Timestamp endAt) {
-        // Calendar 객체를 생성하고 endAt을 설정
+    public SleepWeekAllList getWeekAllList(String token, Timestamp endAtex) {
+        Timestamp endAt = getCurrentTimestamp();
+        log.info("endAt1 : " + endAt);
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(endAt.getTime());
-        // 주어진 시간에 9시간을 더함
-        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
         endAt.setTime(setCalender.getTimeInMillis());
+        log.info("endAt2 : " + endAt);
 
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
-       // List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
+        //List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
         //List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(babyId);
 
 
@@ -61,24 +64,27 @@ public class SleepServiceImpl implements SleepService {
         int[] sleepList = new int[7];
 
         int cnt = 0;
-        while (cnt < 7) {
-            List<Sleep> s = sleepRepository.findAllListByDate(endTime.getTime(), babyId);
-            if (!s.isEmpty()) {
-                sleepList[cnt] = s.get(s.size() - 1).getSleepCnt();
-                hoursList[cnt] = s.get(s.size() - 1).getSleepTime();
-                System.out.println("sleepList " + cnt + " " + sleepList[cnt]);
-                System.out.println("hoursList " + cnt + " " + hoursList[cnt]);
-            } else {
-                sleepList[cnt] = 0;
-                hoursList[cnt] = 0;
-            }
-            cnt++;
-            endTime.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        System.out.println(sleepList.toString());
-        System.out.println(hoursList.toString());
 
-        original.add(Calendar.DAY_OF_MONTH, -6);
+        List<Sleep> sleepList1 = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
+
+//        while (cnt < 7) {
+//            List<Sleep> s = sleepRepository.findAllListByDate(endTime.getTime(), babyId);
+//            if (!s.isEmpty()) {
+//                sleepList[cnt] = s.get(s.size() - 1).getSleepCnt();
+//                hoursList[cnt] = s.get(s.size() - 1).getSleepTime();
+//                System.out.println("sleepList " + cnt + " " + sleepList[cnt]);
+//                System.out.println("hoursList " + cnt + " " + hoursList[cnt]);
+//            } else {
+//                sleepList[cnt] = 0;
+//                hoursList[cnt] = 0;
+//            }
+//            cnt++;
+//            endTime.add(Calendar.DAY_OF_MONTH, 1);
+//        }
+//        System.out.println(sleepList.toString());
+//        System.out.println(hoursList.toString());
+//
+//        original.add(Calendar.DAY_OF_MONTH, -6);
         cnt = 0;
         while (cnt < 7) {
             List<Danger> d = dangerRepository.findAllListByDate(original.getTime(), babyId);
@@ -88,6 +94,8 @@ public class SleepServiceImpl implements SleepService {
             } else {
                 dangerList[cnt] = 0;
             }
+            hoursList[cnt] = sleepList1.get(cnt).getSleepTime();
+            sleepList[cnt] = sleepList1.get(cnt).getSleepCnt();
             cnt++;
             original.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -181,13 +189,12 @@ public class SleepServiceImpl implements SleepService {
     public void getSleepOnTime(String token,Long babyId) {
         Timestamp createdAt = getCurrentTimestamp();
         log.info("createdAt1 : " + createdAt);
-
-        // 주어진 시간에 9시간을 더함
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(createdAt.getTime());
-        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
         createdAt.setTime(setCalender.getTimeInMillis());
-
         log.info("createdAt2 : " + createdAt);
 
         // 유저 정보를 가져온다.
@@ -257,15 +264,14 @@ public class SleepServiceImpl implements SleepService {
     public void getAwakeOnTime(String token, Long babyId) {
         Timestamp endAt = getCurrentTimestamp();
         log.info("endAt1 : " + endAt);
-
-        // 주어진 시간에 9시간을 더함
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(endAt.getTime());
-        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
         endAt.setTime(setCalender.getTimeInMillis());
-
         log.info("endAt2 : " + endAt);
-//        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
+        //Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(babyId);
 
         // 베이비 아이디로 수면 목록을 가져옵니다.

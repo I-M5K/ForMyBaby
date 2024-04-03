@@ -144,13 +144,12 @@ public class DangerServiceImpl implements DangerService {
         List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(baby.getBabyId());
         Timestamp createdAt = getCurrentTimestamp();
         log.info("createdAt1 : " + createdAt);
-
-        // 주어진 시간에 9시간을 더함
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(createdAt.getTime());
-        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
         createdAt.setTime(setCalender.getTimeInMillis());
-
         log.info("createdAt2 : " + createdAt);
 
         if (!dangerList.isEmpty()) {

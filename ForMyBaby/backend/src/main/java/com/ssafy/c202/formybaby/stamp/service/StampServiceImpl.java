@@ -36,11 +36,14 @@ public class StampServiceImpl implements StampService{
     public void createStamp(String token, StampCreateRequest stampCreateRequest) {
         log.info("stampCreateRequest : " + stampCreateRequest);
         Timestamp timestamp = getCurrentTimestamp();
-        // Calendar 객체를 생성하고 endAt을 설정
+        log.info("timestamp1 : " + timestamp);
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(timestamp.getTime());
-        // 주어진 시간에에 9시간을 더함
-        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
+        timestamp.setTime(setCalender.getTimeInMillis());
+        log.info("timestamp2 : " + timestamp);
 
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getBabyIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(babyId);
@@ -65,13 +68,12 @@ public class StampServiceImpl implements StampService{
         Baby baby = babyRepository.findByBabyId(stampCreateAIRequest.babyId());
         Timestamp timestamp = getCurrentTimestamp();
         log.info("timestamp1 : " + timestamp);
-
-        // 주어진 시간에 9시간을 더함
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
         Calendar setCalender = Calendar.getInstance();
         setCalender.setTimeInMillis(timestamp.getTime());
-        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
         timestamp.setTime(setCalender.getTimeInMillis());
-
         log.info("timestamp2 : " + timestamp);
         Stamp stamp = stampRepository.findByStepAndBabyId(stampCreateAIRequest.step(), stampCreateAIRequest.babyId());
         stamp.setBaby(baby);
