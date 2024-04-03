@@ -105,7 +105,9 @@ const SleepStatusContent = () => {
           font: {
             size: 10, // sleepData의 라벨 폰트 크기 줄임
           },
-          stepSize: 10,
+          stepSize: 5, // y축 간격 조정
+          min: 0, // y축 최소값
+          max: 100, // y축 최대값
         },
       },
     },

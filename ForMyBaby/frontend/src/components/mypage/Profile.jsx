@@ -1,5 +1,6 @@
 import React from "react";
 import "./Profile.css";
+import { LuPencil } from "react-icons/lu";
 
 import BangaBanga from "../../assets/bangabanga.png";
 
@@ -14,10 +15,10 @@ const UserProfile = ({ userPhoto, userName, onProfileEdit }) => {
           </div>
           <div className="user-info">
             <h3>김싸피</h3>
+            <div className="edit-profile-button" onClick={onProfileEdit}>
+              <LuPencil />
+            </div>
           </div>
-          <button className="edit-profile-button" onClick={onProfileEdit}>
-            프로필 수정
-          </button>
         </div>
       </div>
     </div>

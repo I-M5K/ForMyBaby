@@ -4,7 +4,11 @@ const PresentPage = () => {
 
     return (
         <div>
-            <p className="family-code-title">가족 코드</p>
+            <br />
+            <div className="family-code-title">가족 코드</div>
+            <br />
+            <br />
+            <div className="mypage-settings">환경 설정</div>
         </div>
     );
 }
