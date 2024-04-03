@@ -14,7 +14,7 @@ function ParentingStamp() {
   const [stampList, setStampList] = useState([]);
 
   const handlePageSelection = (newPage) => {
-    setAnimationClass("slide-out");
+    setAnimationClass("");
     setTimeout(() => {
       setSelectedPage(newPage);
       setAnimationClass("slide-in");
