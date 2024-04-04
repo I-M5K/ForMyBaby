@@ -3,8 +3,8 @@ FROM python:3.9-slim
 
 # Python 애플리케이션에 필요한 파일을 복사합니다.
 WORKDIR /app/python-logic/common/edge_lp3
-COPY ./workspace/python-logic/common/edge_lp3/main.py /app/python-logic/common/edge_lp3/main.py
-COPY ./workspace/python-logic/common/edge_lp3/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
+COPY ./python/src/main.py /app/python-logic/common/edge_lp3/main.py
+COPY ./python/lib/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
 
 # Python 의존성을 설치합니다.
 RUN pip install -r /app/python-logic/common/edge_lp3/requirements.txt
@@ -16,8 +16,8 @@ FROM node:21.7.1-alpine
 
 # Node.js 애플리케이션에 필요한 파일을 복사합니다.
 WORKDIR /app/express-network
-COPY ./workspace/express-network/index.js /app/express-network/index.js
-COPY ./workspace/express-network/package.json /app/express-network/package.json
+COPY ./express/index.js /app/express-network/index.js
+COPY ./express/package.json /app/express-network/package.json
 
 # Node.js 패키지를 설치합니다.
 RUN npm install
