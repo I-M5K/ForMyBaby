@@ -1,0 +1,51 @@
+.chart-detail-header {
+    font-size: 18px;
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+
+.bold-text {
+  font-weight: bold;
+  font-size: 23px;
+}
+.chart-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    height: 170px;
+    border-radius: 30px;
+    background-color: #f9f9f9;
+  }
+  
+  .chart-item {
+    text-align: center;
+    width: 100px; /* 또는 원하는 크기 */
+    height: 100px;
+  }
+  
+  .chart-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .chart-footer {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .chart-footer.적합 {
+    color: green; /* 초록색 */
+  }
+  
+  .chart-footer.부족 {
+    color: orange; /* 노란색 */
+  }
+  
+  .chart-footer.위험 {
+    color: red; /* 빨간색 */
+  }

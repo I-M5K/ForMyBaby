@@ -1,0 +1,36 @@
+.age-group-container {
+    position: relative;
+    text-align: center;
+  }
+  
+  .image-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .stamp-map {
+    width: 99%;
+    height: auto;
+  }
+  
+  .stamp-button {
+    position: absolute;
+    border-radius: 50%; 
+    width: 80px;
+    height: 80px;
+    border: none;
+    cursor: pointer;
+    background-color: gold; 
+    color: white; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+.stamp-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

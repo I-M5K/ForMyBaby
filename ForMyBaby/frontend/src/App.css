@@ -5,10 +5,15 @@
 .login-container {
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* 화면 아래쪽에 정렬합니다. */
-  margin-top: 30px;
+  /* align-items: flex-end; 화면 아래쪽에 정렬합니다. */
+  margin-top: 60px;
 }
 
 .login-content {
   margin-bottom: 20px; /* 로그인 버튼과 컨테이너 사이의 여백을 조절합니다. */
+}
+
+a, a:visited, a:hover, a:active {
+  text-decoration: none;
+  color: inherit; /* 선택적으로, 링크 색상을 부모 요소의 색상을 상속받도록 설정 */
 }

@@ -1,0 +1,64 @@
+.ParentingStamp {
+    position: relative;
+    overflow: hidden; 
+}
+
+.parenstamp-title {
+    text-align: center;
+    font-size: 20px;
+    margin: 20px;
+}
+
+.parenstamp-header button {
+  background: white;
+  color: #929191;
+  border-radius: 20px;
+  border-color: transparent; /* 기존 값 제거 */
+  padding: 10px 15px;
+  margin: 0 2px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.parenstamp-header button:hover,
+.parenstamp-header button:active {
+  background: rgba(247, 197, 21, 0.1);
+  color: #F7C515;
+
+}
+
+.stamp_map {
+    width: 100%;
+    height: auto;
+
+}
+  
+.parenstamp-contents {
+    position: absoulte; 
+    top: 130px; 
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+@keyframes slideOut {
+    0% { opacity: 1; transform: translateX(0); }
+    110% { opacity: 0; transform: translateX(-100%); }
+  }
+  
+  @keyframes slideIn {
+    0% { opacity: 0; transform: translateX(100%); }
+    110% { opacity: 1; transform: translateX(0); }
+  }
+  
+  .slide-out {
+    animation: slideOut 0.5s forwards;
+  }
+  
+  .slide-in {
+    animation: slideIn 0.5s forwards;
+  }
+  

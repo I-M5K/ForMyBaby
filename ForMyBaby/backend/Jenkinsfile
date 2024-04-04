@@ -1,0 +1,132 @@
+pipeline {
+    agent any
+    environment {
+        REPO = "s10-ai-image-sub2/S10P22C202"
+        DB_URL = "${env.DB_URL}"
+        DB_USER = "${env.DB_USER}"
+        DB_PASSWORD = "${env.DB_PASSWORD}"
+        REDIS_HOST = "${env.REDIS_HOST}"
+        REDIS_PASSWORD = "${env.REDIS_PASSWORD}"
+        REDIS_PORT = "${env.REDIS_PORT}"
+        KAKAO_ID = "${env.KAKAO_ID}"
+        KAKAO_REDIRECT_URI = "${env.KAKAO_REDIRECT_URI}"
+        KAKAO_PW = "${env.KAKAO_PW}"
+        S3_ACCESS_KEY = "${env.S3_ACCESS_KEY}"
+        S3_SECRET_KEY = "${env.S3_SECRET_KEY}"
+        S3_REGION = "${env.S3_REGION}"
+        S3_BUCKET = "${env.S3_BUCKET}"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Setup Environment') {
+            steps {
+                dir("${env.WORKSPACE}/ForMyBaby/backend"){
+                    script {
+                        sh "ls -al"
+                        sh "echo 'SUBMODULE CHECK'"
+                        sh "ls ./src/main/resources"
+                        sh "chmod +x ./gradlew"
+                        sh "cat ./src/main/resources/application.yml"
+//                         sh "cp ./src/main/resources/application.yml"
+//                         sh "chmod +x ./gradlew"
+//                         sh "cat ./src/main/resources/application.yml"
+                    }
+                }
+            }
+        }
+        stage("Build") {
+                steps {
+                    script {
+                        sh "ls -al"
+                        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+                            echo "도커허브 아이디: ${DOCKER_USER_ID}"
+                            echo "도커허브 비밀번호: ${DOCKER_USER_PASSWORD}"
+                            sh "docker build --no-cache -t ${DOCKER_USER_ID}/back ForMyBaby/backend"
+                        }
+                    }
+                }
+        }
+
+        stage("Login") {
+            steps {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+                    sh """
+                        set +x
+                        echo $DOCKER_USER_PASSWORD | docker login -u $DOCKER_USER_ID --password-stdin
+                        set -x
+                    """
+                }
+            }
+        }
+
+        stage("Tag and Push") {
+            steps {
+                script {
+                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+                        sh "docker push ${DOCKER_USER_ID}/back"
+                     }
+                }
+            }
+        }
+
+        stage('Prune old images'){
+            steps{
+                script{
+                    sh "docker ps"
+//                     sh "docker system prune --filter until=10h"
+                }
+            }
+        }
+
+
+        stage('Pull') {
+            steps {
+                script {
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+//                         sh "docker stop back || true"  // Ignore error ifgit  container doesn't exist
+//                         sh "docker rm back || true"    // Ignore error if container doesn't exist
+//                         sh "docker rmi hyeiiin/back"     //images 날리기
+//                         sh "docker pull ${DOCKER_USER_ID}/back"
+                    }
+                }
+            }
+        }
+        stage('Up') {
+            steps {
+                script {
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+                        try {
+                            sh "docker stop -f back || true"
+                            sh "docker rm -f back || true"
+                            sh "docker rmi back || true"
+                            sh "docker run -d --name back -p 8082:8080 -e DB_URL=${env.DB_URL} -e DB_USER=${env.DB_USER} -e DB_PASSWORD=${env.DB_PASSWORD} -e REDIS_HOST=${env.REDIS_HOST} -e REDIS_PASSWORD=${env.REDIS_PASSWORD} -e REDIS_PORT=${env.REDIS_PORT} -e KAKAO_ID=${env.KAKAO_ID} -e KAKAO_REDIRECT_URI=${env.KAKAO_REDIRECT_URI} -e KAKAO_PW=${env.KAKAO_PW} -e S3_ACCESS_KEY=${env.S3_ACCESS_KEY} -e S3_SECRET_KEY=${env.S3_SECRET_KEY} -e S3_REGION=${env.S3_REGION} -e S3_BUCKET=${env.S3_BUCKET} ${DOCKER_USER_ID}/back && docker ps"
+                        } catch (Exception e) {
+                            sh "docker restart back || true"  // Ignore error if container doesn't exist
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+post {
+        success {
+            script {
+                mattermostSend (color: 'good',
+                message: "BE 배포 성공   :cat_jump: :loopy_happy: :bboong: ",
+                )
+            }
+        }
+        failure {
+            script {
+                mattermostSend (color: 'danger',
+                message: "BE 배포 실패   :cry_tom: :cryingloopy: :cryingpatamon: "
+                )
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.present-btn {
+    border: none;
+    background: none;
+    padding: 0; /* 내부 패딩 제거 */
+    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 상태로 표시 */
+}
+
+.present-box {
+    width: 300px;
+    height: 300px;
+}

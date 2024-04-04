@@ -1,0 +1,111 @@
+.notification-setting-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.notification-setting-header {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-all-button {
+  margin-left: 10px; /* 뒤로가기 버튼을 맨 왼쪽에 붙임 */
+  background-color: transparent;
+  border: none;
+  margin-top: 5px;
+  font-size: 20px;
+}
+
+.settings-button {
+  margin-left: 10px; /* 뒤로가기 버튼을 맨 왼쪽에 붙임 */
+  background-color: transparent;
+  border: none;
+  margin-top: 5px;
+  font-size: 20px;
+}
+
+.notification-setting-title {
+  font-size: 20px;
+}
+
+.noti-list {
+  width: 400px;
+  margin-top: 30px;
+}
+
+.noti-box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  margin: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+/* 토글 버튼 스타일 */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px; /* 가로 길이를 늘림 */
+    height: 25px; /* 세로 길이를 줄임 */
+  }
+  
+  /* 토글 슬라이더 스타일 */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* 슬라이더 모양 */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #808080; /* 기본 색상 회색 */
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 12px; /* 둥근 슬라이더 모양 */
+    border: 2px solid #808080; /* 테두리 두께를 줄임 */
+  }
+  
+  /* 토글 버튼 ON 시 슬라이더 색상 */
+  input:checked + .slider {
+    background-color: #5cb85c; /* ON 시 초록색으로 변경 */
+    border-color: #5cb85c; /* ON 시 테두리 색상도 변경 */
+  }
+  
+  /* 슬라이더 속을 채우는 색상 */
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; /* 세로 길이를 줄임 */
+    width: 20px; /* 가로 길이를 줄임 */
+    top: 1px;
+    left: 2px; /* 위치 조정 */
+    bottom: 2px; /* 위치 조정 */
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%; /* 둥근 모양으로 변경 */
+  }
+  
+  /* 토글 버튼 ON 시 슬라이더가 이동하는 효과 */
+  input:checked + .slider:before {
+    transform: translateX(21px); /* 이동 거리 조정 */
+  }
