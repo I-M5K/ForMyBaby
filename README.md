@@ -2,7 +2,7 @@
 
 ## FOR MY BABY
 
-<로고 이미지>
+![표정1](/uploads/9a1190b65c8d781a38126c3aef88535e/표정1.png)
 
 [부모가 한숨 돌릴 수 있는 아이 지킴이]
 
@@ -118,7 +118,7 @@ https://www.notion.so/a8139528b99c4278961ed2ca37cfcbf0?v=be78df78104647a09bf164e
 ## 주요 기능 및 화면
 
 ### 아이 지킴이
-![애기백분위](/uploads/73f02dbfd257e2eb3d39dc3b0832e8ba/애기백분위.PNG)
+![image](/uploads/09faa083881ea0d583880a8968840dbd/image.png)
 
 
 <br><br>
