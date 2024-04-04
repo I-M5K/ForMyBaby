@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -51,6 +52,15 @@ public class BabyServiceImpl implements BabyService{
         List<Long> userIdList = familyRepository.findFirstUserIdByFamilyCode(familyCode);
         Baby baby = babyMapper.toBabyEntity(babyCreateRequest);
         Timestamp timestamp = getCurrentTimestamp();
+        log.info("timestamp1 : " + timestamp);
+
+        // 주어진 시간에 9시간을 더함
+        Calendar setCalender = Calendar.getInstance();
+        setCalender.setTimeInMillis(timestamp.getTime());
+        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        timestamp.setTime(setCalender.getTimeInMillis());
+
+        log.info("timestamp2 : " + timestamp);
         babyRepository.save(baby);
         String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp,"pro");
         baby.setProfileImg(uploadFileName);
@@ -95,6 +105,15 @@ public class BabyServiceImpl implements BabyService{
         log.info("familyCode : " + familyCode);
 
         Timestamp timestamp = getCurrentTimestamp();
+        log.info("timestamp1 : " + timestamp);
+
+        // 주어진 시간에 9시간을 더함
+        Calendar setCalender = Calendar.getInstance();
+        setCalender.setTimeInMillis(timestamp.getTime());
+        setCalender.add(Calendar.HOUR_OF_DAY, 9);
+        timestamp.setTime(setCalender.getTimeInMillis());
+
+        log.info("timestamp2 : " + timestamp);
 
         babyRepository.save(baby);
         String uploadFileName = awsS3Service.uploadFile(baby.getBabyId(),babyCreateRequest.files(),timestamp, "pro");
