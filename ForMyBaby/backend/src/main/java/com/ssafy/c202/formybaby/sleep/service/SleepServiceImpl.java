@@ -32,9 +32,19 @@ public class SleepServiceImpl implements SleepService {
     private final DangerRepository dangerRepository;
 
     @Override
-    public SleepWeekAllList getWeekAllList(String token, Timestamp endAt) {
+    public SleepWeekAllList getWeekAllList(String token, Timestamp endAtex) {
+        Timestamp endAt = getCurrentTimestamp();
+        log.info("endAt1 : " + endAt);
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
+        Calendar setCalender = Calendar.getInstance();
+        setCalender.setTimeInMillis(endAt.getTime());
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
+        endAt.setTime(setCalender.getTimeInMillis());
+        log.info("endAt2 : " + endAt);
+
         Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
-       // List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
+        //List<Sleep> sleepList = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
         //List<Danger> dangerList = dangerRepository.findAllByBaby_BabyIdOrderByCreatedAtDesc(babyId);
 
 
@@ -54,24 +64,27 @@ public class SleepServiceImpl implements SleepService {
         int[] sleepList = new int[7];
 
         int cnt = 0;
-        while (cnt < 7) {
-            List<Sleep> s = sleepRepository.findAllListByDate(endTime.getTime(), babyId);
-            if (!s.isEmpty()) {
-                sleepList[cnt] = s.get(s.size() - 1).getSleepCnt();
-                hoursList[cnt] = s.get(s.size() - 1).getSleepTime();
-                System.out.println("sleepList " + cnt + " " + sleepList[cnt]);
-                System.out.println("hoursList " + cnt + " " + hoursList[cnt]);
-            } else {
-                sleepList[cnt] = 0;
-                hoursList[cnt] = 0;
-            }
-            cnt++;
-            endTime.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        System.out.println(sleepList.toString());
-        System.out.println(hoursList.toString());
 
-        original.add(Calendar.DAY_OF_MONTH, -6);
+        List<Sleep> sleepList1 = sleepRepository.findAllByBaby_BabyIdOrderBySleepIdDesc(babyId);
+
+//        while (cnt < 7) {
+//            List<Sleep> s = sleepRepository.findAllListByDate(endTime.getTime(), babyId);
+//            if (!s.isEmpty()) {
+//                sleepList[cnt] = s.get(s.size() - 1).getSleepCnt();
+//                hoursList[cnt] = s.get(s.size() - 1).getSleepTime();
+//                System.out.println("sleepList " + cnt + " " + sleepList[cnt]);
+//                System.out.println("hoursList " + cnt + " " + hoursList[cnt]);
+//            } else {
+//                sleepList[cnt] = 0;
+//                hoursList[cnt] = 0;
+//            }
+//            cnt++;
+//            endTime.add(Calendar.DAY_OF_MONTH, 1);
+//        }
+//        System.out.println(sleepList.toString());
+//        System.out.println(hoursList.toString());
+//
+//        original.add(Calendar.DAY_OF_MONTH, -6);
         cnt = 0;
         while (cnt < 7) {
             List<Danger> d = dangerRepository.findAllListByDate(original.getTime(), babyId);
@@ -81,6 +94,8 @@ public class SleepServiceImpl implements SleepService {
             } else {
                 dangerList[cnt] = 0;
             }
+            hoursList[cnt] = sleepList1.get(cnt).getSleepTime();
+            sleepList[cnt] = sleepList1.get(cnt).getSleepCnt();
             cnt++;
             original.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -149,17 +164,17 @@ public class SleepServiceImpl implements SleepService {
         int dangerCnt = 0;
         // sleepList가 비어있지 않으면 첫 번째 Sleep 객체를 가져옴.
         if(!sleepList.isEmpty()){
-            if (getCalendar(sleepList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
+//            if (getCalendar(sleepList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
                 sleepCnt = sleepList.get(0).getSleepCnt();
                 sleepTime = sleepList.get(0).getSleepTime();
-            }
+//            }
         }
         Danger danger = new Danger();
         // dangerList가 비어있찌 않으면 첫 번째 Danger 객체를 가져옴.
         if(!dangerList.isEmpty()){
-            if (getCalendar(dangerList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
+//            if (getCalendar(dangerList.get(0).getCreatedAt()) == getCalendar(getCurrentTimestamp())){
                 dangerCnt = dangerList.get(0).getDangerCnt();
-            }
+//            }
         }
 
 //        // 각각의 수면 시간,횟수, 위험 행동 횟수,  생성 시간들을 가져와서 저장한다.
@@ -173,7 +188,14 @@ public class SleepServiceImpl implements SleepService {
     @Override
     public void getSleepOnTime(String token,Long babyId) {
         Timestamp createdAt = getCurrentTimestamp();
-        log.info("createdAt : " + createdAt);
+        log.info("createdAt1 : " + createdAt);
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
+        Calendar setCalender = Calendar.getInstance();
+        setCalender.setTimeInMillis(createdAt.getTime());
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
+        createdAt.setTime(setCalender.getTimeInMillis());
+        log.info("createdAt2 : " + createdAt);
 
         // 유저 정보를 가져온다.
 //        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
@@ -194,7 +216,7 @@ public class SleepServiceImpl implements SleepService {
         // 수면 목록이 있다면
         if (!sleepList.isEmpty()) {
             Sleep latestSleep = sleepList.get(0);
-            log.info("sleepList : " + sleepList);
+            log.info("latestSleep : " + latestSleep);
 
             //최근 잠든 시간을 구한다.
             Calendar latestSleepCal = Calendar.getInstance();
@@ -241,8 +263,15 @@ public class SleepServiceImpl implements SleepService {
     @Override
     public void getAwakeOnTime(String token, Long babyId) {
         Timestamp endAt = getCurrentTimestamp();
-        log.info("endAt : " + endAt);
-//        Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
+        log.info("endAt1 : " + endAt);
+        // 주어진시간에 9시간을 더하고 하루를 뺌. 새로운 Timestamp 객체 생성
+        Calendar setCalender = Calendar.getInstance();
+        setCalender.setTimeInMillis(endAt.getTime());
+        setCalender.add(Calendar.HOUR_OF_DAY, 9); // 9시간을 더함
+        setCalender.add(Calendar.HOUR_OF_DAY, -24); // 24시간을 뺌
+        endAt.setTime(setCalender.getTimeInMillis());
+        log.info("endAt2 : " + endAt);
+        //Long babyId = Long.valueOf(redisService.getBabyIdByToken(redisService.getUserIdByToken(token)));
         Baby baby = babyRepository.findByBabyId(babyId);
 
         // 베이비 아이디로 수면 목록을 가져옵니다.
@@ -253,7 +282,7 @@ public class SleepServiceImpl implements SleepService {
             // 가장 최근의 잠든 시간과 잠든 횟수를 가져옵니다.
             Sleep latestSleep = sleepList.get(0);
             Timestamp createdAt = latestSleep.getCreatedAt();
-            int sleepCnt = latestSleep.getSleepCnt() + 1;
+            int sleepCnt = latestSleep.getSleepCnt();
 
 
             Calendar endAtCal = Calendar.getInstance();
@@ -282,7 +311,7 @@ public class SleepServiceImpl implements SleepService {
 
                 //현재 목록에 시간과 횟수를 갱신해서 넣고
                 latestSleep.setSleepTime(currSleepTime);
-                latestSleep.setSleepCnt(sleepCnt);
+                latestSleep.setSleepCnt(sleepCnt+1);
                 sleepRepository.save(latestSleep);
 
                 // 새로운 슬립에 시간과 횟수를 0으로 설정합니다.
@@ -303,7 +332,7 @@ public class SleepServiceImpl implements SleepService {
 
                 //현재 목록만 갱신합니다.
                 latestSleep.setSleepTime(currSleepTime);
-                latestSleep.setSleepCnt(sleepCnt);
+                latestSleep.setSleepCnt(sleepCnt+1);
                 latestSleep.setBaby(baby);
                 latestSleep.setEndAt(endAt);
                 sleepRepository.save(latestSleep);
