@@ -1,18 +1,29 @@
-FROM python:3.9
+# Python 애플리케이션을 위한 기본 이미지를 가져옵니다.
+FROM python:3.9-slim
 
-WORKDIR /ai
+# Python 애플리케이션에 필요한 파일을 복사합니다.
+WORKDIR /app/python-logic/common/edge_lp3
+COPY ./python/src/main.py /app/python-logic/common/edge_lp3/main.py
+COPY ./python/lib/requirements.txt /app/python-logic/common/edge_lp3/requirements.txt
 
-# 필요한 Python 패키지가 있다면 requirements.txt를 이용하여 설치할 수 있습니다.
-# COPY requirements.txt .
-# RUN pip install -r requirements.txt
+# Python 의존성을 설치합니다.
+RUN pip install -r /app/python-logic/common/edge_lp3/requirements.txt
 
-COPY . .
+CMD ["python3", "main.py"]
 
-# 필요한 Python 패키지를 직접 설치하는 경우에는 아래와 같이 명령어를 사용합니다.
-# RUN pip install 패키지이름
+# 베이스 이미지로 node와 python을 포함하는 이미지를 사용합니다.
+FROM node:21.7.1-alpine
 
-# 필요한 Python 패키지가 설치되었다고 가정하고, 서버를 실행하는 CMD를 지정합니다.
-CMD ["python", "start"]
+# Node.js 애플리케이션에 필요한 파일을 복사합니다.
+WORKDIR /app/express-network
+COPY ./express/index.js /app/express-network/index.js
+COPY ./express/package.json /app/express-network/package.json
 
-# Docker 컨테이너에서 노출할 포트를 지정합니다.
-EXPOSE 3002
+# Node.js 패키지를 설치합니다.
+RUN npm install
+
+# 실행할 명령을 지정합니다.
+CMD ["node", "index.js"]
+# 실행할 명령을 지정합니다.
+
+
