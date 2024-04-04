@@ -10,10 +10,10 @@ Chart.register(ChartDataLabels);
 const SleepStatusContent = () => {
   // { danger, hours, awake, temp, humid }
   const danger = 2; // '위험 감지'에 대한 값
-  const hours = 7; // '수면 총 시간'에 대한 값
-  const awake = 100; // '기상 횟수'에 대한 값
-  const temp = 22; // '온도'에 대한 값
-  const humid = 100; // '습도'에 대한 값
+  const hours = 13; // '수면 총 시간'에 대한 값
+  const awake = 8; // '기상 횟수'에 대한 값
+  const temp = 26; // '온도'에 대한 값
+  const humid = 35; // '습도'에 대한 값
 
   const sleepData = {
     labels: ["수면 총 시간", "기상 횟수", "위험 감지"],
