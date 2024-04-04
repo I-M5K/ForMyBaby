@@ -155,7 +155,7 @@ public class DangerServiceImpl implements DangerService {
         if (!dangerList.isEmpty()) {
             // dangerList가 비어있지 않은 경우에만 첫 번째 Danger 엔티티를 가져옴
             Danger firstDanger = dangerList.get(0);
-            if((createdAt.getTime() - firstDanger.getCreatedAt().getTime()) / (1000*60) >= 5){
+            if((createdAt.getTime() - firstDanger.getCreatedAt().getTime()) / 1000 >= 5){
                 Danger danger = new Danger();
                 // Danger 엔티티를 수정하여 저장
                 danger.setDangerCnt(firstDanger.getDangerCnt() + 1);
