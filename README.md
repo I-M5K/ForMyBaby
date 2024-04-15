@@ -2,14 +2,14 @@
 
 ## FOR MY BABY
 
-![표정1](/uploads/9a1190b65c8d781a38126c3aef88535e/표정1.png)
+![표정1](표정1.png)
 
 [부모가 한숨 돌릴 수 있는 아이 지킴이]
 
 ## 프로젝트 개요
 ### 프로젝트 기획의도
 
-![image](/uploads/fa8598802730ee11972458b5eb3386a5/image.png){: width="200" height="200"}
+![image](image.png){: width="200" height="200"}
 ###### 출처: 소방청
 
 - 영유아 사고의 약 31%는 생활안전사고이다.
