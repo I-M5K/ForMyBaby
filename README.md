@@ -9,7 +9,7 @@
 ## 프로젝트 개요
 ### 프로젝트 기획의도
 
-![image](image.png){: width="200" height="200"}
+![image](documents/images/개요.png)
 ###### 출처: 소방청
 
 - 영유아 사고의 약 31%는 생활안전사고이다.
@@ -82,22 +82,18 @@
 
 
 
-## 시스템 아키텍처
-
-
-
 <br>
 <br>                                                                            
 
 
 ## ER 다이어그램
 
-![FMB_ERD](/uploads/ba15e3b31a23a71b7bee106b202348b3/FMB_ERD.png)
+![FMB_ERD](documents/images/ER다이어그램.png)
 
 
 ## API 명세서
 
-![image](/uploads/e3dd9aa8d15df263fa18377643efa5b1/image.png)
+![image](documents/images/API명세서.png)
 
 https://www.notion.so/1227ef1f15f54148a51f36aefc0e3289?v=3cef4b8b00654b2cbe4db7d83294cd7f
 
@@ -108,7 +104,7 @@ https://www.notion.so/1227ef1f15f54148a51f36aefc0e3289?v=3cef4b8b00654b2cbe4db7d
 
 ## 화면 정의서
 
-![image](/uploads/5feedc93e72af108c33bc2b460965773/image.png)
+![image](documents/images/화면정의서.png)
 
 https://www.notion.so/a8139528b99c4278961ed2ca37cfcbf0?v=be78df78104647a09bf164efca0c9e8b
 
@@ -118,21 +114,21 @@ https://www.notion.so/a8139528b99c4278961ed2ca37cfcbf0?v=be78df78104647a09bf164e
 ## 주요 기능 및 화면
 
 ### 아이 지킴이
-![image](/uploads/09faa083881ea0d583880a8968840dbd/image.png)
+![image](documents/images/아이지킴이.png)
 
 
 <br><br>
 
 ### 수면 패턴 분석
-![KakaoTalk_20240403_115343332_01](/uploads/ca7375cf1cdf32607c00258046f5f683/KakaoTalk_20240403_115343332_01.jpg){:width="250" height="497"}
+<img src="documents/images/수면패턴분석.jpg" alt="수면 패턴 분석" width="250" height="497">
 
 
 ### 검진/접종 타임라인
-![KakaoTalk_20240403_115343332_03](/uploads/fd58eb3c014be6f75e36f904aff0413d/KakaoTalk_20240403_115343332_03.jpg){:width="250" height="497"}
+<img src="documents/images/타임라인.jpg" alt="수면 패턴 분석" width="250" height="497">
 
 
 ### 푸시알림
-![KakaoTalk_20240403_124606905](/uploads/dae9afcead9b2544b4b0ae7e994411a4/KakaoTalk_20240403_124606905.jpg){:width="250" height="497"}
+<img src="documents/images/푸시알림.jpg" alt="수면 패턴 분석" width="250" height="497">
 
 
 
